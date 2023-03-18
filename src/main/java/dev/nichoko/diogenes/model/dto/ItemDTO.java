@@ -6,9 +6,6 @@ public class ItemDTO {
     private String description;
     private int number;
 
-    public ItemDTO() {
-    }
-
     public void setId(int id) {
         this.id = id;
     }

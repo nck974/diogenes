@@ -10,10 +10,11 @@ class DiogenesApplicationTests {
 
 	@Test
 	void contextLoads() {
+		assertTrue(true);
 	}
 
 	@Test
-	public void testMain() {
+	public void mainLoads() {
 		DiogenesApplication.main(new String[] {});
 		assertTrue(true);
 	}
