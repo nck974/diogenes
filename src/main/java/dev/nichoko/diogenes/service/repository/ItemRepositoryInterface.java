@@ -9,5 +9,5 @@ import dev.nichoko.diogenes.model.domain.Item;
 
 @Repository
 public interface ItemRepositoryInterface extends JpaRepository<Item, Long> {
-    Optional<Item> findById(String itemId);
+    Optional<Item> findById(int itemId);
 }
