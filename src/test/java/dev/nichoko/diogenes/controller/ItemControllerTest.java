@@ -16,7 +16,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.MockMvc;
 
 import dev.nichoko.diogenes.model.domain.Item;
-import dev.nichoko.diogenes.service.repository.ItemRepositoryInterface;
+import dev.nichoko.diogenes.service.repository.itemRepository;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -28,7 +28,7 @@ public class ItemControllerTest {
 	private MockMvc mockMvc;
 
 	@MockBean
-	private ItemRepositoryInterface itemRepositoryInterface;
+	private itemRepository itemRepositoryInterface;
 
 	@Test
 	public void contextLoads() throws Exception {

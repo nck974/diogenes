@@ -4,7 +4,7 @@ import java.util.List;
 
 import dev.nichoko.diogenes.model.dto.ItemDTO;
 
-public interface ItemServiceInterface {
+public interface ItemService {
     ItemDTO getItemById(Long id);
 
     List<ItemDTO> getAllItems();

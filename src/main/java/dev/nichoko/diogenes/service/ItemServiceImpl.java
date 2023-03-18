@@ -9,19 +9,19 @@ import org.springframework.stereotype.Service;
 
 import dev.nichoko.diogenes.model.domain.Item;
 import dev.nichoko.diogenes.model.dto.ItemDTO;
-import dev.nichoko.diogenes.service.interfaces.ItemServiceInterface;
+import dev.nichoko.diogenes.service.interfaces.ItemService;
 import dev.nichoko.diogenes.service.mapper.ItemMapper;
-import dev.nichoko.diogenes.service.repository.ItemRepositoryInterface;
+import dev.nichoko.diogenes.service.repository.itemRepository;
 
 @Service
-public class ItemService implements ItemServiceInterface {
+public class ItemServiceImpl implements ItemService {
 
-    private final ItemRepositoryInterface itemRepository;
+    private final itemRepository itemRepository;
     @Autowired
     @Qualifier("itemMapper")
     private final ItemMapper itemMapper;
 
-    public ItemService(ItemRepositoryInterface itemRepository, ItemMapper itemMapper) {
+    public ItemServiceImpl(itemRepository itemRepository, ItemMapper itemMapper) {
         this.itemRepository = itemRepository;
         this.itemMapper = itemMapper;
     }

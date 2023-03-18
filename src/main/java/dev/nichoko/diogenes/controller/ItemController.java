@@ -9,14 +9,14 @@ import org.springframework.web.bind.annotation.RestController;
 
 import dev.nichoko.diogenes.exception.ResourceNotFoundException;
 import dev.nichoko.diogenes.model.dto.ItemDTO;
-import dev.nichoko.diogenes.service.interfaces.ItemServiceInterface;
+import dev.nichoko.diogenes.service.interfaces.ItemService;
 
 @RestController
 @RequestMapping("/api/v1/item")
 public class ItemController {
 
     @Autowired
-    private ItemServiceInterface itemService;
+    private ItemService itemService;
 
     @GetMapping("/{id}")
     public ResponseEntity<ItemDTO> getItemById(@PathVariable Long id) {

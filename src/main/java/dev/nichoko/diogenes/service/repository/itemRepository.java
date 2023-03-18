@@ -8,6 +8,6 @@ import org.springframework.stereotype.Repository;
 import dev.nichoko.diogenes.model.domain.Item;
 
 @Repository
-public interface ItemRepositoryInterface extends JpaRepository<Item, Long> {
+public interface itemRepository extends JpaRepository<Item, Long> {
     Optional<Item> findById(int itemId);
 }
