@@ -14,4 +14,9 @@ https://start.spring.io/#!type=maven-project&language=java&platformVersion=3.0.4
 
 ## Run tests
 
-1. Execute `.\mvnw test`
+1. Execute `.\mvnw test`.
+
+## Coverage
+
+1. Execute `mvn test jacoco:report`.
+1. The report will be generated in `target\site\jacoco\index.html`.

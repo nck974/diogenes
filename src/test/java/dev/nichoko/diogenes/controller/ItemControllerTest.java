@@ -3,7 +3,6 @@ package dev.nichoko.diogenes.controller;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.util.Optional;
@@ -44,7 +43,6 @@ public class ItemControllerTest {
 	@Test
 	public void canGetErrorItemNotFound() throws Exception {
 		this.mockMvc.perform(get("/api/v1/item/25"))
-				.andDo(print())
 				.andExpect(status().isNotFound())
 				.andExpect(jsonPath("$.message").value("The item with id 25 could not be found"));
 	}
@@ -67,7 +65,6 @@ public class ItemControllerTest {
 				.willReturn(Optional.of(item));
 
 		this.mockMvc.perform(get("/api/v1/item/1"))
-				.andDo(print())
 				.andExpect(status().isOk())
 				.andExpect(jsonPath("$.id").value(item.getId()))
 				.andExpect(jsonPath("$.name").value(item.getName()))
