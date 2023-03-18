@@ -1,6 +1,9 @@
 name: diogenes-actions
 run-name: Actions for the diogenes project
-on: [push]
+on:
+  pull_request:
+    branches:
+      - main
 jobs:
   check-code-coverage:
     runs-on: ubuntu-latest
