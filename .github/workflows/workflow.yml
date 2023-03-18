@@ -1,0 +1,16 @@
+name: diogenes-actions
+run-name: Actions for the diogenes project
+on: [push]
+jobs:
+  check-code-coverage:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@master
+    - uses: codecov/codecov-action@v3
+      with:
+        directory: ./coverage/reports/
+        files: ./coverage1.xml,./coverage2.xml,!./cache
+        flags: unittests # optional
+        name: codecov-diogenes # optional
+        fail_ci_if_error: true # optional (default = false)
+        verbose: true # optional (default = false)
