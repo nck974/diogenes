@@ -53,6 +53,13 @@
 			<version>42.5.4</version>
 		</dependency>
 
+		<!-- In memory database for unit test -->
+		<dependency>
+			<groupId>com.h2database</groupId>
+			<artifactId>h2</artifactId>
+			<scope>runtime</scope>
+		</dependency>		
+
 		<!-- Database migrations -->
 		<dependency>
 			<groupId>org.flywaydb</groupId>
