@@ -12,7 +12,7 @@ import jakarta.persistence.Table;
 public class Item {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private int id;
 
     @Column(nullable = false)
     private String name;
@@ -21,13 +21,13 @@ public class Item {
     private String description;
 
     @Column(nullable = false)
-    private Long number;
+    private int number;
 
-    public Long getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -47,11 +47,11 @@ public class Item {
         this.description = description;
     }
 
-    public Long getNumber() {
+    public int getNumber() {
         return number;
     }
 
-    public void setNumber(Long number) {
+    public void setNumber(int number) {
         this.number = number;
     }
 

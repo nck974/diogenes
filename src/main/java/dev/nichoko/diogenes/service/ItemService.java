@@ -27,8 +27,8 @@ public class ItemService implements ItemServiceInterface {
     }
 
     @Override
-    public ItemDTO getItemById(Long id) {
-        Optional<Item> item = itemRepository.findById(id);
+    public ItemDTO getItemById(Long i) {
+        Optional<Item> item = itemRepository.findById(i);
         if (item.isPresent()){
             return itemMapper.mapItemToItemDTO(item.get());
         }

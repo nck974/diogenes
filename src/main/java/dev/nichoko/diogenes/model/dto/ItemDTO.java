@@ -1,24 +1,34 @@
 package dev.nichoko.diogenes.model.dto;
 
 public class ItemDTO {
-    private Long id;
+    private int id;
     private String name;
     private String description;
-    private Long number;
+    private int number;
 
-    public void setId(Long id) {
+    public ItemDTO() {
+    }
+
+    public ItemDTO(int id, String name, String description, int number) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.number = number;
+    }
+
+    public void setId(int id) {
         this.id = id;
     }
 
-    public Long getId() {
+    public int getId() {
         return id;
     }
 
-    public Long getNumber() {
+    public int getNumber() {
         return number;
     }
 
-    public void setNumber(Long number) {
+    public void setNumber(int number) {
         this.number = number;
     }
 
