@@ -3,7 +3,7 @@ run-name: Actions for the diogenes project
 on:
   push:
     branches:
-      - master
+      - main
 jobs:
   check-code-coverage:
     runs-on: ubuntu-latest
