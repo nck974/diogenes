@@ -19,6 +19,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -86,18 +89,18 @@ class ItemControllerTest {
 	 */
 	@Test
 	void canSearchAllItems() throws Exception {
-		Item item = new Item(1, "TesTest", "Description", 3);
+		Item item1 = new Item(1, "TesTest", "Description", 3);
 		Item item2 = new Item(2, "TesTest2", "Description", 2);
 
-		// Mock database
-		given(itemRepository.findAll())
-				.willReturn(List.of(item, item2));
+		List<Item> items = List.of(item1, item2);
+		Page<Item> pagedResponse = new PageImpl<Item>(items);
+		Mockito.when(itemRepository.findAll(Mockito.any(Pageable.class))).thenReturn(pagedResponse);
 
 		this.mockMvc.perform(get("/api/v1/item/"))
 				.andExpect(status().isOk())
-				.andExpect(jsonPath("$.length()").value(2))
-				.andExpect(jsonPath("$[0].name").value(item.getName()))
-				.andExpect(jsonPath("$[1].name").value(item2.getName()));
+				.andExpect(jsonPath("$.content.length()").value(2))
+				.andExpect(jsonPath("$.content[0].name").value(item1.getName()))
+				.andExpect(jsonPath("$.content[1].name").value(item2.getName()));
 	}
 
 	/**

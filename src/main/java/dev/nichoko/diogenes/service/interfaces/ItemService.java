@@ -1,13 +1,13 @@
 package dev.nichoko.diogenes.service.interfaces;
 
-import java.util.List;
+import org.springframework.data.domain.Page;
 
 import dev.nichoko.diogenes.model.dto.ItemDTO;
 
 public interface ItemService {
     ItemDTO getItemById(Long id);
 
-    List<ItemDTO> getAllItems();
+    Page<ItemDTO> getAllItems(int pageSize, int offset);
 
     ItemDTO createItem(ItemDTO item);
 
