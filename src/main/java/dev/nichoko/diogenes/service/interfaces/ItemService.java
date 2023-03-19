@@ -7,7 +7,7 @@ import dev.nichoko.diogenes.model.dto.ItemDTO;
 public interface ItemService {
     ItemDTO getItemById(Long id);
 
-    Page<ItemDTO> getAllItems(int pageSize, int offset);
+    Page<ItemDTO> getAllItems(int pageSize, int offset, String sort, String sortDirection);
 
     ItemDTO createItem(ItemDTO item);
 
