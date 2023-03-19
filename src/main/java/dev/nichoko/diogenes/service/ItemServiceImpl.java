@@ -1,10 +1,10 @@
 package dev.nichoko.diogenes.service;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
+import org.springframework.data.domain.Pageable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import dev.nichoko.diogenes.exception.ResourceNotFoundException;
@@ -17,7 +17,7 @@ import dev.nichoko.diogenes.service.repository.ItemRepository;
 @Service
 public class ItemServiceImpl implements ItemService {
 
-    private static final  String ID_NOT_FOUND = "The following id could not be found: ";
+    private static final String ID_NOT_FOUND = "The following id could not be found: ";
 
     private final ItemRepository itemRepository;
     @Autowired
@@ -44,11 +44,11 @@ public class ItemServiceImpl implements ItemService {
      * Return all items
      */
     @Override
-    public List<ItemDTO> getAllItems() {
-        return itemRepository.findAll()
-                .stream()
-                .map(itemMapper::mapItemToItemDTO)
-                .collect(Collectors.toList());
+    public Page<ItemDTO> getAllItems(int pageSize, int offset) {
+        Pageable pageable = PageRequest.of(offset, pageSize);
+        Page<Item> itemsPage = itemRepository.findAll(pageable);
+        return itemsPage.map(itemMapper::mapItemToItemDTO);
+
     }
 
     /*

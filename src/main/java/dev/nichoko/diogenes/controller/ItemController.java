@@ -1,10 +1,9 @@
 package dev.nichoko.diogenes.controller;
 
-import java.util.List;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -14,6 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import jakarta.validation.Valid;
@@ -29,9 +29,10 @@ public class ItemController {
     private ItemService itemService;
 
     @GetMapping("/")
-    public ResponseEntity<List<ItemDTO>> getAllItems() {
-        logger.info("Received a request to retrieve all items");
-        return ResponseEntity.ok(itemService.getAllItems());
+    public ResponseEntity<Page<ItemDTO>> getAllItems(@RequestParam(defaultValue = "10") int pageSize,
+            @RequestParam(defaultValue = "0") int offset) {
+        logger.info("Received a request to retrieve all items. Offset: {} PageSize: {}", offset, pageSize);
+        return ResponseEntity.ok(itemService.getAllItems(pageSize, offset));
     }
 
     @GetMapping("/{id}")
