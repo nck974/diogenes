@@ -1,62 +1,90 @@
 package dev.nichoko.diogenes.service;
 
 import java.util.List;
-import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
+import dev.nichoko.diogenes.exception.ResourceNotFoundException;
 import dev.nichoko.diogenes.model.domain.Item;
 import dev.nichoko.diogenes.model.dto.ItemDTO;
 import dev.nichoko.diogenes.service.interfaces.ItemService;
 import dev.nichoko.diogenes.service.mapper.ItemMapper;
-import dev.nichoko.diogenes.service.repository.itemRepository;
+import dev.nichoko.diogenes.service.repository.ItemRepository;
 
 @Service
 public class ItemServiceImpl implements ItemService {
 
-    private final itemRepository itemRepository;
+    private static final  String ID_NOT_FOUND = "The following id could not be found: ";
+
+    private final ItemRepository itemRepository;
     @Autowired
     @Qualifier("itemMapper")
     private final ItemMapper itemMapper;
 
-    public ItemServiceImpl(itemRepository itemRepository, ItemMapper itemMapper) {
+    public ItemServiceImpl(ItemRepository itemRepository, ItemMapper itemMapper) {
         this.itemRepository = itemRepository;
         this.itemMapper = itemMapper;
     }
 
+    /*
+     * Return a single item by id
+     */
     @Override
-    public ItemDTO getItemById(Long i) {
-        Optional<Item> item = itemRepository.findById(i);
-        if (item.isPresent()){
-            return itemMapper.mapItemToItemDTO(item.get());
-        }
-        return null;
+    public ItemDTO getItemById(Long id) {
+        Item item = itemRepository.findById(id)
+                .orElseThrow(
+                        () -> new ResourceNotFoundException(ID_NOT_FOUND + id));
+        return itemMapper.mapItemToItemDTO(item);
     }
 
+    /*
+     * Return all items
+     */
     @Override
     public List<ItemDTO> getAllItems() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getAllItems'");
+        return itemRepository.findAll()
+                .stream()
+                .map(itemMapper::mapItemToItemDTO)
+                .collect(Collectors.toList());
     }
 
+    /*
+     * Create a new item
+     */
     @Override
-    public ItemDTO createItem(ItemDTO ItemDTO) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'createItem'");
+    public ItemDTO createItem(ItemDTO itemDto) {
+        Item item = itemMapper.mapItemDTOToItem(itemDto);
+        Item savedItem = itemRepository.save(item);
+        return itemMapper.mapItemToItemDTO(savedItem);
     }
 
+    /*
+     * Update an existing item or throw a not found exception
+     */
     @Override
-    public ItemDTO updateItem(Long id, ItemDTO ItemDTO) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'updateItem'");
+    public ItemDTO updateItem(Long id, ItemDTO itemDto) {
+        Item item = itemRepository.findById(id)
+                .orElseThrow(
+                        () -> new ResourceNotFoundException(ID_NOT_FOUND + id));
+        item.setName(itemDto.getName());
+        item.setDescription(itemDto.getDescription());
+        item.setNumber(itemDto.getNumber());
+        Item savedItem = itemRepository.save(item);
+        return itemMapper.mapItemToItemDTO(savedItem);
     }
 
+    /*
+     * Delete an existing item or throw a not found exception
+     */
     @Override
     public void deleteItem(Long id) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'deleteItem'");
+        Item item = itemRepository.findById(id)
+                .orElseThrow(
+                        () -> new ResourceNotFoundException(ID_NOT_FOUND + id));
+        itemRepository.delete(item);
     }
-    
+
 }

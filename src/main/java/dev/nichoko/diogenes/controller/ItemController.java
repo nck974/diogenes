@@ -1,15 +1,23 @@
 package dev.nichoko.diogenes.controller;
 
+import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import dev.nichoko.diogenes.exception.ResourceNotFoundException;
+import jakarta.validation.Valid;
+
 import dev.nichoko.diogenes.model.dto.ItemDTO;
 import dev.nichoko.diogenes.service.interfaces.ItemService;
 
@@ -20,13 +28,37 @@ public class ItemController {
     @Autowired
     private ItemService itemService;
 
+    @GetMapping("/")
+    public ResponseEntity<List<ItemDTO>> getAllItems() {
+        logger.info("Received a request to retrieve all items");
+        return ResponseEntity.ok(itemService.getAllItems());
+    }
+
     @GetMapping("/{id}")
-    public ResponseEntity<ItemDTO> getItemById(@PathVariable Long id) {
-        logger.info("Received a request to: {}", id);
+    public ResponseEntity<ItemDTO> getItemById(@Valid @PathVariable Long id) {
+        logger.info("Received a request to retrieve item with id: '{}'", id);
         ItemDTO item = itemService.getItemById(id);
-        if (item != null) {
-            return ResponseEntity.ok(item);
-        }
-        throw new ResourceNotFoundException("The item with id " + id.toString() + " could not be found");
+        return ResponseEntity.ok(item);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<ItemDTO> updateItem(@Valid @RequestBody ItemDTO updateItem, @PathVariable Long id) {
+        logger.info("Received a request to update item with id: '{}'", id);
+        ItemDTO updatedItem = itemService.updateItem(id, updateItem);
+        return ResponseEntity.ok().body(updatedItem);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Object> deleteItem(@Valid @PathVariable Long id) {
+        logger.info("Received a request to delete item with id: '{}'", id);
+        itemService.deleteItem(id);
+        return ResponseEntity.noContent().build();
+    }
+
+    @PostMapping("/")
+    public ResponseEntity<ItemDTO> createItem(@Valid @RequestBody ItemDTO item) {
+        logger.info("Received a request to create new item: '{}'", item.getName());
+        ItemDTO createdItem = itemService.createItem(item);
+        return ResponseEntity.status(HttpStatus.CREATED).body(createdItem);
     }
 }

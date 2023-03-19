@@ -10,6 +10,7 @@ import jakarta.persistence.Table;
 @Entity
 @Table(name = "item")
 public class Item {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
@@ -22,6 +23,16 @@ public class Item {
 
     @Column(nullable = false)
     private int number;
+
+    public Item() {
+    }
+
+    public Item(int id, String name, String description, int number) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.number = number;
+    }
 
     public int getId() {
         return id;
