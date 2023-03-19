@@ -1,17 +1,31 @@
 version: '3.8'
 services:
+
+  diogenes:
+    container_name: diogenes
+    image: nck974/diogenes:0.0.1-SNAPSHOT
+    depends_on:
+    - diogenes_db
+    environment:
+        - SPRING_DATASOURCE_JDBC-URL=jdbc:postgresql://diogenes_db:5432/diogenes_db
+        - SPRING_DATASOURCE_USERNAME=${DATABASE_USER}
+        - SPRING_DATASOURCE_PASSWORD=${DATABASE_PASSWORD}
+    ports:
+        - 8080:8080
+
   diogenes_db:
     container_name: diogenes_db
     image: postgres:14.1-alpine
     restart: always
     environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_USER=${DATABASE_USER}
+      - POSTGRES_PASSWORD=${DATABASE_PASSWORD}
       - POSTGRES_DB=diogenes_db
     ports:
       - '5432:5432'
-    volumes: 
+    volumes:
       - db:/var/lib/postgresql/data
+
 volumes:
   db:
     driver: local
