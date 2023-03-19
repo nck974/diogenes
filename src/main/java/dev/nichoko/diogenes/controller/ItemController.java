@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import jakarta.validation.Valid;
-
+import dev.nichoko.diogenes.enums.SortDirection;
 import dev.nichoko.diogenes.model.dto.ItemDTO;
 import dev.nichoko.diogenes.service.interfaces.ItemService;
 
@@ -28,11 +28,21 @@ public class ItemController {
     @Autowired
     private ItemService itemService;
 
+    private enum SortingOption {
+        ID,
+        NAME,
+        DESCRIPTION,
+        NUMBER,
+    }
+
     @GetMapping("/")
     public ResponseEntity<Page<ItemDTO>> getAllItems(@RequestParam(defaultValue = "10") int pageSize,
-            @RequestParam(defaultValue = "0") int offset) {
-        logger.info("Received a request to retrieve all items. Offset: {} PageSize: {}", offset, pageSize);
-        return ResponseEntity.ok(itemService.getAllItems(pageSize, offset));
+            @RequestParam(defaultValue = "0") int offset, @RequestParam(defaultValue = "ID") SortingOption sort,
+            @RequestParam(defaultValue = "ASC") SortDirection sortDirection) {
+        logger.info("Received a request to retrieve all items. Offset: {} PageSize: {} Sort: {}", offset, pageSize,
+                sort);
+        return ResponseEntity
+                .ok(itemService.getAllItems(pageSize, offset, sort.toString().toLowerCase(), sortDirection.toString()));
     }
 
     @GetMapping("/{id}")

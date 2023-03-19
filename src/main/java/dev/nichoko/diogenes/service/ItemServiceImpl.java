@@ -1,12 +1,14 @@
 package dev.nichoko.diogenes.service;
 
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+import dev.nichoko.diogenes.enums.SortDirection;
 import dev.nichoko.diogenes.exception.ResourceNotFoundException;
 import dev.nichoko.diogenes.model.domain.Item;
 import dev.nichoko.diogenes.model.dto.ItemDTO;
@@ -44,11 +46,15 @@ public class ItemServiceImpl implements ItemService {
      * Return all items
      */
     @Override
-    public Page<ItemDTO> getAllItems(int pageSize, int offset) {
-        Pageable pageable = PageRequest.of(offset, pageSize);
+    public Page<ItemDTO> getAllItems(int pageSize, int offset, String sort, String sortDirection) {
+        Sort sorting = Sort.by(sort);
+        if (sortDirection.equals(SortDirection.DESC.toString())) {
+            sorting = sorting.descending();
+        }
+
+        Pageable pageable = PageRequest.of(offset, pageSize, sorting);
         Page<Item> itemsPage = itemRepository.findAll(pageable);
         return itemsPage.map(itemMapper::mapItemToItemDTO);
-
     }
 
     /*
