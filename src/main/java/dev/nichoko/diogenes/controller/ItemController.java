@@ -14,9 +14,11 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import jakarta.validation.Valid;
+
 import dev.nichoko.diogenes.enums.SortDirection;
 import dev.nichoko.diogenes.model.dto.ItemDTO;
 import dev.nichoko.diogenes.service.interfaces.ItemService;
@@ -59,6 +61,7 @@ public class ItemController {
         return ResponseEntity.ok().body(updatedItem);
     }
 
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping("/{id}")
     public ResponseEntity<Object> deleteItem(@Valid @PathVariable Long id) {
         logger.info("Received a request to delete item with id: '{}'", id);
