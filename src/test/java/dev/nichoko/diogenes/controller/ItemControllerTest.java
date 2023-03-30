@@ -1,7 +1,11 @@
 package dev.nichoko.diogenes.controller;
 
 import java.util.List;
-import java.util.Optional;
+import java.util.stream.IntStream;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectWriter;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -11,25 +15,24 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
-import org.json.JSONObject;
+import org.flywaydb.core.Flyway;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
-import static org.mockito.BDDMockito.given;
+import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.ResultActions;
 
 import dev.nichoko.diogenes.model.domain.Item;
-import dev.nichoko.diogenes.service.repository.ItemRepository;
 
 @SpringBootTest
 @AutoConfigureMockMvc
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class ItemControllerTest {
 	@Autowired
 	private ItemController controller;
@@ -37,9 +40,47 @@ class ItemControllerTest {
 	@Autowired
 	private MockMvc mockMvc;
 
-	@MockBean
-	private ItemRepository itemRepository;
+	@Autowired
+	Flyway flyway;
 
+	/*
+	 * Clean up the database before each test
+	 */
+	@BeforeEach
+	public void cleanUp() {
+		flyway.clean();
+		flyway.migrate();
+	}
+
+	/*
+	 * Use jackson library to stringify the provided class
+	 */
+	private static String stringifyClass(Object object) throws JsonProcessingException {
+		ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
+		return ow.writeValueAsString(object);
+	}
+
+	/*
+	 * Return a mock of an item
+	 */
+	private static Item getMockItem(Integer number) {
+		return new Item(number, "TestName" + number.toString(), "Description" + number.toString(), number);
+	}
+
+	/*
+	 * Sends the provided item to the API
+	 */
+	private ResultActions createItem(Item item) throws Exception {
+		return this.mockMvc.perform(
+				post("/api/v1/item/")
+						.content(stringifyClass(item))
+						.contentType(MediaType.APPLICATION_JSON)
+						.accept(MediaType.APPLICATION_JSON));
+	}
+
+	/*
+	 * Test the app can load
+	 */
 	@Test
 	void contextLoads() throws Exception {
 		assertThat(controller).isNotNull();
@@ -64,15 +105,8 @@ class ItemControllerTest {
 	 */
 	@Test
 	void canSearchItemById() throws Exception {
-		Item item = new Item();
-		item.setId(1);
-		item.setName("TestTest");
-		item.setDescription("Test description of item");
-		item.setNumber(1);
-
-		// Mock database
-		given(itemRepository.findById(1L))
-				.willReturn(Optional.of(item));
+		Item item = getMockItem(1);
+		createItem(item);
 
 		this.mockMvc.perform(get("/api/v1/item/1"))
 				.andExpect(status().isOk())
@@ -83,54 +117,57 @@ class ItemControllerTest {
 	}
 
 	/**
-	 * Verify that the list of items can be returned
-	 *
-	 * @throws Exception
-	 */
-	@Test
-	void canSearchAllItems() throws Exception {
-		Item item1 = new Item(1, "TesTest", "Description", 3);
-		Item item2 = new Item(2, "TesTest2", "Description", 2);
-
-		List<Item> items = List.of(item1, item2);
-		Page<Item> pagedResponse = new PageImpl<Item>(items);
-		Mockito.when(itemRepository.findAll(Mockito.any(Pageable.class))).thenReturn(pagedResponse);
-
-		this.mockMvc.perform(get("/api/v1/item/"))
-				.andExpect(status().isOk())
-				.andExpect(jsonPath("$.content.length()").value(2))
-				.andExpect(jsonPath("$.content[0].name").value(item1.getName()))
-				.andExpect(jsonPath("$.content[1].name").value(item2.getName()));
-	}
-
-	/**
-	 * Verify that a new item can be created
+	 * Can create a new item
 	 *
 	 * @throws Exception
 	 */
 	@Test
 	void canCreateNewItem() throws Exception {
-		Item item = new Item(1, "TesTest", "Description", 3);
-		// Mock database
-		given(itemRepository.save(Mockito.any(Item.class)))
-				.willReturn(item);
+		Item item = getMockItem(1);
 
-		// Create a JSON object for the item
-		JSONObject jsonObject = new JSONObject();
-		jsonObject.put("name", item.getName());
-		jsonObject.put("description", item.getDescription());
-		jsonObject.put("number", item.getNumber());
-
-		this.mockMvc.perform(
-				post("/api/v1/item/")
-						.content(jsonObject.toString())
-						.contentType(MediaType.APPLICATION_JSON)
-						.accept(MediaType.APPLICATION_JSON))
+		createItem(item)
 				.andExpect(status().isCreated())
-				.andExpect(jsonPath("$.id").value(item.getId()))
+				.andExpect(jsonPath("$.id").isNumber())
 				.andExpect(jsonPath("$.name").value(item.getName()))
 				.andExpect(jsonPath("$.description").value(item.getDescription()))
 				.andExpect(jsonPath("$.number").value(item.getNumber()));
+	}
+
+	/**
+	 * Can create a new item
+	 *
+	 * @throws Exception
+	 */
+	@Test
+	void canCreateItemWithoutDescription() throws Exception {
+		Item item = getMockItem(1);
+		item.setDescription(null);
+
+		createItem(item)
+				.andExpect(status().isCreated())
+				.andExpect(jsonPath("$.id").isNumber())
+				.andExpect(jsonPath("$.name").value(item.getName()))
+				.andExpect(jsonPath("$.description").value(item.getDescription()))
+				.andExpect(jsonPath("$.number").value(item.getNumber()));
+	}
+
+	/**
+	 * Can filter items
+	 *
+	 * @throws Exception
+	 */
+	@Test
+	void canGetAllItems() throws Exception {
+		List<Item> items = List.of(getMockItem(2), getMockItem(3), getMockItem(4));
+		for (Item item : items) {
+			createItem(item);
+		}
+		this.mockMvc.perform(get("/api/v1/item/"))
+				.andExpect(status().isOk())
+				.andExpect(jsonPath("$.content.length()").value(items.size()))
+				.andExpect(jsonPath("$.content[0].name").value(items.get(0).getName()))
+				.andExpect(jsonPath("$.content[1].name").value(items.get(1).getName()))
+				.andExpect(jsonPath("$.content[2].name").value(items.get(2).getName()));
 	}
 
 	/**
@@ -140,18 +177,26 @@ class ItemControllerTest {
 	 */
 	@Test
 	void canNotCreateNewWithoutName() throws Exception {
-		Item item = new Item(1, "TesTest", "Description", 3);
+		Item item = getMockItem(1);
+		item.setName(null);
+		item.setDescription(null);
 
-		// Create a JSON object for the item
-		JSONObject jsonObject = new JSONObject();
-		jsonObject.put("description", item.getDescription());
-		jsonObject.put("number", item.getNumber());
+		createItem(item)
+				.andExpect(status().isBadRequest());
+	}
 
-		this.mockMvc.perform(
-				post("/api/v1/item/")
-						.content(jsonObject.toString())
-						.contentType(MediaType.APPLICATION_JSON)
-						.accept(MediaType.APPLICATION_JSON))
+	/**
+	 * Verify create item validation: Empty name
+	 *
+	 * @throws Exception
+	 */
+	@Test
+	void canNotCreateNewEmptyName() throws Exception {
+		Item item = getMockItem(1);
+		item.setName("");
+		item.setDescription("");
+
+		createItem(item)
 				.andExpect(status().isBadRequest());
 	}
 
@@ -162,19 +207,10 @@ class ItemControllerTest {
 	 */
 	@Test
 	void canNotCreateNewItemNegativeNumber() throws Exception {
-		Item item = new Item(1, "NameNewWithoutNumber", "Description", -3);
+		Item item = getMockItem(1);
+		item.setNumber(-3);
 
-		// Create a JSON object for the item
-		JSONObject jsonObject = new JSONObject();
-		jsonObject.put("name", item.getName());
-		jsonObject.put("description", item.getDescription());
-		jsonObject.put("number", item.getNumber());
-
-		this.mockMvc.perform(
-				post("/api/v1/item/")
-						.content(jsonObject.toString())
-						.contentType(MediaType.APPLICATION_JSON)
-						.accept(MediaType.APPLICATION_JSON))
+		createItem(item)
 				.andExpect(status().isBadRequest());
 	}
 
@@ -185,18 +221,10 @@ class ItemControllerTest {
 	 */
 	@Test
 	void canNotCreateNewItemTooLongDescription() throws Exception {
+		Item item = getMockItem(1);
+		item.setDescription("a".repeat(2001));
 
-		// Create a JSON object for the item
-		JSONObject jsonObject = new JSONObject();
-		jsonObject.put("name", "TestLongDescription");
-		jsonObject.put("description", "a".repeat(2001));
-		jsonObject.put("number", 1);
-
-		this.mockMvc.perform(
-				post("/api/v1/item/")
-						.content(jsonObject.toString())
-						.contentType(MediaType.APPLICATION_JSON)
-						.accept(MediaType.APPLICATION_JSON))
+		createItem(item)
 				.andExpect(status().isBadRequest());
 	}
 
@@ -207,17 +235,10 @@ class ItemControllerTest {
 	 */
 	@Test
 	void canNotCreateNewWithNameTooLong() throws Exception {
+		Item item = getMockItem(1);
+		item.setName("a".repeat(51));
 
-		// Create a JSON object for the item
-		JSONObject jsonObject = new JSONObject();
-		jsonObject.put("name", "a".repeat(51));
-		jsonObject.put("description", "Too long name");
-
-		this.mockMvc.perform(
-				post("/api/v1/item/")
-						.content(jsonObject.toString())
-						.contentType(MediaType.APPLICATION_JSON)
-						.accept(MediaType.APPLICATION_JSON))
+		createItem(item)
 				.andExpect(status().isBadRequest());
 	}
 
@@ -228,24 +249,14 @@ class ItemControllerTest {
 	 */
 	@Test
 	void canUpdateItem() throws Exception {
-		Item item = new Item(1, "TesTest", "Description", 3);
-		Item updatedItem = new Item(1, "NameUpdated", "Updated", 25);
-
-		// Mock database
-		given(itemRepository.findById(1L))
-				.willReturn(Optional.of(item));
-		given(itemRepository.save(Mockito.any(Item.class)))
-				.willReturn(updatedItem);
-
-		// Create a JSON object for the item
-		JSONObject jsonObject = new JSONObject();
-		jsonObject.put("name", updatedItem.getName());
-		jsonObject.put("description", updatedItem.getDescription());
-		jsonObject.put("number", updatedItem.getNumber());
+		Item item = getMockItem(1);
+		Item updatedItem = getMockItem(2);
+		updatedItem.setId(item.getId());
+		createItem(item);
 
 		this.mockMvc.perform(
 				put("/api/v1/item/" + Integer.toString(item.getId()))
-						.content(jsonObject.toString())
+						.content(stringifyClass(updatedItem))
 						.contentType(MediaType.APPLICATION_JSON)
 						.accept(MediaType.APPLICATION_JSON))
 				.andExpect(status().isOk())
@@ -262,22 +273,10 @@ class ItemControllerTest {
 	 */
 	@Test
 	void canNotUpdateNotExistingItem() throws Exception {
-		Item item = new Item(1, "TesTest", "Description", 3);
-		Item updatedItem = new Item(1, "NameUpdated", "Updated", 25);
-
-		// Mock database
-		given(itemRepository.findById(1L))
-				.willReturn(Optional.empty());
-
-		// Create a JSON object for the item
-		JSONObject jsonObject = new JSONObject();
-		jsonObject.put("name", updatedItem.getName());
-		jsonObject.put("description", updatedItem.getDescription());
-		jsonObject.put("number", updatedItem.getNumber());
-
+		Item item = getMockItem(1);
 		this.mockMvc.perform(
 				put("/api/v1/item/" + Integer.toString(item.getId()))
-						.content(jsonObject.toString())
+						.content(stringifyClass(item))
 						.contentType(MediaType.APPLICATION_JSON)
 						.accept(MediaType.APPLICATION_JSON))
 				.andExpect(status().isNotFound());
@@ -290,11 +289,8 @@ class ItemControllerTest {
 	 */
 	@Test
 	void canDeleteItem() throws Exception {
-		Item item = new Item(1, "TesTest", "Description", 3);
-
-		// Mock database
-		given(itemRepository.findById(1L))
-				.willReturn(Optional.of(item));
+		Item item = getMockItem(1);
+		createItem(item);
 
 		this.mockMvc.perform(
 				delete("/api/v1/item/" + Integer.toString(item.getId()))
@@ -310,17 +306,80 @@ class ItemControllerTest {
 	 */
 	@Test
 	void canNotDeleteNonExistingItem() throws Exception {
-		Item item = new Item(1, "TesTest", "Description", 3);
-
-		// Mock database
-		given(itemRepository.findById(1L))
-				.willReturn(Optional.empty());
+		Item item = getMockItem(1);
 
 		this.mockMvc.perform(
 				delete("/api/v1/item/" + Integer.toString(item.getId()))
 						.contentType(MediaType.APPLICATION_JSON)
 						.accept(MediaType.APPLICATION_JSON))
 				.andExpect(status().isNotFound());
+	}
+
+	/**
+	 * Can filter items
+	 *
+	 * @throws Exception
+	 */
+	@ParameterizedTest()
+	@ValueSource(strings = {
+			"name",
+			"number",
+			"description"
+	})
+	void canFilterByTheAvailableParameters(String filterName) throws Exception {
+		IntStream.range(0, 10).forEachOrdered(n -> {
+			try {
+				createItem(getMockItem(n));
+			} catch (Exception e) {
+				e.printStackTrace();
+				throw new RuntimeException();
+			}
+		});
+		String filterParameter = "?" + filterName + "=5";
+		this.mockMvc.perform(get("/api/v1/item/" + filterParameter))
+				.andExpect(status().isOk())
+				.andExpect(jsonPath("$.content.length()").value(1));
+	}
+
+	/**
+	 * Can filter items by two parameters
+	 *
+	 * @throws Exception
+	 */
+	@Test
+	void canFilterByTwoParameters() throws Exception {
+		IntStream.range(0, 10).forEachOrdered(n -> {
+			try {
+				createItem(getMockItem(n));
+			} catch (Exception e) {
+				e.printStackTrace();
+				throw new RuntimeException();
+			}
+		});
+		String filterParameter = "?name=5&description=5";
+		this.mockMvc.perform(get("/api/v1/item/" + filterParameter))
+				.andExpect(status().isOk())
+				.andExpect(jsonPath("$.content.length()").value(1));
+	}
+
+	/**
+	 * Can sort the items in reverse order
+	 *
+	 * @throws Exception
+	 */
+	@Test
+	void canSortItems() throws Exception {
+		List<Item> items = List.of(getMockItem(1), getMockItem(2), getMockItem(3));
+		for (Item item : items) {
+			createItem(item);
+		}
+		String sortParameter = "?sortDirection=DESC";
+		this.mockMvc.perform(get("/api/v1/item/" + sortParameter))
+				.andExpect(status().isOk())
+				.andExpect(jsonPath("$.content.length()").value(items.size()))
+				.andExpect(jsonPath("$.content[0].name").value(items.get(2).getName()))
+				.andExpect(jsonPath("$.content[1].name").value(items.get(1).getName()))
+				.andExpect(jsonPath("$.content[2].name").value(items.get(0).getName()));
 	}
 
 }

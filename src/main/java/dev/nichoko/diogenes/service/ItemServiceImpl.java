@@ -2,6 +2,7 @@ package dev.nichoko.diogenes.service;
 
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.Page;
@@ -12,6 +13,7 @@ import dev.nichoko.diogenes.enums.SortDirection;
 import dev.nichoko.diogenes.exception.ResourceNotFoundException;
 import dev.nichoko.diogenes.model.domain.Item;
 import dev.nichoko.diogenes.model.dto.ItemDTO;
+import dev.nichoko.diogenes.model.dto.ItemFilterDTO;
 import dev.nichoko.diogenes.service.interfaces.ItemService;
 import dev.nichoko.diogenes.service.mapper.ItemMapper;
 import dev.nichoko.diogenes.service.repository.ItemRepository;
@@ -43,17 +45,48 @@ public class ItemServiceImpl implements ItemService {
     }
 
     /*
+     * If the filters are available filter by each field. Strings match everything
+     * lower case
+     * number match the exact number
+     */
+    private Specification<Item> filterItems(ItemFilterDTO filter) {
+        Specification<Item> spec = Specification.where(null);
+        if (filter.getName() != null && !filter.getName().isEmpty()) {
+            spec = spec.and((root, query, cb) -> cb.like(cb.lower(root.get("name")),
+                    "%" + filter.getName().toLowerCase() + "%"));
+        }
+
+        if (filter.getDescription() != null && !filter.getDescription().isEmpty()) {
+            spec = spec.and(
+                    (root, query, cb) -> cb.like(cb.lower(root.get("description")),
+                            "%" + filter.getDescription().toLowerCase() + "%"));
+        }
+
+        if (filter.getNumber() != null) {
+            spec = spec.and((root, query, cb) -> cb.equal(root.get("number"), filter.getNumber()));
+        }
+        return spec;
+    }
+
+    /*
      * Return all items
      */
     @Override
-    public Page<ItemDTO> getAllItems(int pageSize, int offset, String sort, String sortDirection) {
+    public Page<ItemDTO> getAllItems(int pageSize, int offset, String sort, String sortDirection,
+            ItemFilterDTO filter) {
+
+        // Sort
         Sort sorting = Sort.by(sort);
         if (sortDirection.equals(SortDirection.DESC.toString())) {
             sorting = sorting.descending();
         }
 
+        // Filter
+        Specification<Item> spec = filterItems(filter);
+
+        // Query pageable
         Pageable pageable = PageRequest.of(offset, pageSize, sorting);
-        Page<Item> itemsPage = itemRepository.findAll(pageable);
+        Page<Item> itemsPage = itemRepository.findAll(spec, pageable);
         return itemsPage.map(itemMapper::mapItemToItemDTO);
     }
 
