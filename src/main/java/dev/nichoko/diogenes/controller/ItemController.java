@@ -2,12 +2,14 @@ package dev.nichoko.diogenes.controller;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -21,6 +23,7 @@ import jakarta.validation.Valid;
 
 import dev.nichoko.diogenes.enums.SortDirection;
 import dev.nichoko.diogenes.model.dto.ItemDTO;
+import dev.nichoko.diogenes.model.dto.ItemFilterDTO;
 import dev.nichoko.diogenes.service.interfaces.ItemService;
 
 @RestController
@@ -40,11 +43,14 @@ public class ItemController {
     @GetMapping("/")
     public ResponseEntity<Page<ItemDTO>> getAllItems(@RequestParam(defaultValue = "10") int pageSize,
             @RequestParam(defaultValue = "0") int offset, @RequestParam(defaultValue = "ID") SortingOption sort,
-            @RequestParam(defaultValue = "ASC") SortDirection sortDirection) {
-        logger.info("Received a request to retrieve all items. Offset: {} PageSize: {} Sort: {}", offset, pageSize,
-                sort);
+            @RequestParam(defaultValue = "ASC") SortDirection sortDirection,
+            @ParameterObject @ModelAttribute  ItemFilterDTO filterOption) {
+        logger.info("Received a request to retrieve all items. Offset: {} PageSize: {} Sort: {} SortDirection {} Filter {}",
+                offset, pageSize,
+                sort, sortDirection, filterOption);
         return ResponseEntity
-                .ok(itemService.getAllItems(pageSize, offset, sort.toString().toLowerCase(), sortDirection.toString()));
+                .ok(itemService.getAllItems(pageSize, offset, sort.toString().toLowerCase(), sortDirection.toString(),
+                        filterOption));
     }
 
     @GetMapping("/{id}")
