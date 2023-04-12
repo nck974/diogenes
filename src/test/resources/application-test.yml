@@ -1,0 +1,9 @@
+# Use embedded database
+spring:
+  datasource:
+    jdbc-url: jdbc:h2:mem:testdb
+    driver-class-name: org.h2.Driver
+
+  # Allow complete removal of the database for cleanup
+  flyway:
+    clean-disabled: false
