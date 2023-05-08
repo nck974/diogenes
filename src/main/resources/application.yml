@@ -1,0 +1,43 @@
+server:
+  port: "8080"
+  servlet:
+    context-path: /diogenes
+
+spring:
+  application:
+    name: diogenes
+  datasource:
+    jdbc-url: jdbc:postgresql://localhost:5432/diogenes_db
+    username: postgres
+    password: postgres
+    driver-class-name: org.postgresql.Driver
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: ${keycloak.server}/realms/diogenes
+          jwk-set-uri: ${spring.security.oauth2.resourceserver.jwt.issuer-uri}/protocol/openid-connect/certs
+  # See:
+  # https://stackoverflow.com/questions/30549489/what-is-this-spring-jpa-open-in-view-true-property-in-spring-boot
+  jpa:
+    open-in-view: false
+
+jwt:
+  auth:
+    converter:
+      resource-id: diogenes-client
+      principal-attribute: preferred_username
+
+springdoc:
+  swagger-ui:
+    oauth:
+      client-id: diogenes-client
+      client-secret:
+
+logging:
+  level:
+    org.springframework.security: DEBUG
+
+keycloak:
+  server: http://localhost:8081
+  token-url: ${spring.security.oauth2.resourceserver.jwt.issuer-uri}/protocol/openid-connect/token
