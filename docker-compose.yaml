@@ -11,6 +11,7 @@ services:
       - SPRING_DATASOURCE_USERNAME=${DATABASE_USER}
       - SPRING_DATASOURCE_PASSWORD=${DATABASE_PASSWORD}
       - SPRING_APPLICATION_JSON={"keycloak.server":"http://keycloak:8081/keycloak"}
+      - SECURITY_DISABLE_SECURITY=false
     ports:
       - 8080:8080
 
