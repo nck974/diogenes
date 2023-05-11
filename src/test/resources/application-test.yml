@@ -7,3 +7,6 @@ spring:
   # Allow complete removal of the database for cleanup
   flyway:
     clean-disabled: false
+
+security:
+  disable-security: true

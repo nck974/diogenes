@@ -5,7 +5,6 @@ import lombok.RequiredArgsConstructor;
 import java.util.Arrays;
 import java.util.Collections;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -28,28 +27,29 @@ public class WebSecurityConfig {
     public static final String USER = "USER";
 
     private final JwtAuthConverter jwtAuthConverter;
-    
-    @Value("${keycloak.server}")
-    private String keycloakUrl;
+    private final SecurityProperties securityProperties;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http.cors(); 
+        http.cors();
 
-        // Authorization
-        http.authorizeHttpRequests()
-                .requestMatchers(HttpMethod.GET, "/swagger-ui/**", "/v3/api-docs/**").permitAll()
-                .requestMatchers(HttpMethod.GET, "/api/v1/**").hasAnyRole(ADMIN, USER)
-                .anyRequest().authenticated();
+        if (securityProperties.isDisableSecurity()) {
+            http.authorizeHttpRequests().anyRequest().permitAll();
+        } else {
+            // Authorization
+            http.authorizeHttpRequests()
+                    .requestMatchers(HttpMethod.GET, "/swagger-ui/**", "/v3/api-docs/**").permitAll()
+                    .requestMatchers(HttpMethod.GET, "/api/v1/**").hasAnyRole(ADMIN, USER)
+                    .anyRequest().authenticated();
 
-        // Token management
-        http.oauth2ResourceServer()
-                .jwt()
-                .jwtAuthenticationConverter(jwtAuthConverter);
+            // Token management
+            http.oauth2ResourceServer()
+                    .jwt()
+                    .jwtAuthenticationConverter(jwtAuthConverter);
+        }
 
         // Session
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-
 
         return http.build();
     }
@@ -58,7 +58,8 @@ public class WebSecurityConfig {
     CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.setAllowedOrigins(Collections.singletonList("*")); // set the allowed origin to your front-end URL
-        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "HEAD")); // remove unnecessary HTTP methods
+        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "HEAD")); // remove unnecessary
+                                                                                                // HTTP methods
         configuration.setAllowCredentials(true);
         configuration.setAllowedHeaders(Arrays.asList("Authorization")); // remove unnecessary headers
         configuration.setMaxAge(3600L); // set the cache time for pre-flight requests

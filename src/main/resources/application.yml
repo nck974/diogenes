@@ -41,3 +41,7 @@ logging:
 keycloak:
   server: http://localhost:8081
   token-url: ${spring.security.oauth2.resourceserver.jwt.issuer-uri}/protocol/openid-connect/token
+
+# Disable security during development
+security:
+  disable-security: true
