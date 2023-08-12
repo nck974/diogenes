@@ -96,8 +96,12 @@ public class ItemServiceImpl implements ItemService {
      */
     @Override
     public Item updateItem(int id, Item item) {
-        item.setId(id);
-        return itemRepository.save(item);
+        return itemRepository.findById(id)
+                .map(existingItem -> {
+                    item.setId(existingItem.getId());
+                    return itemRepository.save(item);
+                })
+                .orElseThrow(() -> new ResourceNotFoundException(id));
     }
 
     /*
