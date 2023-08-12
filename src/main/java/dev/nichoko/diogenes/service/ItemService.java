@@ -1,4 +1,4 @@
-package dev.nichoko.diogenes.service.interfaces;
+package dev.nichoko.diogenes.service;
 
 import org.springframework.data.domain.Page;
 

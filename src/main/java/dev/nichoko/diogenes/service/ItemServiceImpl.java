@@ -14,9 +14,8 @@ import dev.nichoko.diogenes.exception.ResourceNotFoundException;
 import dev.nichoko.diogenes.model.domain.Item;
 import dev.nichoko.diogenes.model.dto.ItemDTO;
 import dev.nichoko.diogenes.model.dto.ItemFilterDTO;
-import dev.nichoko.diogenes.service.interfaces.ItemService;
+import dev.nichoko.diogenes.repository.ItemRepository;
 import dev.nichoko.diogenes.service.mapper.ItemMapper;
-import dev.nichoko.diogenes.service.repository.ItemRepository;
 
 @Service
 public class ItemServiceImpl implements ItemService {
@@ -24,6 +23,7 @@ public class ItemServiceImpl implements ItemService {
     private static final String ID_NOT_FOUND = "The following id could not be found: ";
 
     private final ItemRepository itemRepository;
+    
     @Autowired
     @Qualifier("itemMapper")
     private final ItemMapper itemMapper;

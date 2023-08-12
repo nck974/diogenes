@@ -24,7 +24,7 @@ import jakarta.validation.Valid;
 import dev.nichoko.diogenes.enums.SortDirection;
 import dev.nichoko.diogenes.model.dto.ItemDTO;
 import dev.nichoko.diogenes.model.dto.ItemFilterDTO;
-import dev.nichoko.diogenes.service.interfaces.ItemService;
+import dev.nichoko.diogenes.service.ItemService;
 
 @RestController
 @RequestMapping("/api/v1/item")
