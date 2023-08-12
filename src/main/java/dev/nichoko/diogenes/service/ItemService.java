@@ -2,17 +2,17 @@ package dev.nichoko.diogenes.service;
 
 import org.springframework.data.domain.Page;
 
-import dev.nichoko.diogenes.model.dto.ItemDTO;
-import dev.nichoko.diogenes.model.dto.ItemFilterDTO;
+import dev.nichoko.diogenes.model.ItemFilter;
+import dev.nichoko.diogenes.model.domain.Item;
 
 public interface ItemService {
-    ItemDTO getItemById(Long id);
+    Item getItemById(int id);
 
-    Page<ItemDTO> getAllItems(int pageSize, int offset, String sort, String sortDirection, ItemFilterDTO filter);
+    Page<Item> getAllItems(int pageSize, int offset, String sort, String sortDirection, ItemFilter filter);
 
-    ItemDTO createItem(ItemDTO item);
+    Item createItem(Item item);
 
-    ItemDTO updateItem(Long id, ItemDTO item);
+    Item updateItem(int id, Item item);
 
-    void deleteItem(Long id);
+    void deleteItem(int id);
 }
