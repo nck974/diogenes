@@ -18,11 +18,10 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import jakarta.validation.Valid;
-
-import dev.nichoko.diogenes.enums.SortDirection;
-import dev.nichoko.diogenes.enums.SortingOption;
 import dev.nichoko.diogenes.model.ItemFilter;
 import dev.nichoko.diogenes.model.domain.Item;
+import dev.nichoko.diogenes.model.enums.SortDirection;
+import dev.nichoko.diogenes.model.enums.SortingOption;
 import dev.nichoko.diogenes.service.ItemService;
 
 @RestController
@@ -33,6 +32,12 @@ public class ItemController {
     @Autowired
     public ItemController(ItemService itemService) {
         this.itemService = itemService;
+    }
+
+    @PostMapping("/")
+    public ResponseEntity<Item> createItem(@Valid @RequestBody Item item) {
+        Item createdItem = itemService.createItem(item);
+        return ResponseEntity.status(HttpStatus.CREATED).body(createdItem);
     }
 
     @GetMapping("/")
@@ -47,14 +52,12 @@ public class ItemController {
 
     @GetMapping("/{id}")
     public ResponseEntity<Item> getItemById(@Valid @PathVariable int id) {
-        Item item = itemService.getItemById(id);
-        return ResponseEntity.ok(item);
+        return ResponseEntity.ok(itemService.getItemById(id));
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<Item> updateItem(@Valid @RequestBody Item updateItem, @PathVariable int id) {
-        Item updatedItem = itemService.updateItem(id, updateItem);
-        return ResponseEntity.ok().body(updatedItem);
+        return ResponseEntity.ok().body(itemService.updateItem(id, updateItem));
     }
 
     @ResponseStatus(HttpStatus.NO_CONTENT)
@@ -64,9 +67,4 @@ public class ItemController {
         return ResponseEntity.noContent().build();
     }
 
-    @PostMapping("/")
-    public ResponseEntity<Item> createItem(@Valid @RequestBody Item item) {
-        Item createdItem = itemService.createItem(item);
-        return ResponseEntity.status(HttpStatus.CREATED).body(createdItem);
-    }
 }

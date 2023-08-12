@@ -1,4 +1,4 @@
-package dev.nichoko.diogenes.enums;
+package dev.nichoko.diogenes.model.enums;
 
 public enum SortingOption {
     ID,

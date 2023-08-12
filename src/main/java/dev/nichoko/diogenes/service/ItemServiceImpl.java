@@ -8,10 +8,10 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
-import dev.nichoko.diogenes.enums.SortDirection;
 import dev.nichoko.diogenes.exception.ResourceNotFoundException;
 import dev.nichoko.diogenes.model.ItemFilter;
 import dev.nichoko.diogenes.model.domain.Item;
+import dev.nichoko.diogenes.model.enums.SortDirection;
 import dev.nichoko.diogenes.repository.ItemRepository;
 
 @Service
@@ -41,17 +41,21 @@ public class ItemServiceImpl implements ItemService {
      */
     private Specification<Item> filterItems(ItemFilter filter) {
         Specification<Item> spec = Specification.where(null);
+
+        // Filter by name
         if (filter.getName() != null && !filter.getName().isEmpty()) {
             spec = spec.and((root, query, cb) -> cb.like(cb.lower(root.get("name")),
                     "%" + filter.getName().toLowerCase() + "%"));
         }
 
+        // Filter by description
         if (filter.getDescription() != null && !filter.getDescription().isEmpty()) {
             spec = spec.and(
                     (root, query, cb) -> cb.like(cb.lower(root.get("description")),
                             "%" + filter.getDescription().toLowerCase() + "%"));
         }
 
+        // Filter by number
         if (filter.getNumber() != null) {
             spec = spec.and((root, query, cb) -> cb.equal(root.get("number"), filter.getNumber()));
         }
