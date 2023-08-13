@@ -13,26 +13,10 @@
 
 ### Docker
 
-1. Add keycloak to your hosts file if you are running this locally:
-
-  ```shell
-  # Added to be used with diogenes
-  127.0.0.1 keycloak
-  ```
-
-1. Pull the project or downlaod the `docker-compose.yaml`, `keycloak` folder and `.example.env`.
+1. Pull the project or download the `docker-compose.yaml` and `.example.env`.
 1. Create a copy of the `example.env` into a `.env` file with your own passwords.
 1. Start the containers with `docker-compose up -d`
 1. The latest image can be found in the [docker-hub](https://hub.docker.com/r/nck974/diogenes/tags)
-
-### Create user
-
-1. Login keycloak (port 8081) with your admin account.
-1. Access the  `diogenes` realm.
-1. Access users.
-1. Create a user.
-1. Go to credentials and set a password.
-1. Go to role mapping. Add add the role `diogenes-user` (Filter by client).
 
 ## Development
 
