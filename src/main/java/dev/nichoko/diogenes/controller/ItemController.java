@@ -1,7 +1,5 @@
 package dev.nichoko.diogenes.controller;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -20,65 +18,53 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import jakarta.validation.Valid;
-
-import dev.nichoko.diogenes.enums.SortDirection;
-import dev.nichoko.diogenes.model.dto.ItemDTO;
-import dev.nichoko.diogenes.model.dto.ItemFilterDTO;
-import dev.nichoko.diogenes.service.interfaces.ItemService;
+import dev.nichoko.diogenes.model.ItemFilter;
+import dev.nichoko.diogenes.model.domain.Item;
+import dev.nichoko.diogenes.model.enums.SortDirection;
+import dev.nichoko.diogenes.model.enums.SortingOption;
+import dev.nichoko.diogenes.service.ItemService;
 
 @RestController
 @RequestMapping("/api/v1/item")
 public class ItemController {
-    private static final Logger logger = LoggerFactory.getLogger(ItemController.class);
-    @Autowired
     private ItemService itemService;
 
-    private enum SortingOption {
-        ID,
-        NAME,
-        DESCRIPTION,
-        NUMBER,
+    @Autowired
+    public ItemController(ItemService itemService) {
+        this.itemService = itemService;
+    }
+
+    @PostMapping("/")
+    public ResponseEntity<Item> createItem(@Valid @RequestBody Item item) {
+        Item createdItem = itemService.createItem(item);
+        return ResponseEntity.status(HttpStatus.CREATED).body(createdItem);
     }
 
     @GetMapping("/")
-    public ResponseEntity<Page<ItemDTO>> getAllItems(@RequestParam(defaultValue = "10") int pageSize,
+    public ResponseEntity<Page<Item>> getAllItems(@RequestParam(defaultValue = "10") int pageSize,
             @RequestParam(defaultValue = "0") int offset, @RequestParam(defaultValue = "ID") SortingOption sort,
             @RequestParam(defaultValue = "ASC") SortDirection sortDirection,
-            @ParameterObject @ModelAttribute  ItemFilterDTO filterOption) {
-        logger.info("Received a request to retrieve all items. Offset: {} PageSize: {} Sort: {} SortDirection {} Filter {}",
-                offset, pageSize,
-                sort, sortDirection, filterOption);
+            @ParameterObject @ModelAttribute ItemFilter filterOption) {
         return ResponseEntity
                 .ok(itemService.getAllItems(pageSize, offset, sort.toString().toLowerCase(), sortDirection.toString(),
                         filterOption));
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ItemDTO> getItemById(@Valid @PathVariable Long id) {
-        logger.info("Received a request to retrieve item with id: '{}'", id);
-        ItemDTO item = itemService.getItemById(id);
-        return ResponseEntity.ok(item);
+    public ResponseEntity<Item> getItemById(@Valid @PathVariable int id) {
+        return ResponseEntity.ok(itemService.getItemById(id));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ItemDTO> updateItem(@Valid @RequestBody ItemDTO updateItem, @PathVariable Long id) {
-        logger.info("Received a request to update item with id: '{}'", id);
-        ItemDTO updatedItem = itemService.updateItem(id, updateItem);
-        return ResponseEntity.ok().body(updatedItem);
+    public ResponseEntity<Item> updateItem(@Valid @RequestBody Item updateItem, @PathVariable int id) {
+        return ResponseEntity.ok().body(itemService.updateItem(id, updateItem));
     }
 
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping("/{id}")
-    public ResponseEntity<Object> deleteItem(@Valid @PathVariable Long id) {
-        logger.info("Received a request to delete item with id: '{}'", id);
+    public ResponseEntity<Object> deleteItem(@Valid @PathVariable int id) {
         itemService.deleteItem(id);
         return ResponseEntity.noContent().build();
     }
 
-    @PostMapping("/")
-    public ResponseEntity<ItemDTO> createItem(@Valid @RequestBody ItemDTO item) {
-        logger.info("Received a request to create new item: '{}'", item.getName());
-        ItemDTO createdItem = itemService.createItem(item);
-        return ResponseEntity.status(HttpStatus.CREATED).body(createdItem);
-    }
 }

@@ -1,4 +1,4 @@
-package dev.nichoko.diogenes.service.repository;
+package dev.nichoko.diogenes.repository;
 
 import java.util.Optional;
 

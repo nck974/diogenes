@@ -10,8 +10,7 @@ services:
       - SPRING_DATASOURCE_JDBC-URL=jdbc:postgresql://diogenes_db:5432/diogenes_db
       - SPRING_DATASOURCE_USERNAME=${DATABASE_USER}
       - SPRING_DATASOURCE_PASSWORD=${DATABASE_PASSWORD}
-      - SPRING_APPLICATION_JSON={"keycloak.server":"http://keycloak:8081/keycloak"}
-      - SECURITY_DISABLE_SECURITY=false
+      - SPRING_APPLICATION_JSON={}
     ports:
       - 8080:8080
 
@@ -28,55 +27,7 @@ services:
     volumes:
       - db:/var/lib/postgresql/data
 
-  keycloak:
-    container_name: keycloak
-    image: quay.io/keycloak/keycloak:21.0.2
-    restart: always
-    environment:
-      - KEYCLOAK_ADMIN=${KEYCLOAK_ADMIN_USER}
-      - KEYCLOAK_ADMIN_PASSWORD=${KEYCLOAK_ADMIN_PASSWORD}
-      - KC_DB=postgres
-      - KC_DB_URL=jdbc:postgresql://keycloak_db/keycloak_db
-      - KC_DB_USERNAME=${KEYCLOAK_DATABASE_USERNAME}
-      - KC_DB_PASSWORD=${KEYCLOAK_DATABASE_PASSWORD}
-      - KC_HOSTNAME_STRICT=false
-      - KC_HOSTNAME_STRICT_HTTPS=false
-      - KC_HTTP_ENABLED=true
-      - KC_LOG_LEVEL=info
-      - KC_PROXY=passthrough
-    ports:
-      - '8081:8081'
-    command: -v start --import-realm --http-relative-path=/keycloak --http-port=8081
-    volumes:
-      - ./keycloak/imports:/opt/keycloak/data/import
-
-  keycloak_db:
-    container_name: keycloak_db
-    image: postgres:14.1-alpine
-    restart: always
-    environment:
-      - POSTGRES_USER=${KEYCLOAK_DATABASE_USERNAME}
-      - POSTGRES_PASSWORD=${KEYCLOAK_DATABASE_PASSWORD}
-      - POSTGRES_DB=keycloak_db
-    ports:
-      - '5433:5432'
-    volumes:
-      - keycloak_db_volume:/var/lib/postgresql/data
-
-  nginx:
-    container_name: nginx
-    image: nginx:1.23.4
-    volumes:
-      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
-    ports:
-      - "80:80"
-    environment:
-      - NGINX_HOST=localhost
-      - NGINX_PORT=80
-
 volumes:
   db:
     driver: local
-  keycloak_db_volume:
-    name: keycloak_db_volume
-    driver: local
+    name: diogenes_db_volume

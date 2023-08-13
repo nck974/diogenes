@@ -11,37 +11,15 @@ spring:
     username: postgres
     password: postgres
     driver-class-name: org.postgresql.Driver
-  security:
-    oauth2:
-      resourceserver:
-        jwt:
-          issuer-uri: ${keycloak.server}/realms/diogenes
-          jwk-set-uri: ${spring.security.oauth2.resourceserver.jwt.issuer-uri}/protocol/openid-connect/certs
+  output:
+    ansi:
+      enabled: always
+
   # See:
   # https://stackoverflow.com/questions/30549489/what-is-this-spring-jpa-open-in-view-true-property-in-spring-boot
   jpa:
     open-in-view: false
 
-jwt:
-  auth:
-    converter:
-      resource-id: diogenes-client
-      principal-attribute: preferred_username
-
-springdoc:
-  swagger-ui:
-    oauth:
-      client-id: diogenes-client
-      client-secret:
-
 logging:
   level:
     org.springframework.security: DEBUG
-
-keycloak:
-  server: http://localhost:8081
-  token-url: ${spring.security.oauth2.resourceserver.jwt.issuer-uri}/protocol/openid-connect/token
-
-# Disable security during development
-security:
-  disable-security: true

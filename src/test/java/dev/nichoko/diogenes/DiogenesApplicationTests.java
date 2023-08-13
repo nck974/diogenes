@@ -10,6 +10,9 @@ import org.springframework.test.context.ActiveProfiles;
 @ActiveProfiles("test")
 class DiogenesApplicationTests {
 
+	/**
+	 * Verify that the application can be started
+	 */
 	@Test
 	public void mainLoads() {
 		DiogenesApplication.main(new String[] {});
