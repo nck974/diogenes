@@ -3,10 +3,6 @@ package dev.nichoko.diogenes.controller;
 import java.util.List;
 import java.util.stream.IntStream;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.ObjectWriter;
-
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -30,6 +26,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
 import dev.nichoko.diogenes.model.domain.Item;
+import dev.nichoko.diogenes.utils.JsonProcessor;
 
 @SpringBootTest
 @AutoConfigureMockMvc(addFilters = false)
@@ -55,14 +52,6 @@ class ItemControllerTest {
     }
 
     /*
-     * Use jackson library to stringify the provided class
-     */
-    private static String stringifyClass(Object object) throws JsonProcessingException {
-        ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
-        return ow.writeValueAsString(object);
-    }
-
-    /*
      * Return a mock of an item
      */
     private static Item getMockItem(Integer number) {
@@ -79,7 +68,7 @@ class ItemControllerTest {
     private ResultActions createItem(Item item) throws Exception {
         return this.mockMvc.perform(
                 post("/api/v1/item/")
-                        .content(stringifyClass(item))
+                        .content(JsonProcessor.stringifyClass(item))
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON));
     }
@@ -262,7 +251,7 @@ class ItemControllerTest {
 
         this.mockMvc.perform(
                 put("/api/v1/item/" + Integer.toString(item.getId()))
-                        .content(stringifyClass(updatedItem))
+                        .content(JsonProcessor.stringifyClass(updatedItem))
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
@@ -282,7 +271,7 @@ class ItemControllerTest {
         Item item = getMockItem(1);
         this.mockMvc.perform(
                 put("/api/v1/item/" + Integer.toString(item.getId()))
-                        .content(stringifyClass(item))
+                        .content(JsonProcessor.stringifyClass(item))
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNotFound());
@@ -363,6 +352,27 @@ class ItemControllerTest {
             }
         });
         String filterParameter = "?name=5&description=5";
+        this.mockMvc.perform(get("/api/v1/item/" + filterParameter))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.content.length()").value(1));
+    }    
+    
+    /**
+     * Can filter items when parameter is empty
+     *
+     * @throws Exception
+     */
+    @Test
+    void canFilterWithEmptyParameters() throws Exception {
+        IntStream.range(0, 10).forEachOrdered(n -> {
+            try {
+                createItem(getMockItem(n));
+            } catch (Exception e) {
+                e.printStackTrace();
+                throw new RuntimeException();
+            }
+        });
+        String filterParameter = "?name=&description=&number=1";
         this.mockMvc.perform(get("/api/v1/item/" + filterParameter))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.content.length()").value(1));

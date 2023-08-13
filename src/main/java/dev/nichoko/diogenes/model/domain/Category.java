@@ -52,6 +52,16 @@ public class Category {
     @JsonProperty(access = Access.READ_ONLY)
     private LocalDateTime createdOn;
 
+    public Category(int id,
+            String name,
+            String description,
+            String color) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.color = color;
+    }
+
     public Category(
             String name,
             String description,

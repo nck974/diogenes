@@ -27,6 +27,18 @@ public class CategoryServiceImpl implements CategoryService {
 
     }
 
+    /**
+     * Check if another item with the same name already exists in the database
+     * @param category
+     */
+    private void validateName(Category category) {
+        String categoryName = category.getName();
+        if (categoryRepository.existsByName(categoryName)) {
+            throw new NameAlreadyExistsException(
+                    "Category with the name " + categoryName + " already exists.");
+        }
+    }
+
     /*
      * Return all categories
      */
@@ -40,11 +52,7 @@ public class CategoryServiceImpl implements CategoryService {
      */
     @Override
     public Category createCategory(Category category) {
-        // Check if a category with the same name already exists
-        String categoryName = category.getName();
-        if (categoryRepository.existsByName(categoryName)) {
-            throw new NameAlreadyExistsException("Category with the name " + categoryName + " already exists.");
-        }
+        validateName(category);
 
         return categoryRepository.save(category);
     }
@@ -58,6 +66,7 @@ public class CategoryServiceImpl implements CategoryService {
                 .map(existingCategory -> {
                     category.setId(existingCategory.getId());
                     category.setCreatedOn(existingCategory.getCreatedOn());
+                    validateName(category);
                     return categoryRepository.save(category);
                 })
                 .orElseThrow(() -> new ResourceNotFoundException(id));
