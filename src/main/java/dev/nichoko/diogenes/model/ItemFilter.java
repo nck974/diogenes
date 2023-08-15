@@ -23,4 +23,9 @@ public class ItemFilter {
         return number;
     }
 
+    @Override
+    public String toString() {
+        return "ItemFilter [name=" + name + ", description=" + description + ", number=" + number + "]";
+    }
+
 }

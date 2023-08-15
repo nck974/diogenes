@@ -9,7 +9,10 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
@@ -42,6 +45,14 @@ public class Item {
     @Min(value = 0, message = "Number must be greater than or equal to 0")
     @Max(value = 100000000, message = "Number must be less than or equal to 100000000")
     private int number;
+
+    @OneToOne()
+    @JoinColumn(name = "category_id")
+    @JsonProperty(access = Access.READ_ONLY)
+    private Category category;
+
+    @Transient
+    private int categoryId;
 
     public Item() {
     }
@@ -83,6 +94,23 @@ public class Item {
 
     public void setNumber(int number) {
         this.number = number;
+    }
+
+    public Category getCategory() {
+        return category;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
+        this.categoryId = category.getId();
+    }
+
+    public int getCategoryId() {
+        return categoryId;
+    }
+
+    public void setCategoryId(int categoryId) {
+        this.categoryId = categoryId;
     }
 
     @Override

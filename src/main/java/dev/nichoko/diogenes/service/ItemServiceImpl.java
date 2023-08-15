@@ -8,20 +8,26 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+import dev.nichoko.diogenes.exception.MissingCategoryException;
 import dev.nichoko.diogenes.exception.ResourceNotFoundException;
+import dev.nichoko.diogenes.exception.InvalidCategoryException;
 import dev.nichoko.diogenes.model.ItemFilter;
+import dev.nichoko.diogenes.model.domain.Category;
 import dev.nichoko.diogenes.model.domain.Item;
 import dev.nichoko.diogenes.model.enums.SortDirection;
+import dev.nichoko.diogenes.repository.CategoryRepository;
 import dev.nichoko.diogenes.repository.ItemRepository;
 
 @Service
 public class ItemServiceImpl implements ItemService {
 
     private final ItemRepository itemRepository;
+    private final CategoryRepository categoryRepository;
 
     @Autowired
-    public ItemServiceImpl(ItemRepository itemRepository) {
+    public ItemServiceImpl(ItemRepository itemRepository, CategoryRepository categoryRepository) {
         this.itemRepository = itemRepository;
+        this.categoryRepository = categoryRepository;
     }
 
     /*
@@ -83,11 +89,34 @@ public class ItemServiceImpl implements ItemService {
         return itemRepository.findAll(spec, pageable);
     }
 
+
+    /**
+     * Checks that the provided category exists and returns it
+     * @param item
+     * @return
+     * @throws MissingCategoryException
+     * @throws InvalidCategoryException
+     */
+    private Category findCategory(Item item) throws MissingCategoryException, InvalidCategoryException {
+        final int categoryId = item.getCategoryId();
+
+        if (categoryId == 0) {
+            throw new MissingCategoryException();
+        }
+
+        return categoryRepository.findById(categoryId)
+                .orElseThrow(() -> new InvalidCategoryException(categoryId));
+
+    }
+
     /*
      * Create a new item
      */
     @Override
     public Item createItem(Item item) {
+
+        item.setCategory(this.findCategory(item));
+
         return itemRepository.save(item);
     }
 
@@ -99,6 +128,7 @@ public class ItemServiceImpl implements ItemService {
         return itemRepository.findById(id)
                 .map(existingItem -> {
                     item.setId(existingItem.getId());
+                    item.setCategory(this.findCategory(item));
                     return itemRepository.save(item);
                 })
                 .orElseThrow(() -> new ResourceNotFoundException(id));
