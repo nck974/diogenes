@@ -14,5 +14,3 @@ COMMENT ON TABLE category IS 'Categories of the items';
 ALTER TABLE item ADD category_id INT;
 
 ALTER TABLE item ADD CONSTRAINT fk_category_id FOREIGN KEY (category_id) REFERENCES category(id);
-
-ALTER TABLE item ADD CONSTRAINT uk_category_id UNIQUE (category_id);

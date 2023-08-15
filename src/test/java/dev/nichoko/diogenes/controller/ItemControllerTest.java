@@ -25,6 +25,7 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
+import dev.nichoko.diogenes.model.domain.Category;
 import dev.nichoko.diogenes.model.domain.Item;
 import dev.nichoko.diogenes.utils.JsonProcessor;
 
@@ -55,20 +56,48 @@ class ItemControllerTest {
      * Return a mock of an item
      */
     private static Item getMockItem(Integer number) {
-        return new Item(
+        Item item = new Item(
                 number,
                 "TestName" + number.toString(),
                 "Description" + number.toString(),
                 number);
+        item.setCategory(new Category(
+                number,
+                "name" + number,
+                "description" + number,
+                "col" + number));
+        return item;
     }
 
     /*
      * Sends the provided item to the API
      */
     private ResultActions createItem(Item item) throws Exception {
+        
+        // Create first the category and assign the id to the item
+        String categoryString = this.createCategory(item.getCategory()).andReturn().getResponse().getContentAsString();
+        if (categoryString != null) {
+            int categoryId = JsonProcessor
+                    .readJsonString(categoryString)
+                    .get("id")
+                    .asInt(0);
+            item.setCategoryId(categoryId);
+        }
+
         return this.mockMvc.perform(
                 post("/api/v1/item/")
                         .content(JsonProcessor.stringifyClass(item))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON));
+    }
+
+    /*
+     * Sends the provided category API
+     */
+    private ResultActions createCategory(Category category) throws Exception {
+        return this.mockMvc.perform(
+                post("/api/v1/categories/")
+                        .content(JsonProcessor.stringifyClass(category))
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON));
     }
@@ -247,6 +276,7 @@ class ItemControllerTest {
         Item item = getMockItem(1);
         Item updatedItem = getMockItem(2);
         updatedItem.setId(item.getId());
+        updatedItem.setCategory(item.getCategory());
         createItem(item);
 
         this.mockMvc.perform(
@@ -326,6 +356,7 @@ class ItemControllerTest {
             try {
                 createItem(getMockItem(n));
             } catch (Exception e) {
+                System.out.println(e.getMessage());
                 e.printStackTrace();
                 throw new RuntimeException();
             }
@@ -355,8 +386,8 @@ class ItemControllerTest {
         this.mockMvc.perform(get("/api/v1/item/" + filterParameter))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.content.length()").value(1));
-    }    
-    
+    }
+
     /**
      * Can filter items when parameter is empty
      *

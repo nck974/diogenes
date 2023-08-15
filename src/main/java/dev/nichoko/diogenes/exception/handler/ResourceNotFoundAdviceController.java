@@ -5,6 +5,8 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import dev.nichoko.diogenes.exception.InvalidCategoryException;
+import dev.nichoko.diogenes.exception.MissingCategoryException;
 import dev.nichoko.diogenes.exception.NameAlreadyExistsException;
 import dev.nichoko.diogenes.exception.ResourceNotFoundException;
 
@@ -20,6 +22,18 @@ public class ResourceNotFoundAdviceController {
     @ExceptionHandler(NameAlreadyExistsException.class)
     @ResponseStatus(HttpStatus.CONFLICT)
     public ErrorResponse handleNameAlreadyExistsException(NameAlreadyExistsException ex) {
+        return new ErrorResponse(ex.getMessage());
+    }
+
+    @ExceptionHandler(MissingCategoryException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ErrorResponse handleMissingCategory(MissingCategoryException ex) {
+        return new ErrorResponse(ex.getMessage());
+    }
+
+    @ExceptionHandler(InvalidCategoryException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ErrorResponse handleInvalidCategory(InvalidCategoryException ex) {
         return new ErrorResponse(ex.getMessage());
     }
 
