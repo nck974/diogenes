@@ -13,6 +13,8 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
+import jakarta.persistence.PrePersist;
+import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
 import jakarta.persistence.Transient;
 import jakarta.validation.constraints.Max;
@@ -72,6 +74,17 @@ public class Item {
         this.name = name;
         this.description = description;
         this.number = number;
+    }
+
+    @PrePersist
+    protected void onCreate() {
+        createdOn = LocalDateTime.now();
+        updatedOn = createdOn;
+    }
+
+    @PreUpdate
+    protected void onUpdate() {
+        updatedOn = LocalDateTime.now();
     }
 
     public int getId() {
@@ -145,6 +158,5 @@ public class Item {
                 + ", updatedOn=" + updatedOn + ", createdOn=" + createdOn + ", category=" + category + ", categoryId="
                 + categoryId + "]";
     }
-
 
 }
