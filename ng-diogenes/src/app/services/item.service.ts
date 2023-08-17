@@ -1,6 +1,6 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, catchError, of } from 'rxjs';
+import { Observable, catchError, map, of, tap } from 'rxjs';
 import { Page } from '../models/Page';
 import { Item } from '../models/Item';
 
@@ -12,9 +12,6 @@ export class ItemService {
   private backendUrl = "http://localhost:8080/diogenes";
   private urlPath = "api/v1/item";
   private url = `${this.backendUrl}/${this.urlPath}`;
-  private httpOptions = {
-    headers: new HttpHeaders({ 'Content-Type': 'application/json' })
-  };
 
 
   constructor(private httpClient: HttpClient) { }
@@ -36,12 +33,20 @@ export class ItemService {
     return page;
   }
 
-  getItems(): Observable<Page<Item>> {
-    const url = `${this.url}/`;
+  getItems(page: number = 0): Observable<Page<Item>> {
+    const url = `${this.url}/?offset=${page}`;
+
+    console.log(url);
     return this.httpClient.get<Page<Item>>(url)
       .pipe(
+        map((page) => {
+          const mappedItems: Item[] = page.content.map((item) => ({ ...item }));
+          page.content = mappedItems;
+          return page;
+        }),
+        tap((page) => console.log(page)),
         catchError(this.handleError<Page<Item>>("getItems", this.createEmptyPage()
-      )));
+        )));
   }
 
   /**

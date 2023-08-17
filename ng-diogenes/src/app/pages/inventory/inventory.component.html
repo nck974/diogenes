@@ -4,4 +4,5 @@
     <div *ngFor="let item of items">
         <app-item-in-list [item]="item"></app-item-in-list>
     </div>
+    <app-loading-spinner [isLoading]="fetchingInProgress"></app-loading-spinner>
 </div>
