@@ -34,3 +34,6 @@ build/
 
 ### Docker ###
 .env
+
+### Python environment ###
+.venv

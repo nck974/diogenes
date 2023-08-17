@@ -89,9 +89,9 @@ public class ItemServiceImpl implements ItemService {
         return itemRepository.findAll(spec, pageable);
     }
 
-
     /**
      * Checks that the provided category exists and returns it
+     * 
      * @param item
      * @return
      * @throws MissingCategoryException
@@ -129,6 +129,8 @@ public class ItemServiceImpl implements ItemService {
                 .map(existingItem -> {
                     item.setId(existingItem.getId());
                     item.setCategory(this.findCategory(item));
+                    item.setCreatedOn(existingItem.getCreatedOn());
+
                     return itemRepository.save(item);
                 })
                 .orElseThrow(() -> new ResourceNotFoundException(id));
