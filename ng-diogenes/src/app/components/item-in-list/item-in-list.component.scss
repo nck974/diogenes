@@ -33,6 +33,17 @@
     cursor: pointer;
 }
 
+.item-number {
+    font-size: 0.8em;
+    margin-left: 5px;
+    color: #666;
+}
+
+.item-number-label {
+    font-weight: bold;
+    font-size: 0.7em;
+}
+
 .card-subtitle {
     margin: 5px 0;
     color: #666;
@@ -60,5 +71,4 @@
 
 .card-footer p {
     margin: 5px 0;
-    /* Add spacing between date values */
 }

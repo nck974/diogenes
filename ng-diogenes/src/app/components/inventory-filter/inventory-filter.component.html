@@ -1,0 +1,16 @@
+<form [formGroup]="form" (ngSubmit)="onApplyFilters()">
+    <div id="filter-container">
+        <app-text-filter [filterName]="nameFilterName"
+            [formControl]="getFilterControl(nameFilterName)"></app-text-filter>
+        <app-text-filter [filterName]="numberFilterName"
+            [formControl]="getFilterControl(numberFilterName)"></app-text-filter>
+        <app-text-filter [filterName]="descriptionFilterName"
+            [formControl]="getFilterControl(descriptionFilterName)"></app-text-filter>
+
+        <div class="button-container">
+            <button class="filter-button" type="submit">Apply Filters</button>
+            <button class="filter-button filter-secondary"
+                (click)="onClearFilters()" *ngIf="filterIsActive">Clear Filters</button>
+        </div>
+    </div>
+</form>

@@ -1,0 +1,19 @@
+<div class="filter-group" *ngIf="filterName && formControl">
+    <div>
+        <label for="filter-{{filterName}}">{{filterName | capitalizeFirstLetter
+            }}:</label>
+        <input type="text" id="filter-{{filterName}}"
+            [formControl]="formControl">
+    </div>
+    <!-- Display on error -->
+    <div
+        *ngIf="formControl.invalid && (formControl.dirty || formControl.touched)"
+        class="error-container">
+        <div class="error-message" *ngIf="formControl.errors">
+            <!-- Loop through validation errors and display corresponding messages -->
+            <div *ngFor="let key of formControl.errors | keys">
+                {{ getErrorMessage(key) }}
+            </div>
+        </div>
+    </div>
+</div>

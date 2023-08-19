@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable, catchError, map, of, tap } from 'rxjs';
 import { Page } from '../models/Page';
 import { Item } from '../models/Item';
+import { ItemFilter } from '../models/ItemFilter';
 
 @Injectable({
   providedIn: 'root'
@@ -33,8 +34,27 @@ export class ItemService {
     return page;
   }
 
-  getItems(page: number = 0): Observable<Page<Item>> {
-    const url = `${this.url}/?offset=${page}`;
+
+  private applyFilters(url: string, itemFilter?: ItemFilter): string {
+
+    if (itemFilter) {
+      for (const key of Object.keys(itemFilter) as (keyof ItemFilter)[]) {
+        const value = itemFilter[key];
+        console.log(`Property Name: ${key}, Value: ${value}`);
+        if (value && value != "") {
+
+          url += `&${key}=${value}`;
+        }
+      }
+    }
+
+    return url;
+  }
+
+  getItems(page: number = 0, itemFilter?: ItemFilter): Observable<Page<Item>> {
+    let url = `${this.url}/?offset=${page}`;
+
+    url = this.applyFilters(url, itemFilter)
 
     console.log(url);
     return this.httpClient.get<Page<Item>>(url)

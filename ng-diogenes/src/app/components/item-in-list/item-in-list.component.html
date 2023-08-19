@@ -4,8 +4,19 @@
         <!-- Replace with your avatar image or content -->
     </div>
     <div class="card-content">
-        <h2 class="card-title" (click)="onOpenDetails()">{{ item.name }}</h2>
-        <h3 class="card-subtitle">{{item.category.name}}</h3>
+        <h2 class="card-title" (click)="onOpenDetails()">
+            <span>
+                {{ item.name }}
+            </span>
+        </h2>
+        <h3 class="card-subtitle">
+            <span>
+                {{item.category.name}}
+            </span>
+            <span class="item-number">
+                <span class="item-number-label">x</span>{{ item.number }}
+            </span>
+        </h3>
         <p class="card-description">{{ item.description }}</p>
     </div>
     <div class="card-actions">

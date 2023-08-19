@@ -1,6 +1,7 @@
 import { Component, HostListener, OnDestroy, OnInit } from '@angular/core';
 import { Subscription, catchError, finalize } from 'rxjs';
 import { Item } from 'src/app/models/Item';
+import { ItemFilter } from 'src/app/models/ItemFilter';
 import { ItemService } from 'src/app/services/item.service';
 import { MessageService } from 'src/app/services/message.service';
 
@@ -12,17 +13,14 @@ import { MessageService } from 'src/app/services/message.service';
 export class InventoryComponent implements OnInit, OnDestroy {
 
   private itemServiceSubscription?: Subscription;
+
   private currentPage: number = 0;
   private lastPage: boolean = false
+  private itemFilter?: ItemFilter;
 
   items: Item[] = [];
   isLoading = false;
   fetchingInProgress = false;
-
-  nameFilter = '';            // Filter by Name
-  numberFilter = '';          // Filter by Number
-  descriptionFilter = '';     // Filter by Description
-  categoryFilter = '';        // Filter by Category
 
   constructor(private itemService: ItemService, private messageService: MessageService) { }
 
@@ -52,7 +50,7 @@ export class InventoryComponent implements OnInit, OnDestroy {
     }
 
     const nextPage = this.currentPage;
-    this.itemServiceSubscription = this.itemService.getItems(nextPage)
+    this.itemServiceSubscription = this.itemService.getItems(nextPage, this.itemFilter)
       .pipe(
         catchError((error) => {
           console.error('Error fetching next page:', error);
@@ -86,9 +84,23 @@ export class InventoryComponent implements OnInit, OnDestroy {
     );
   }
 
+  resetLoadedItems() {
+    this.currentPage = 0;
+    this.lastPage = false;
+    this.items.splice(0, this.items.length);
+    this.fetchNextPage();
+  }
 
-  applyFilters() {
-    console.log("Filtering");
+  onFilterItems(filter: ItemFilter) {
+    if (JSON.stringify(filter) === JSON.stringify(this.itemFilter)) {
+      return;
+    }
+
+    this.isLoading = true;
+    this.itemFilter = filter;
+    this.resetLoadedItems()
+    this.isLoading = false;
+
   }
 
 }
