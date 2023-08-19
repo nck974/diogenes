@@ -1,8 +1,35 @@
-<p>inventory works!</p>
-
-<div id="item-list">
-    <div *ngFor="let item of items">
-        <app-item-in-list [item]="item"></app-item-in-list>
+<div id="filter-container">
+    <div class="filter-group">
+        <label for="nameFilter">Name:</label>
+        <input type="text" id="nameFilter" [(ngModel)]="nameFilter">
     </div>
-    <app-loading-spinner [isLoading]="fetchingInProgress"></app-loading-spinner>
+    <div class="filter-group">
+        <label for="numberFilter">Number:</label>
+        <input type="text" id="numberFilter" [(ngModel)]="numberFilter">
+    </div>
+    <div class="filter-group">
+        <label for="descriptionFilter">Description:</label>
+        <input type="text" id="descriptionFilter"
+            [(ngModel)]="descriptionFilter">
+    </div>
+    <!-- <div class="filter-group">
+      <label for="categoryFilter">Filter by Category:</label>
+      <select id="categoryFilter" [(ngModel)]="categoryFilter">
+        <option value="">All Categories</option>
+        <option *ngFor="let category of categories" [value]="category">{{ category }}</option>
+      </select>
+    </div> -->
+    <button class="filter-button" (click)="applyFilters()">Apply Filters</button>
 </div>
+
+<div *ngIf="isLoading; else notLoading">
+    <app-loading-spinner [isLoading]="isLoading"></app-loading-spinner>
+</div>
+<ng-template #notLoading>
+    <div id="item-list">
+        <div *ngFor="let item of items">
+            <app-item-in-list [item]="item" (itemDeleted)="onDeleteItem($event)"></app-item-in-list>
+        </div>
+        <app-loading-spinner [isLoading]="fetchingInProgress"></app-loading-spinner>
+    </div>
+</ng-template>

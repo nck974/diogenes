@@ -1,0 +1,51 @@
+
+#filter-container {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+    background-color: #f5f5f5;
+    border-bottom: 1px solid #ddd;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  .filter-group {
+    display: flex;
+    align-items: center;
+  }
+  
+  .filter-group label {
+    margin-right: 10px;
+    font-weight: bold;
+  }
+  
+  .filter-group input,
+  .filter-group select {
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 14px;
+  }
+  
+  .filter-group select {
+    appearance: none;
+    padding-right: 28px;
+    cursor: pointer;
+    font-size: 14px;
+    background-color: white;
+    color: #333;
+  }
+  
+  .filter-button {
+    padding: 8px 16px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    font-size: 14px;
+  }
+  
+  .filter-button:hover {
+    background-color: #0056b3;
+  }
