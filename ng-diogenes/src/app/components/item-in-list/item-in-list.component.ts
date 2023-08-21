@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Router } from '@angular/router';
 import { Item } from 'src/app/models/Item';
 
 @Component({
@@ -11,6 +12,9 @@ export class ItemInListComponent {
   @Input() item!: Item;
   @Output() itemDeleted = new EventEmitter<Item>();
 
+  constructor(private router: Router) {
+
+  }
 
   onDelete() {
     console.log("Deleting item " + this.item.id);
@@ -18,7 +22,7 @@ export class ItemInListComponent {
   }
 
   onOpenDetails() {
-    console.log("Opening item " + this.item.id);
+    this.router.navigate(["items", this.item.id]);
   }
 
   getAvatarColor(): string {

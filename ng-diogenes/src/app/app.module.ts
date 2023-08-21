@@ -7,6 +7,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { InventoryComponent } from './pages/inventory/inventory.component';
+import { ItemDetailComponent } from './pages/item-detail/item-detail.component';
 import { ItemInListComponent } from './components/item-in-list/item-in-list.component';
 import { LoadingSpinnerComponent } from './components/loading-spinner/loading-spinner.component';
 import { MessageComponent } from './components/messages/message.component';
@@ -27,6 +28,7 @@ import { KeysPipe } from './pipes/keys.pipe';
     TextFilterComponent,
     CapitalizeFirstLetterPipe,
     KeysPipe,
+    ItemDetailComponent,
   ],
   imports: [
     BrowserModule,

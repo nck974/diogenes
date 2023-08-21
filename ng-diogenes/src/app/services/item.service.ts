@@ -69,9 +69,27 @@ export class ItemService {
         )));
   }
 
+  getItem(itemId: number): Observable<Item> {
+    let url = `${this.url}/${itemId}`;
+
+    console.log(url);
+
+    return this.httpClient.get<Item>(url)
+      .pipe(
+        map((rawItem) => {
+          const item: Item = { ...rawItem };
+          return item;
+        }),
+        tap((item) => console.log(item)),
+        catchError(this.handleError<Item>("getItem"))
+      );
+  }
+
   deleteItem(id: number): Observable<any> {
     const url = `${this.url}/${id}`;
+
     console.log(url);
+
     return this.httpClient.delete(url)
       .pipe(
         tap(_ => console.log(`Item ${id} deleted`)),

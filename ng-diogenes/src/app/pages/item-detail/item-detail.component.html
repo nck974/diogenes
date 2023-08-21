@@ -1,0 +1,41 @@
+<div *ngIf="isLoading; else notLoading">
+    <app-loading-spinner [isLoading]="isLoading"></app-loading-spinner>
+</div>
+<ng-template #notLoading>
+
+    <div class="item-container" *ngIf="item; else notFound">
+        <button class="back-button" (click)="onNavigateBack()">Back</button>
+        <div class="header">
+            <h1>{{ item.name }}</h1>
+        </div>
+        <div class="category-container">
+            <div class="category-color"
+                [style.backgroundColor]="'#' + item.category.color"></div>
+            <div class="category-name">{{item.category.name}}</div>
+        </div>
+        <div class="item-details">
+            <div class="item-description">
+                <p>{{ item.description }}</p>
+            </div>
+            <div class="item-metadata">
+                <p>Number of items: {{ item.number }}</p>
+                <p>Last Updated: {{ item.updatedOn | date:'medium' }}</p>
+                <p>Created On: {{ item.createdOn | date:'medium' }}</p>
+            </div>
+        </div>
+        <div class="actions">
+            <button class="edit-button">Edit</button>
+            <button class="delete-button">Delete</button>
+        </div>
+    </div>
+
+    <ng-template #notFound>
+
+        <div class="not-found-container">
+            <h2>Item Not Found</h2>
+            <p>The requested item could not be found.</p>
+        </div>
+
+    </ng-template>
+
+</ng-template>

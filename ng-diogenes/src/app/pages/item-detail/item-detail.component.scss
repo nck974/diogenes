@@ -1,0 +1,144 @@
+.item-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #f0f0f0;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+    border-radius: 5px;
+}
+
+.header {
+    display: flex;
+    align-items: center;
+}
+
+.back-button {
+    background-color: #333;
+    color: #fff;
+    border: none;
+    padding: 8px 16px;
+    margin-right: 10px;
+    cursor: pointer;
+}
+
+.item-container h1 {
+    font-size: 2.5rem;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.item-details {
+    display: flex;
+    flex-direction: column;
+}
+
+.item-description {
+    font-size: 16px;
+    color: #666;
+    margin-bottom: 20px;
+}
+
+.item-metadata p {
+    font-size: 14px;
+    color: #888;
+    margin: 5px 0;
+}
+
+.actions {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 20px;
+}
+
+.edit-button,
+.delete-button {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    padding: 8px 16px;
+    margin-left: 10px;
+    cursor: pointer;
+}
+
+.delete-button{
+    background-color: #ff1100;
+
+}
+
+.category-container {
+    display: flex;
+    flex-direction: row;
+}
+
+.category-color {
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    margin-right: 10px;
+    margin-bottom: 2rem;
+}
+
+.category-name {
+    margin-top: 0.3rem;
+}
+
+@media screen and (max-width: 768px) {
+    .item-container {
+        padding: 10px;
+    }
+
+    .item-container h1 {
+        font-size: 20px;
+    }
+
+    .item-description {
+        font-size: 14px;
+    }
+
+    .item-metadata p {
+        font-size: 12px;
+    }
+
+    .actions {
+        margin-top: 10px;
+    }
+
+    .edit-button,
+    .delete-button {
+        font-size: 12px;
+        padding: 6px 12px;
+        margin-left: 5px;
+    }
+}
+
+// Item not found
+.not-found-container {
+    text-align: center;
+    padding: 20px;
+}
+
+h2 {
+    font-size: 24px;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+p {
+    font-size: 16px;
+    color: #666;
+}
+
+/* Responsive Design */
+@media screen and (max-width: 768px) {
+    .not-found-container {
+        padding: 10px;
+    }
+
+    h2 {
+        font-size: 20px;
+    }
+
+    p {
+        font-size: 14px;
+    }
+}
