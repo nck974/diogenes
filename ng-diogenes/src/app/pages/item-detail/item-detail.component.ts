@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Location } from '@angular/common';
 import { ActivatedRoute, } from '@angular/router';
 import { Subscription, finalize } from 'rxjs';
@@ -10,7 +10,7 @@ import { ItemService } from 'src/app/services/item.service';
   templateUrl: './item-detail.component.html',
   styleUrls: ['./item-detail.component.scss']
 })
-export class ItemDetailComponent implements OnInit {
+export class ItemDetailComponent implements OnInit, OnDestroy {
 
   itemServiceSubscription?: Subscription;
   paramsSubscription?: Subscription;
@@ -19,8 +19,14 @@ export class ItemDetailComponent implements OnInit {
   constructor(private itemService: ItemService, private route: ActivatedRoute, private location: Location) {
 
   }
+
   ngOnInit(): void {
     this.getItem();
+  }
+
+  ngOnDestroy(): void {
+    this.itemServiceSubscription?.unsubscribe();
+    this.paramsSubscription?.unsubscribe();
   }
 
   private getItem(): void {
