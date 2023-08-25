@@ -1,4 +1,5 @@
 import { Component, HostListener, OnDestroy, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { Subscription, catchError, finalize } from 'rxjs';
 import { Item } from 'src/app/models/Item';
 import { ItemFilter } from 'src/app/models/ItemFilter';
@@ -22,7 +23,7 @@ export class InventoryComponent implements OnInit, OnDestroy {
   isLoading = false;
   fetchingInProgress = false;
 
-  constructor(private itemService: ItemService, private messageService: MessageService) { }
+  constructor(private itemService: ItemService, private messageService: MessageService, private router: Router) { }
 
   ngOnInit(): void {
     this.fetchNextPage()
@@ -100,7 +101,10 @@ export class InventoryComponent implements OnInit, OnDestroy {
     this.itemFilter = filter;
     this.resetLoadedItems()
     this.isLoading = false;
+  }
 
+  onCreateNewItem(){
+    this.router.navigateByUrl("/items/new")
   }
 
 }

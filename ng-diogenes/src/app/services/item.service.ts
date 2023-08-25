@@ -4,6 +4,7 @@ import { Observable, catchError, map, of, tap } from 'rxjs';
 import { Page } from '../models/Page';
 import { Item } from '../models/Item';
 import { ItemFilter } from '../models/ItemFilter';
+import { ErrorHandlerService } from './error-handler.service';
 
 @Injectable({
   providedIn: 'root'
@@ -15,11 +16,11 @@ export class ItemService {
   private url = `${this.backendUrl}/${this.urlPath}`;
 
 
-  constructor(private httpClient: HttpClient) { }
+  constructor(private httpClient: HttpClient, private errorHandler: ErrorHandlerService) { }
 
   private createEmptyPage(): Page<Item> {
     const page: Page<Item> = {
-      content: [],          // An array of your data items (MyItemType[])
+      content: [],
       totalElements: 0,    // Total number of items in the dataset
       totalPages: 0,        // Total number of pages
       size: 0,              // Number of items per page
@@ -65,7 +66,7 @@ export class ItemService {
           return page;
         }),
         tap((page) => console.log(page)),
-        catchError(this.handleError<Page<Item>>("getItems", this.createEmptyPage()
+        catchError(this.errorHandler.handleError<Page<Item>>("getItems", this.createEmptyPage()
         )));
   }
 
@@ -81,7 +82,7 @@ export class ItemService {
           return item;
         }),
         tap((item) => console.log(item)),
-        catchError(this.handleError<Item>("getItem"))
+        catchError(this.errorHandler.handleError<Item>("getItem"))
       );
   }
 
@@ -93,25 +94,42 @@ export class ItemService {
     return this.httpClient.delete(url)
       .pipe(
         tap(_ => console.log(`Item ${id} deleted`)),
-        catchError(this.handleError<any>("deleteItem", [])));
+        catchError(this.errorHandler.handleError<any>("deleteItem", [])));
   }
 
-  /**
-  * Handle Http operation that failed.
-  * Let the app continue.
-  * TODO: Cleanup this to somewhere else
-  *
-  * @param operation - name of the operation that failed
-  * @param result - optional value to return as the observable result
-  */
-  private handleError<T>(operation = 'operation', result?: T) {
-    return (error: any): Observable<T> => {
+  postItem(item: Item): Observable<Item> {
+    let url = `${this.url}/`;
 
-      console.error(error);
+    console.log(url);
 
-      // Let the app keep running by returning an empty result.
-      return of(result as T);
-    };
+    let data = {...item};
+
+    return this.httpClient.post<Item>(url, data)
+      .pipe(
+        map((rawItem) => {
+          const item: Item = { ...rawItem };
+          return item;
+        }),
+        tap((item) => console.log(item)),
+        catchError(this.errorHandler.handleError<Item>("postItem"))
+      );
+  }  
+  
+  updateItem(item: Item): Observable<Item> {
+    let url = `${this.url}/${item.id}`;
+
+    console.log(url);
+
+    let data = {...item};
+
+    return this.httpClient.put<Item>(url, data)
+      .pipe(
+        map((rawItem) => {
+          const item: Item = { ...rawItem };
+          return item;
+        }),
+        tap((item) => console.log(item)),
+        catchError(this.errorHandler.handleError<Item>("updateItem"))
+      );
   }
-
 }

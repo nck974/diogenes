@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Location } from '@angular/common';
-import { ActivatedRoute, } from '@angular/router';
+import { ActivatedRoute, Router, } from '@angular/router';
 import { Subscription, finalize } from 'rxjs';
 import { Item } from 'src/app/models/Item';
 import { ItemService } from 'src/app/services/item.service';
@@ -16,7 +16,11 @@ export class ItemDetailComponent implements OnInit, OnDestroy {
   paramsSubscription?: Subscription;
   item?: Item;
   isLoading = false;
-  constructor(private itemService: ItemService, private route: ActivatedRoute, private location: Location) {
+  constructor(
+    private itemService: ItemService,
+    private route: ActivatedRoute,
+    private location: Location,
+    private router: Router) {
 
   }
 
@@ -56,6 +60,10 @@ export class ItemDetailComponent implements OnInit, OnDestroy {
 
   onNavigateBack(): void {
     this.location.back();
+  }
+
+  onEditItem(): void {
+    this.router.navigateByUrl(`/items/${this.item?.id}/edit`);
   }
 
 }

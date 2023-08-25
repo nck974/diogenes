@@ -15,6 +15,7 @@ import { InventoryFilterComponent } from './components/inventory-filter/inventor
 import { TextFilterComponent } from './components/inventory-filter/text-filter/text-filter.component';
 import { CapitalizeFirstLetterPipe } from './pipes/capitalize-first-letter.pipe';
 import { KeysPipe } from './pipes/keys.pipe';
+import { EditItemComponent } from './pages/edit-item/edit-item.component';
 
 @NgModule({
   declarations: [
@@ -29,6 +30,7 @@ import { KeysPipe } from './pipes/keys.pipe';
     CapitalizeFirstLetterPipe,
     KeysPipe,
     ItemDetailComponent,
+    EditItemComponent,
   ],
   imports: [
     BrowserModule,
