@@ -21,7 +21,7 @@
     </div>
     <div class="card-actions">
         <div>
-            <button class="delete-button" (click)="onDelete()">Delete</button>
+            <button mat-raised-button class="small-button" color="warn" (click)="onDelete()">Delete</button>
         </div>
         <div class="card-footer">
             <p>Created: {{ item.createdOn | date }}</p>

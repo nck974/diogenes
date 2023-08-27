@@ -1,32 +1,21 @@
-.header-container {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-}
-
 .select-items-container {
     display: flex;
     flex-direction: row;
-    justify-content: flex-start;
+    width: 100%;
+    justify-content: space-between;
 }
 
-.sorter-wrapper {
-    display: flex;
-    align-self: center;
+.extended-size-row{
+    min-height: 80px;
 }
 
-.new-item-container {
-    padding: 10px;
-}
-
-.new-item-button {
-    padding: 8px 16px;
-    background-color: #007bff;
-    color: #fff;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: background-color 0.2s;
-    font-size: 14px;
-    margin-right: 10px;
+// Show button as a mobile app
+.fab-container {
+    position: fixed;
+    bottom: 20px;
+    /* Adjust the distance from the bottom */
+    right: 20px;
+    /* Adjust the distance from the right */
+    z-index: 1;
+    /* Ensure it's above other elements */
 }

@@ -54,13 +54,11 @@
     margin: 10px 0;
 }
 
-.delete-button {
-    background-color: #ff1100;
-    color: #fff;
-    border: none;
-    padding: 5px 10px;
-    border-radius: 4px;
-    cursor: pointer;
+.small-button {
+    padding: 6px 12px;
+    font-size: 12px;
+    min-width: auto;
+    height: auto;
 }
 
 .card-footer {
