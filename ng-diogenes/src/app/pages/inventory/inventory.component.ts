@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { Subscription, catchError, finalize } from 'rxjs';
 import { Item } from 'src/app/models/Item';
 import { ItemFilter } from 'src/app/models/ItemFilter';
+import { ItemSorter } from 'src/app/models/ItemSorter';
 import { ItemService } from 'src/app/services/item.service';
 import { MessageService } from 'src/app/services/message.service';
 
@@ -18,6 +19,7 @@ export class InventoryComponent implements OnInit, OnDestroy {
   private currentPage: number = 0;
   private lastPage: boolean = false
   private itemFilter?: ItemFilter;
+  private itemSorter: ItemSorter = {field: "ID", direction: "ASC"};
 
   items: Item[] = [];
   isLoading = false;
@@ -51,7 +53,7 @@ export class InventoryComponent implements OnInit, OnDestroy {
     }
 
     const nextPage = this.currentPage;
-    this.itemServiceSubscription = this.itemService.getItems(nextPage, this.itemFilter)
+    this.itemServiceSubscription = this.itemService.getItems(nextPage, this.itemFilter, this.itemSorter)
       .pipe(
         catchError((error) => {
           console.error('Error fetching next page:', error);
@@ -86,10 +88,12 @@ export class InventoryComponent implements OnInit, OnDestroy {
   }
 
   resetLoadedItems() {
+    this.isLoading = true;
     this.currentPage = 0;
     this.lastPage = false;
     this.items.splice(0, this.items.length);
     this.fetchNextPage();
+    this.isLoading = false;
   }
 
   onFilterItems(filter: ItemFilter) {
@@ -97,10 +101,17 @@ export class InventoryComponent implements OnInit, OnDestroy {
       return;
     }
 
-    this.isLoading = true;
     this.itemFilter = filter;
     this.resetLoadedItems()
-    this.isLoading = false;
+  }
+
+  onSortItems(sorter: ItemSorter) {
+    if (JSON.stringify(sorter) === JSON.stringify(this.itemSorter)) {
+      return;
+    }
+
+    this.itemSorter = sorter;
+    this.resetLoadedItems()
   }
 
   onCreateNewItem(){

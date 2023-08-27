@@ -1,5 +1,10 @@
-<div class="control-container">
-    <app-inventory-filter (filterItems)="onFilterItems($event)"></app-inventory-filter>
+<div class="header-container">
+    <div class="select-items-container">
+        <app-inventory-filter (filterItems)="onFilterItems($event)"></app-inventory-filter>
+        <div class="sorter-wrapper">
+            <app-inventory-sorter (sortItems)="onSortItems($event)"></app-inventory-sorter>
+        </div>
+    </div>
     <div class="new-item-container">
         <button class="new-item-button" (click)="onCreateNewItem()">New item</button>
     </div>

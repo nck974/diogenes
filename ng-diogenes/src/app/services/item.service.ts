@@ -5,6 +5,7 @@ import { Page } from '../models/Page';
 import { Item } from '../models/Item';
 import { ItemFilter } from '../models/ItemFilter';
 import { ErrorHandlerService } from './error-handler.service';
+import { ItemSorter } from '../models/ItemSorter';
 
 @Injectable({
   providedIn: 'root'
@@ -35,7 +36,6 @@ export class ItemService {
     return page;
   }
 
-
   private applyFilters(url: string, itemFilter?: ItemFilter): string {
 
     if (itemFilter) {
@@ -52,10 +52,20 @@ export class ItemService {
     return url;
   }
 
-  getItems(page: number = 0, itemFilter?: ItemFilter): Observable<Page<Item>> {
+  private applySorting(url: string, itemSorter?: ItemSorter): string {
+
+    if (itemSorter) {
+      url += `&sort=${itemSorter.field}&sortDirection=${itemSorter.direction}`;
+    }
+
+    return url;
+  }
+
+  getItems(page: number = 0, itemFilter?: ItemFilter, itemSorter?: ItemSorter): Observable<Page<Item>> {
     let url = `${this.url}/?offset=${page}`;
 
     url = this.applyFilters(url, itemFilter)
+    url = this.applySorting(url, itemSorter)
 
     console.log(url);
     return this.httpClient.get<Page<Item>>(url)
@@ -102,7 +112,7 @@ export class ItemService {
 
     console.log(url);
 
-    let data = {...item};
+    let data = { ...item };
 
     return this.httpClient.post<Item>(url, data)
       .pipe(
@@ -113,14 +123,14 @@ export class ItemService {
         tap((item) => console.log(item)),
         catchError(this.errorHandler.handleError<Item>("postItem"))
       );
-  }  
-  
+  }
+
   updateItem(item: Item): Observable<Item> {
     let url = `${this.url}/${item.id}`;
 
     console.log(url);
 
-    let data = {...item};
+    let data = { ...item };
 
     return this.httpClient.put<Item>(url, data)
       .pipe(
