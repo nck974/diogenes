@@ -1,5 +1,7 @@
 package dev.nichoko.diogenes.model.domain;
 
+import java.time.LocalDateTime;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonProperty.Access;
 
@@ -11,6 +13,8 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
+import jakarta.persistence.PrePersist;
+import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
 import jakarta.persistence.Transient;
 import jakarta.validation.constraints.Max;
@@ -46,6 +50,14 @@ public class Item {
     @Max(value = 100000000, message = "Number must be less than or equal to 100000000")
     private int number;
 
+    @Column(name = "updated_on")
+    @JsonProperty(access = Access.READ_ONLY)
+    private LocalDateTime updatedOn;
+
+    @Column(name = "created_on")
+    @JsonProperty(access = Access.READ_ONLY)
+    private LocalDateTime createdOn;
+
     @OneToOne()
     @JoinColumn(name = "category_id")
     @JsonProperty(access = Access.READ_ONLY)
@@ -62,6 +74,17 @@ public class Item {
         this.name = name;
         this.description = description;
         this.number = number;
+    }
+
+    @PrePersist
+    protected void onCreate() {
+        createdOn = LocalDateTime.now();
+        updatedOn = createdOn;
+    }
+
+    @PreUpdate
+    protected void onUpdate() {
+        updatedOn = LocalDateTime.now();
     }
 
     public int getId() {
@@ -113,9 +136,27 @@ public class Item {
         this.categoryId = categoryId;
     }
 
+    public LocalDateTime getUpdatedOn() {
+        return updatedOn;
+    }
+
+    public void setUpdatedOn(LocalDateTime updatedOn) {
+        this.updatedOn = updatedOn;
+    }
+
+    public LocalDateTime getCreatedOn() {
+        return createdOn;
+    }
+
+    public void setCreatedOn(LocalDateTime createdOn) {
+        this.createdOn = createdOn;
+    }
+
     @Override
     public String toString() {
-        return "Item [id=" + id + ", name=" + name + ", description=" + description + ", number=" + number + "]";
+        return "Item [id=" + id + ", name=" + name + ", description=" + description + ", number=" + number
+                + ", updatedOn=" + updatedOn + ", createdOn=" + createdOn + ", category=" + category + ", categoryId="
+                + categoryId + "]";
     }
 
 }

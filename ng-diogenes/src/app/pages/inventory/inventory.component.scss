@@ -1,0 +1,32 @@
+.header-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.select-items-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+}
+
+.sorter-wrapper {
+    display: flex;
+    align-self: center;
+}
+
+.new-item-container {
+    padding: 10px;
+}
+
+.new-item-button {
+    padding: 8px 16px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    font-size: 14px;
+    margin-right: 10px;
+}

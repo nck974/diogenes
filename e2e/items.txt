@@ -1,0 +1,298 @@
+Lion
+Elephant
+Dolphin
+Penguin
+Giraffe
+Tiger
+Bear
+Koala
+Kangaroo
+Zebra
+Monkey
+Gorilla
+Rabbit
+Panda
+Crocodile
+Alligator
+Horse
+Octopus
+Jellyfish
+Butterfly
+Owl
+Snake
+Chimpanzee
+Cheetah
+Rhinoceros
+Beautiful
+Strong
+Happy
+Sad
+Brave
+Smart
+Funny
+Kind
+Angry
+Energetic
+Shiny
+Generous
+Creative
+Mysterious
+Gentle
+Peaceful
+Playful
+Polite
+Clever
+Curious
+Tired
+Grumpy
+Sensitive
+Careful
+Silly
+Quickly
+Slowly
+Quietly
+Loudly
+Carefully
+Happily
+Sadly
+Suddenly
+Always
+Never
+Often
+Rarely
+Well
+Badly
+Kindly
+Easily
+Nervously
+Calmly
+Anxiously
+Briefly
+Eagle
+Sparrow
+Hawk
+Flamingo
+Peacock
+Robin
+Parrot
+Ostrich
+Toucan
+Crow
+Seagull
+Hummingbird
+Pigeon
+Swan
+Pelican
+Woodpecker
+Canary
+Owl
+Falcon
+Albatross
+Harry Potter
+Lord of the Rings
+To Kill a Mockingbird
+The Great Gatsby
+Pride and Prejudice
+1984
+The Catcher in the Rye
+The Hobbit
+The Hunger Games
+Twilight
+The Da Vinci Code
+The Chronicles of Narnia
+The Alchemist
+The Shining
+The Fault in Our Stars
+Divergent
+The Giver
+Gone Girl
+The Lovely Bones
+Fifty Shades of Grey
+Castle
+Skyscraper
+Mansion
+Cathedral
+Lighthouse
+Temple
+Hut
+Pagoda
+Barn
+Windmill
+Pyramid
+Cottage
+Bungalow
+Church
+Mosque
+Tower
+Cabin
+Hall
+Stadium
+Hotel
+Lamborghini
+Ferrari
+Porsche
+Mercedes-Benz
+BMW
+Audi
+Tesla
+Ford
+Chevrolet
+Toyota
+Honda
+Volkswagen
+Subaru
+Nissan
+Mazda
+Kia
+Hyundai
+Jeep
+Volvo
+Jaguar
+Leonardo DiCaprio
+Angelina Jolie
+Brad Pitt
+Beyoncé
+Elon Musk
+Oprah Winfrey
+Cristiano Ronaldo
+Taylor Swift
+Barack Obama
+Kim Kardashian
+Bill Gates
+Jennifer Lawrence
+Justin Bieber
+Katy Perry
+Scarlett Johansson
+Tom Hanks
+Rihanna
+Mark Zuckerberg
+Adele
+Emma Watson
+Christmas
+Thanksgiving
+Halloween
+Easter
+New Year's Eve
+Valentine's Day
+Independence Day
+Hanukkah
+Diwali
+Chinese New Year
+St. Patrick's Day
+Ramadan
+Kwanzaa
+Oktoberfest
+Mardi Gras
+Cinco de Mayo
+Bastille Day
+Boxing Day
+Labor Day
+Veterans Day
+New York City
+London
+Tokyo
+Paris
+Los Angeles
+Beijing
+Sydney
+Rome
+Dubai
+Mumbai
+Rio de Janeiro
+Cairo
+Moscow
+Istanbul
+Buenos Aires
+Toronto
+Seoul
+Bangkok
+Amsterdam
+Nairobi
+Shirt
+Pants
+Dress
+Skirt
+Sweater
+Jacket
+Coat
+T-shirt
+Jeans
+Shorts
+Blouse
+Suit
+Tie
+Scarf
+Hat
+Gloves
+Socks
+Shoes
+Boots
+Sandals
+Red
+Blue
+Green
+Yellow
+Orange
+Purple
+Pink
+Brown
+Black
+White
+Gray
+Beige
+Teal
+Turquoise
+Gold
+Silver
+Indigo
+Maroon
+Cyan
+Lavender
+Superman
+Batman
+Spider-Man
+Wonder Woman
+Iron Man
+Captain America
+Hulk
+Thor
+Black Widow
+Wolverine
+Deadpool
+Flash
+Green Lantern
+Aquaman
+Black Panther
+Supergirl
+Doctor Strange
+Ant-Man
+Robin
+Catwoman
+Loyalty
+Honesty
+Courage
+Kindness
+Generosity
+Empathy
+Humor
+Patience
+Determination
+Intelligence
+Creativity
+Perseverance
+Tolerance
+Respect
+Confidence
+Optimism
+Compassion
+Wisdom
+Flexibility
+Integrity
+United States
+China
+India
+Russia
+Brazil
+Canada
+Australia
+United Kingdom

@@ -76,10 +76,13 @@ public class ItemServiceImpl implements ItemService {
             ItemFilter filter) {
 
         // Sort
-        Sort sorting = Sort.by(sort);
+        Sort.Direction direction = Sort.Direction.ASC;
         if (sortDirection.equals(SortDirection.DESC.toString())) {
-            sorting = sorting.descending();
+            direction = Sort.Direction.DESC;
         }
+
+        Sort.Order order = new Sort.Order(direction, sort).ignoreCase();
+        Sort sorting = Sort.by(order);
 
         // Filter
         Specification<Item> spec = filterItems(filter);
@@ -89,9 +92,9 @@ public class ItemServiceImpl implements ItemService {
         return itemRepository.findAll(spec, pageable);
     }
 
-
     /**
      * Checks that the provided category exists and returns it
+     * 
      * @param item
      * @return
      * @throws MissingCategoryException
@@ -129,6 +132,8 @@ public class ItemServiceImpl implements ItemService {
                 .map(existingItem -> {
                     item.setId(existingItem.getId());
                     item.setCategory(this.findCategory(item));
+                    item.setCreatedOn(existingItem.getCreatedOn());
+
                     return itemRepository.save(item);
                 })
                 .orElseThrow(() -> new ResourceNotFoundException(id));

@@ -1,0 +1,27 @@
+<div class="custom-dropdown">
+    <div class="selected-option" (click)="toggleDropdown()">
+        <div class="dropdown-option-container" *ngIf="optionHasBeenSelected; else initialText">
+            <span>
+                {{ displayOption(selectedOption) | lowercase | capitalizeFirstLetter }}
+            </span>
+            <span
+                [ngClass]="{'arrow-up': isSortAscending(selectedOption), 'arrow-down': !isSortAscending(selectedOption)}">
+            </span>
+        </div>
+        <ng-template #initialText>
+            {{selectedOption}}
+        </ng-template>
+    </div>
+    <div class="dropdown-options" *ngIf="isOpen">
+        <div class="dropdown-option-container" *ngFor="let option of generateSortingOptions()"
+            (click)="onSelectOption(option)">
+            <span>
+                {{ displayOption(option) | lowercase | capitalizeFirstLetter}}
+            </span>
+            <span
+                [ngClass]="{'arrow-up': isSortAscending(option), 'arrow-down': !isSortAscending(option)}">
+            </span>
+
+        </div>
+    </div>
+</div>
