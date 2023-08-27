@@ -15,7 +15,7 @@ services:
 
   diogenes:
     container_name: diogenes
-    image: nck974/diogenes:0.0.6-SNAPSHOT
+    image: nck974/diogenes:0.0.7-SNAPSHOT-1
     depends_on:
       - diogenes_db
     environment:
