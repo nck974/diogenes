@@ -6,13 +6,14 @@ import { Item } from '../models/Item';
 import { ItemFilter } from '../models/ItemFilter';
 import { ErrorHandlerService } from './error-handler.service';
 import { ItemSorter } from '../models/ItemSorter';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ItemService {
 
-  private backendUrl = "http://localhost:8080/diogenes";
+  private backendUrl = environment.diogenesBackendURL;
   private urlPath = "api/v1/item";
   private url = `${this.backendUrl}/${this.urlPath}`;
 

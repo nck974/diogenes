@@ -1,6 +1,18 @@
 version: '3.8'
 services:
 
+  diogenes-ng:
+    container_name: diogenes-ng
+    image: nck974/diogenes-ng:0.0.1-SNAPSHOT-1
+    depends_on:
+      - diogenes
+    environment:
+      - PRODUCTION=true
+      - DEBUG=false
+      - DIOGENES_BACKEND_URL=http://${SERVER_IP}:8080/diogenes
+    ports:
+      - 8081:80
+
   diogenes:
     container_name: diogenes
     image: nck974/diogenes:0.0.6-SNAPSHOT

@@ -4,13 +4,14 @@ import { Observable, catchError, map, tap } from 'rxjs';
 
 import { Category } from '../models/Category';
 import { ErrorHandlerService } from './error-handler.service';
+import { environment } from 'src/environments/environment';
 
 
 @Injectable({
   providedIn: 'root'
 })
 export class CategoryService {
-  private backendUrl = "http://localhost:8080/diogenes";
+  private backendUrl = environment.diogenesBackendURL;
   private urlPath = "api/v1/categories";
   private url = `${this.backendUrl}/${this.urlPath}`;
 
