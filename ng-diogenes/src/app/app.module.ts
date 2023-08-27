@@ -17,6 +17,7 @@ import { CapitalizeFirstLetterPipe } from './pipes/capitalize-first-letter.pipe'
 import { KeysPipe } from './pipes/keys.pipe';
 import { EditItemComponent } from './pages/edit-item/edit-item.component';
 import { InventorySorterComponent } from './components/inventory-sorter/inventory-sorter.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
   declarations: [
@@ -39,7 +40,8 @@ import { InventorySorterComponent } from './components/inventory-sorter/inventor
     AppRoutingModule,
     HttpClientModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    BrowserAnimationsModule
   ],
   providers: [],
   bootstrap: [AppComponent]
