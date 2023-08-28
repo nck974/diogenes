@@ -1,72 +1,22 @@
 .card {
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    padding: 10px;
     margin: 10px;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    /* Add a smooth transition effect */
-    transition: background-color 0.3s;
 }
 
-/* Add a background color to highlight on hover */
-.card:hover {
-    background-color: #f5f5f5;
-}
-
-.avatar {
-    width: 50px;
-    height: 50px;
-    background-color: #ddd;
-    border-radius: 50%;
-    margin-right: 10px;
-}
-
-.card-content {
-    flex: 1;
-}
-
-.card-title {
-    margin: 0;
-    font-size: 1.2em;
+.card-header {
     cursor: pointer;
 }
 
+.card-actions {
+    display: flex;
+    justify-content: flex-end;
+}
+
 .item-number {
-    font-size: 0.8em;
+    font-size: small;
     margin-left: 5px;
-    color: #666;
 }
 
 .item-number-label {
     font-weight: bold;
-    font-size: 0.7em;
-}
-
-.card-subtitle {
-    margin: 5px 0;
-    color: #666;
-    font-size: 1em;
-}
-
-.card-description {
-    margin: 10px 0;
-}
-
-.small-button {
-    padding: 6px 12px;
-    font-size: 12px;
-    min-width: auto;
-    height: auto;
-}
-
-.card-footer {
-    color: #999;
-    font-size: 0.8em;
-    margin-top: 10px;
-}
-
-.card-footer p {
-    margin: 5px 0;
+    font-size: smaller;
 }
