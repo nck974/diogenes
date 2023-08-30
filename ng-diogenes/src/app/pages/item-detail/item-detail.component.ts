@@ -66,4 +66,15 @@ export class ItemDetailComponent implements OnInit, OnDestroy {
     this.router.navigateByUrl(`/items/${this.item?.id}/edit`);
   }
 
+  getAvatarColor(): string {
+    if (this.item?.category != null) {
+      let color = this.item.category.color;
+      const hexColorRegex = /^(?:[0-9a-fA-F]{3}){1,2}$/;
+      if (hexColorRegex.test(color)) {
+        return `#${color}`;
+      }
+    }
+    return "#ddd";
+  }
+
 }
