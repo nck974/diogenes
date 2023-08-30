@@ -10,15 +10,9 @@ import { Item } from 'src/app/models/Item';
 export class ItemInListComponent {
 
   @Input() item!: Item;
-  @Output() itemDeleted = new EventEmitter<Item>();
 
   constructor(private router: Router) {
 
-  }
-
-  onDelete() {
-    console.log("Deleting item " + this.item.id);
-    this.itemDeleted.emit(this.item);
   }
 
   onOpenDetails() {

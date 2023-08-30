@@ -4,7 +4,7 @@
     <!-- header -->
     <mat-card-header>
 
-        <mat-card-title class="card-header" (click)="onOpenDetails()">
+        <mat-card-title class="card-header" (click)="onOpenDetails()" title="{{item.description}}">
             {{ item.name }}
         </mat-card-title>
 
@@ -23,23 +23,5 @@
         <div mat-card-avatar [style.background-color]="getAvatarColor()"></div>
 
     </mat-card-header>
-
-    <!-- content -->
-    <mat-card-content>
-
-        <span>
-            {{ item.description }}
-        </span>
-
-    </mat-card-content>
-
-    <!-- actions -->
-    <mat-card-actions class="card-actions">
-
-        <button mat-icon-button aria-label="Delete item" (click)="onDelete()">
-            <mat-icon>delete</mat-icon>
-        </button>
-
-    </mat-card-actions>
 
 </mat-card>

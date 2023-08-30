@@ -23,7 +23,7 @@
 <ng-template #notLoading>
     <div id="item-list">
         <div *ngFor="let item of items">
-            <app-item-in-list [item]="item" (itemDeleted)="onDeleteItem($event)"></app-item-in-list>
+            <app-item-in-list [item]="item"></app-item-in-list>
         </div>
         <div *ngIf="fetchingInProgress">
             <app-loading-spinner></app-loading-spinner>

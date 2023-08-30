@@ -19,7 +19,7 @@ export class InventoryComponent implements OnInit, OnDestroy {
   private currentPage: number = 0;
   private lastPage: boolean = false
   private itemFilter?: ItemFilter;
-  private itemSorter: ItemSorter = {field: "ID", direction: "ASC"};
+  private itemSorter: ItemSorter = { field: "ID", direction: "ASC" };
 
   items: Item[] = [];
   isLoading = false;
@@ -68,25 +68,6 @@ export class InventoryComponent implements OnInit, OnDestroy {
       });
   }
 
-  onDeleteItem(item: Item) {
-    this.isLoading = true;
-    this.itemService.deleteItem(item.id).pipe(
-      catchError((err) => {
-        console.log("Error deleting: " + err);
-        return [];
-      }),
-      finalize(() => this.isLoading = false)
-    ).subscribe(
-      () => {
-        const index = this.items.findIndex(x => x.id === item.id);
-        if (index !== -1) {
-          this.items.splice(index, 1);
-        }
-        this.messageService.add(`The item "${item.name}" was deleted.`);
-      }
-    );
-  }
-
   resetLoadedItems() {
     this.isLoading = true;
     this.currentPage = 0;
@@ -114,7 +95,7 @@ export class InventoryComponent implements OnInit, OnDestroy {
     this.resetLoadedItems()
   }
 
-  onCreateNewItem(){
+  onCreateNewItem() {
     this.router.navigateByUrl("/items/new")
   }
 
