@@ -4,6 +4,7 @@ import { ActivatedRoute, Router, } from '@angular/router';
 import { Subscription, finalize } from 'rxjs';
 import { Item } from 'src/app/models/Item';
 import { ItemService } from 'src/app/services/item.service';
+import { MessageService } from 'src/app/services/message.service';
 
 @Component({
   selector: 'app-item-detail',
@@ -18,6 +19,7 @@ export class ItemDetailComponent implements OnInit, OnDestroy {
   isLoading = false;
   constructor(
     private itemService: ItemService,
+    private messageService: MessageService,
     private route: ActivatedRoute,
     private location: Location,
     private router: Router) {
@@ -64,6 +66,18 @@ export class ItemDetailComponent implements OnInit, OnDestroy {
 
   onEditItem(): void {
     this.router.navigateByUrl(`/items/${this.item?.id}/edit`);
+  }
+
+  onDeleteItem(): void {
+    if (!this.item) {
+      console.error("Trying to delete an item that is not defined");
+    }
+    this.itemService.deleteItem(this.item!.id)
+      .subscribe(() => {
+        this.messageService.add(`Item ${this.item!.name} was deleted`);
+
+        this.onNavigateBack();
+      });
   }
 
   getAvatarColor(): string {
