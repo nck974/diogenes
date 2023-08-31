@@ -46,7 +46,8 @@
                     <mat-icon>edit</mat-icon>
                 </button>
 
-                <button mat-icon-button aria-label="Delete item" (click)="onDeleteItem()">
+                <button mat-icon-button aria-label="Delete item"
+                    (click)="onDeleteItem()">
                     <mat-icon>delete</mat-icon>
                 </button>
 
@@ -55,19 +56,8 @@
     </div>
 
     <ng-template #notFound>
-        <div class="center-card">
-            <mat-card class="card">
-                <mat-card-header>
-                    <mat-card-title>
-                        Item not found
-                    </mat-card-title>
-                    <mat-icon mat-card-avatar>error</mat-icon>
-                </mat-card-header>
-                <mat-card-content>
-                    <p>The requested item could not be found.</p>
-                </mat-card-content>
-            </mat-card>
-        </div>
+        <app-error-card [title]="'Item not found'" [icon]="'error'"
+            [content]="'The requested item could not be found'"></app-error-card>
     </ng-template>
 
 </ng-template>

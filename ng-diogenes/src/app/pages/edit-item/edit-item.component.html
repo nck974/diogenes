@@ -12,12 +12,9 @@
 
 <ng-template #notLoading>
 
-    <div class="error-container"
-        *ngIf="initializationError; else itemFormTemplate">
-        <div class="error-message">
-            <p>{{ initializationError }}</p>
-            <button (click)="onNavigateBack()">Go Back</button>
-        </div>
+    <div *ngIf="initializationError; else itemFormTemplate">
+        <app-error-card [title]="'Item not found'" [icon]="'error'"
+            [content]="initializationError"></app-error-card>
     </div>
 
     <ng-template #itemFormTemplate>

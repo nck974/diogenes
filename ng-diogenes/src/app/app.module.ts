@@ -27,6 +27,7 @@ import { KeysPipe } from './pipes/keys.pipe';
 import { EditItemComponent } from './pages/edit-item/edit-item.component';
 import { InventorySorterComponent } from './components/inventory-sorter/inventory-sorter.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ErrorCardComponent } from './components/error-card/error-card.component';
 
 @NgModule({
   declarations: [
@@ -43,6 +44,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     ItemDetailComponent,
     EditItemComponent,
     InventorySorterComponent,
+    ErrorCardComponent,
   ],
   imports: [
     BrowserModule,
