@@ -1,8 +1,0 @@
-<div *ngIf="messageService.messages.length">
-    <div class="message-container" *ngFor="let message of messageService.messages; let i = index" [style.margin-bottom]="(i * 60) + 'px'">
-        <div class="message">
-            {{ message }}
-            <button class="remove-button" (click)="closeMessage(message)">Close</button>
-        </div>
-    </div>
-</div>

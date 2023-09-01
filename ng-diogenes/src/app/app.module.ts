@@ -12,6 +12,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatSelectModule } from '@angular/material/select';
 import { MatCardModule } from '@angular/material/card';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 import { InfiniteScrollModule } from "ngx-infinite-scroll";
 
@@ -55,6 +56,7 @@ import { ErrorCardComponent } from './components/error-card/error-card.component
     FormsModule,
     ReactiveFormsModule,
     BrowserAnimationsModule,
+    InfiniteScrollModule,
     // Material:
     MatButtonModule,
     MatFormFieldModule,
@@ -64,7 +66,7 @@ import { ErrorCardComponent } from './components/error-card/error-card.component
     MatSelectModule,
     MatCardModule,
     MatProgressSpinnerModule,
-    InfiniteScrollModule,
+    MatSnackBarModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
