@@ -21,7 +21,8 @@
     <app-loading-spinner></app-loading-spinner>
 </div>
 <ng-template #notLoading>
-    <div id="item-list">
+    <div infiniteScroll (scrolled)="onScroll()" [infiniteScrollDistance]="0.5"
+        [infiniteScrollDisabled]="lastPage" id="item-list">
         <div *ngFor="let item of items">
             <app-item-in-list [item]="item"></app-item-in-list>
         </div>

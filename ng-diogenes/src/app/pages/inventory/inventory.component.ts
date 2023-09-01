@@ -17,7 +17,7 @@ export class InventoryComponent implements OnInit, OnDestroy {
   private itemServiceSubscription?: Subscription;
 
   private currentPage: number = 0;
-  private lastPage: boolean = false
+  lastPage: boolean = false
   private itemFilter?: ItemFilter;
   private itemSorter: ItemSorter = { field: "ID", direction: "ASC" };
 
@@ -35,16 +35,11 @@ export class InventoryComponent implements OnInit, OnDestroy {
     this.itemServiceSubscription?.unsubscribe();
   }
 
-  @HostListener("window:scroll")
-  onScroll(): void {
-    if (!this.fetchingInProgress && this.bottomReached() && !this.lastPage) {
+  onScroll() {
+    if (!this.fetchingInProgress && !this.lastPage) {
       this.fetchingInProgress = true;
       this.fetchNextPage();
     }
-  }
-
-  bottomReached(): boolean {
-    return (window.innerHeight + window.scrollY) >= document.body.offsetHeight;
   }
 
   fetchNextPage(): void {

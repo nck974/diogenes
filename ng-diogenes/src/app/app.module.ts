@@ -13,6 +13,8 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatCardModule } from '@angular/material/card';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
+import { InfiniteScrollModule } from "ngx-infinite-scroll";
+
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { InventoryComponent } from './pages/inventory/inventory.component';
@@ -62,6 +64,7 @@ import { ErrorCardComponent } from './components/error-card/error-card.component
     MatSelectModule,
     MatCardModule,
     MatProgressSpinnerModule,
+    InfiniteScrollModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
