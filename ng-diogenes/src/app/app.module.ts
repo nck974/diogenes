@@ -13,6 +13,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatCardModule } from '@angular/material/card';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import {MatDialogModule} from '@angular/material/dialog'; 
 
 import { InfiniteScrollModule } from "ngx-infinite-scroll";
 
@@ -31,6 +32,7 @@ import { EditItemComponent } from './pages/edit-item/edit-item.component';
 import { InventorySorterComponent } from './components/inventory-sorter/inventory-sorter.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ErrorCardComponent } from './components/error-card/error-card.component';
+import { ConfirmationDialogComponent } from './components/confirmation-dialog/confirmation-dialog.component';
 
 @NgModule({
   declarations: [
@@ -48,6 +50,7 @@ import { ErrorCardComponent } from './components/error-card/error-card.component
     EditItemComponent,
     InventorySorterComponent,
     ErrorCardComponent,
+    ConfirmationDialogComponent,
   ],
   imports: [
     BrowserModule,
@@ -67,6 +70,7 @@ import { ErrorCardComponent } from './components/error-card/error-card.component
     MatCardModule,
     MatProgressSpinnerModule,
     MatSnackBarModule,
+    MatDialogModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
