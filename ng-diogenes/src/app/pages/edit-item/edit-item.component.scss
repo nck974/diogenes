@@ -10,7 +10,7 @@
     padding: 1rem;
 }
 
-.title{
+.title {
     margin: 1rem;
 }
 
@@ -21,4 +21,8 @@
 
 .form mat-form-field {
     width: 100%;
+}
+
+.textarea-height {
+    min-height: 150px;
 }

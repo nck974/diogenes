@@ -1,6 +1,10 @@
 .card {
     margin: 10px;
 }
+.card:hover{
+    border: 1px solid black; 
+    box-shadow: 8px 8px 2px 1px #7b1fa21a; 
+}
 
 .card-header {
     cursor: pointer;
