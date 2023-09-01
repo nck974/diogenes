@@ -17,9 +17,9 @@ export class InventoryComponent implements OnInit, OnDestroy {
   private itemServiceSubscription?: Subscription;
 
   private currentPage: number = 0;
-  private lastPage: boolean = false
+  lastPage: boolean = false
   private itemFilter?: ItemFilter;
-  private itemSorter: ItemSorter = {field: "ID", direction: "ASC"};
+  private itemSorter: ItemSorter = { field: "ID", direction: "ASC" };
 
   items: Item[] = [];
   isLoading = false;
@@ -35,16 +35,11 @@ export class InventoryComponent implements OnInit, OnDestroy {
     this.itemServiceSubscription?.unsubscribe();
   }
 
-  @HostListener("window:scroll")
-  onScroll(): void {
-    if (!this.fetchingInProgress && this.bottomReached() && !this.lastPage) {
+  onScroll() {
+    if (!this.fetchingInProgress && !this.lastPage) {
       this.fetchingInProgress = true;
       this.fetchNextPage();
     }
-  }
-
-  bottomReached(): boolean {
-    return (window.innerHeight + window.scrollY) >= document.body.offsetHeight;
   }
 
   fetchNextPage(): void {
@@ -66,25 +61,6 @@ export class InventoryComponent implements OnInit, OnDestroy {
         this.items.push(...page.content);
         this.fetchingInProgress = false;
       });
-  }
-
-  onDeleteItem(item: Item) {
-    this.isLoading = true;
-    this.itemService.deleteItem(item.id).pipe(
-      catchError((err) => {
-        console.log("Error deleting: " + err);
-        return [];
-      }),
-      finalize(() => this.isLoading = false)
-    ).subscribe(
-      () => {
-        const index = this.items.findIndex(x => x.id === item.id);
-        if (index !== -1) {
-          this.items.splice(index, 1);
-        }
-        this.messageService.add(`The item "${item.name}" was deleted.`);
-      }
-    );
   }
 
   resetLoadedItems() {
@@ -114,7 +90,7 @@ export class InventoryComponent implements OnInit, OnDestroy {
     this.resetLoadedItems()
   }
 
-  onCreateNewItem(){
+  onCreateNewItem() {
     this.router.navigateByUrl("/items/new")
   }
 

@@ -1,42 +1,63 @@
+<mat-toolbar>
+    <mat-toolbar-row>
+        <button mat-button (click)="onNavigateBack()">
+            <mat-icon>arrow_back</mat-icon>
+        </button>
+    </mat-toolbar-row>
+</mat-toolbar>
+
 <div *ngIf="isLoading; else notLoading">
-    <app-loading-spinner [isLoading]="isLoading"></app-loading-spinner>
+    <app-loading-spinner></app-loading-spinner>
 </div>
 
 <ng-template #notLoading>
 
-    <div class="item-container" *ngIf="item; else notFound">
-        <button class="back-button" (click)="onNavigateBack()">Back</button>
-        <div class="header">
-            <h1>{{ item.name }}</h1>
-        </div>
-        <div class="category-container">
-            <div class="category-color"
-                [style.backgroundColor]="'#' + item.category.color"></div>
-            <div class="category-name">{{item.category.name}}</div>
-        </div>
-        <div class="item-details">
-            <div class="item-description">
-                <p>{{ item.description }}</p>
-            </div>
-            <div class="item-metadata">
-                <p>Number of items: {{ item.number }}</p>
-                <p>Last Updated: {{ item.updatedOn | date:'medium' }}</p>
-                <p>Created On: {{ item.createdOn | date:'medium' }}</p>
-            </div>
-        </div>
-        <div class="actions">
-            <button (click)="onEditItem()" class="edit-button">Edit</button>
-            <button class="delete-button">Delete</button>
-        </div>
+    <div class="center-card" *ngIf="item; else notFound">
+        <mat-card align="center" class="card">
+            <!-- Header -->
+            <mat-card-header>
+                <mat-card-title>
+                    {{ item.name }}
+                </mat-card-title>
+
+                <mat-card-subtitle>
+                    {{item.category.name}}
+                </mat-card-subtitle>
+
+                <div mat-card-avatar [style.background-color]="getAvatarColor()"></div>
+
+            </mat-card-header>
+
+            <!-- Content -->
+            <mat-card-content>
+                <p class="no-overflow">{{ item.description }}</p>
+                <div class="item-metadata">
+                    <p>Number of items: {{ item.number }}</p>
+                    <p>Last Updated: {{ item.updatedOn | date:'medium' }}</p>
+                    <p>Created On: {{ item.createdOn | date:'medium' }}</p>
+                </div>
+            </mat-card-content>
+
+            <!-- Action buttons -->
+            <mat-card-actions align="end">
+
+                <button mat-icon-button aria-label="Edit item"
+                    (click)="onEditItem()">
+                    <mat-icon>edit</mat-icon>
+                </button>
+
+                <button mat-icon-button aria-label="Delete item"
+                    (click)="onDeleteItem()">
+                    <mat-icon>delete</mat-icon>
+                </button>
+
+            </mat-card-actions>
+        </mat-card>
     </div>
 
     <ng-template #notFound>
-
-        <div class="not-found-container">
-            <h2>Item Not Found</h2>
-            <p>The requested item could not be found.</p>
-        </div>
-
+        <app-error-card [title]="'Item not found'" [icon]="'error'"
+            [content]="'The requested item could not be found'"></app-error-card>
     </ng-template>
 
 </ng-template>

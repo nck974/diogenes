@@ -4,6 +4,19 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { HttpClientModule } from '@angular/common/http';
 
+import { MatButtonModule } from '@angular/material/button';
+import { MatInputModule } from '@angular/material/input';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatIconModule } from '@angular/material/icon';
+import { MatSelectModule } from '@angular/material/select';
+import { MatCardModule } from '@angular/material/card';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import {MatDialogModule} from '@angular/material/dialog'; 
+
+import { InfiniteScrollModule } from "ngx-infinite-scroll";
+
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { InventoryComponent } from './pages/inventory/inventory.component';
@@ -17,6 +30,9 @@ import { CapitalizeFirstLetterPipe } from './pipes/capitalize-first-letter.pipe'
 import { KeysPipe } from './pipes/keys.pipe';
 import { EditItemComponent } from './pages/edit-item/edit-item.component';
 import { InventorySorterComponent } from './components/inventory-sorter/inventory-sorter.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ErrorCardComponent } from './components/error-card/error-card.component';
+import { ConfirmationDialogComponent } from './components/confirmation-dialog/confirmation-dialog.component';
 
 @NgModule({
   declarations: [
@@ -33,13 +49,28 @@ import { InventorySorterComponent } from './components/inventory-sorter/inventor
     ItemDetailComponent,
     EditItemComponent,
     InventorySorterComponent,
+    ErrorCardComponent,
+    ConfirmationDialogComponent,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    BrowserAnimationsModule,
+    InfiniteScrollModule,
+    // Material:
+    MatButtonModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatToolbarModule,
+    MatIconModule,
+    MatSelectModule,
+    MatCardModule,
+    MatProgressSpinnerModule,
+    MatSnackBarModule,
+    MatDialogModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

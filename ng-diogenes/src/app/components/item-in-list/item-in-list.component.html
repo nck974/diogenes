@@ -1,32 +1,27 @@
 
-<div class="card" *ngIf="item">
-    <div class="avatar" [style.background-color]="getAvatarColor()">
-        <!-- Replace with your avatar image or content -->
-    </div>
-    <div class="card-content">
-        <h2 class="card-title" (click)="onOpenDetails()">
-            <span>
-                {{ item.name }}
-            </span>
-        </h2>
-        <h3 class="card-subtitle">
+<mat-card class="card" *ngIf="item">
+
+    <!-- header -->
+    <mat-card-header>
+
+        <mat-card-title class="card-header" (click)="onOpenDetails()" title="{{item.description}}">
+            {{ item.name }}
+        </mat-card-title>
+
+        <mat-card-subtitle>
+
             <span>
                 {{item.category.name}}
             </span>
+
             <span class="item-number">
                 <span class="item-number-label">x</span>{{ item.number }}
             </span>
-        </h3>
-        <p class="card-description">{{ item.description }}</p>
-    </div>
-    <div class="card-actions">
-        <div>
-            <button class="delete-button" (click)="onDelete()">Delete</button>
-        </div>
-        <div class="card-footer">
-            <p>Created: {{ item.createdOn | date }}</p>
-            <p>Last Updated: {{ item.updatedOn | date }}</p>
-        </div>
-    </div>
 
-</div>
+        </mat-card-subtitle>
+
+        <div mat-card-avatar [style.background-color]="getAvatarColor()"></div>
+
+    </mat-card-header>
+
+</mat-card>

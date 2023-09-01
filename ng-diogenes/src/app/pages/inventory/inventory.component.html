@@ -1,22 +1,33 @@
-<div class="header-container">
-    <div class="select-items-container">
-        <app-inventory-filter (filterItems)="onFilterItems($event)"></app-inventory-filter>
-        <div class="sorter-wrapper">
+<mat-toolbar>
+    <mat-toolbar-row>
+        xxxx
+    </mat-toolbar-row>
+    <mat-toolbar-row class="extended-size-row">
+        <div class="select-items-container">
+            <app-inventory-filter (filterItems)="onFilterItems($event)"></app-inventory-filter>
             <app-inventory-sorter (sortItems)="onSortItems($event)"></app-inventory-sorter>
         </div>
-    </div>
-    <div class="new-item-container">
-        <button class="new-item-button" (click)="onCreateNewItem()">New item</button>
-    </div>
+    </mat-toolbar-row>
+</mat-toolbar>
+
+<!-- Show a add item as float action button -->
+<div class="fab-container">
+    <button mat-fab color="primary"
+        (click)="onCreateNewItem()"><mat-icon>add</mat-icon></button>
 </div>
+
+<!-- Show inventory -->
 <div *ngIf="isLoading; else notLoading">
-    <app-loading-spinner [isLoading]="isLoading"></app-loading-spinner>
+    <app-loading-spinner></app-loading-spinner>
 </div>
 <ng-template #notLoading>
-    <div id="item-list">
+    <div infiniteScroll (scrolled)="onScroll()" [infiniteScrollDistance]="0.5"
+        [infiniteScrollDisabled]="lastPage" id="item-list">
         <div *ngFor="let item of items">
-            <app-item-in-list [item]="item" (itemDeleted)="onDeleteItem($event)"></app-item-in-list>
+            <app-item-in-list [item]="item"></app-item-in-list>
         </div>
-        <app-loading-spinner [isLoading]="fetchingInProgress"></app-loading-spinner>
+        <div *ngIf="fetchingInProgress">
+            <app-loading-spinner></app-loading-spinner>
+        </div>
     </div>
 </ng-template>

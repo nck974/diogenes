@@ -1,155 +1,28 @@
-/*Error messages*/
-.error-container {
-    background-color: #f2f2f2;
-    /* Background color for the entire background */
+.center {
     display: flex;
+    align-self: center;
     justify-content: center;
-    align-items: center;
-    height: 100vh;
-    /* 100% viewport height */
+}
+
+.card {
+    margin: 1rem;
+    max-width: 600px;
+    padding: 1rem;
+}
+
+.title {
+    margin: 1rem;
+}
+
+.form {
+    min-width: 150px;
     width: 100%;
-    /* 100% viewport width */
-    position: relative;
-    /* Ensure relative positioning for child elements */
 }
 
-.error-message {
-    background-color: #fff;
-    /* Background color for the error message box */
-    padding: 20px;
-    border-radius: 5px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
-    text-align: center;
-    max-width: 80%;
-    /* Adjust the maximum width as needed */
-    position: relative;
-    /* Ensure relative positioning for child elements */
-}
-
-/* Style for the "Go Back" button */
-.error-message button {
-    background-color: #007bff;
-    /* Button background color */
-    color: #fff;
-    /* Button text color */
-    border: none;
-    padding: 10px 20px;
-    border-radius: 5px;
-    cursor: pointer;
-    margin: 0 auto;
-    margin-top: 15px;
-    display: block;
-
-}
-
-/* Hover effect for the button */
-.error-message button:hover {
-    background-color: #0056b3;
-}
-
-/* You can style the error message text further if needed */
-.error-message p {
-    font-size: 16px;
-    margin-bottom: 10px;
-}
-
-
-/* Button go back*/
-.back-button {
-    background-color: #333;
-    color: #fff;
-    border: none;
-    margin-left: 10px;
-    padding: 5px 10px;
-    border-radius: 4px;
-    cursor: pointer;
-}
-
-
-/* Style for the form container */
-
-.form-container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 20px;
-    background-color: #f0f0f0;
-    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
-    border-radius: 5px;
-}
-
-
-form {
-    max-width: 400px;
-    margin: 0 auto;
-    padding: 20px;
-    box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.3);
-    background-color: #fff;
-}
-
-/* Style for form inputs and labels */
-.form-group {
-    margin-bottom: 15px;
-    margin-right: 15px;
-}
-
-label {
-    font-weight: bold;
-    margin-bottom: 5px;
-}
-
-input[type="text"],
-input[type="number"],
-select,
-textarea {
+.form mat-form-field {
     width: 100%;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    margin-top: 5px;
 }
 
-textarea {
-    resize: vertical;
-    min-height: 100px;
-}
-
-/* Style for the submit button */
-button[type="submit"] {
-    background-color: #007bff;
-    color: #fff;
-    padding: 10px 15px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-}
-
-button[type="submit"]:disabled {
-    background-color: #ccc;
-    cursor: not-allowed;
-}
-
-/* Responsive styles */
-@media screen and (max-width: 768px) {
-
-    /* Adjust form width for smaller screens */
-    form {
-        max-width: 100%;
-    }
-
-    /* Center-align form controls */
-    input[type="text"],
-    input[type="number"],
-    select,
-    textarea {
-        text-align: center;
-    }
-
-    /* Increase padding for better touch interactions */
-    input[type="text"],
-    input[type="number"],
-    select,
-    textarea,
-    button[type="submit"] {
-        padding: 15px;
-    }
+.textarea-height {
+    min-height: 150px;
 }

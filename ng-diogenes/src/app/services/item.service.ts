@@ -63,7 +63,8 @@ export class ItemService {
   }
 
   getItems(page: number = 0, itemFilter?: ItemFilter, itemSorter?: ItemSorter): Observable<Page<Item>> {
-    let url = `${this.url}/?offset=${page}`;
+    const pageSize = 20;
+    let url = `${this.url}/?offset=${page}&pageSize=${pageSize}`;
 
     url = this.applyFilters(url, itemFilter)
     url = this.applySorting(url, itemSorter)

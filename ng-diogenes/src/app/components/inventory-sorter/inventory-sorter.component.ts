@@ -60,8 +60,13 @@ export class InventorySorterComponent implements OnInit {
   }
 
   displayOption(option: string): string {
-    const { filterName } = this.getOptionDetails(option)
-    return filterName;
+    const { filterName, isAscending } = this.getOptionDetails(option)
+
+    if (isAscending){
+      return filterName + " ↑";
+    }
+
+    return filterName + " ↓";
   }
 
 }

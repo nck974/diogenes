@@ -1,55 +1,72 @@
+<mat-toolbar>
+    <mat-toolbar-row>
+        <button mat-button (click)="onNavigateBack()">
+            <mat-icon>arrow_back</mat-icon>
+        </button>
+    </mat-toolbar-row>
+</mat-toolbar>
+
 <div *ngIf="isLoading; else notLoading">
-    <app-loading-spinner [isLoading]="isLoading"></app-loading-spinner>
+    <app-loading-spinner></app-loading-spinner>
 </div>
 
 <ng-template #notLoading>
 
-    <div class="error-container"
-        *ngIf="initializationError; else itemFormTemplate">
-        <div class="error-message">
-            <p>{{ initializationError }}</p>
-            <button (click)="onNavigateBack()">Go Back</button>
-        </div>
+    <div *ngIf="initializationError; else itemFormTemplate">
+        <app-error-card [title]="'Item not found'" [icon]="'error'"
+            [content]="initializationError"></app-error-card>
     </div>
 
     <ng-template #itemFormTemplate>
-        
-        <div class="form-container">
-            <button class="back-button" (click)="onNavigateBack()">Back</button>
-            
-            <form [formGroup]="itemForm" (ngSubmit)="onSubmit()">
-                <div class="form-group">
-                    <label for="name">Name*:</label>
-                    <input type="text" id="name" formControlName="name"
-                        class="form-control" required maxlength="50">
-                </div>
 
-                <div class="form-group">
-                    <label for="description">Description:</label>
-                    <textarea id="description" formControlName="description"
-                        class="form-control" maxlength="2000"></textarea>
-                </div>
+        <div class="center">
+            <mat-card align="center" class="card">
 
-                <div class="form-group">
-                    <label for="number">Number*:</label>
-                    <input type="number" id="number" formControlName="number"
-                        class="form-control" required>
-                </div>
+                <form class="form" [formGroup]="itemForm"
+                    (ngSubmit)="onSubmit()">
 
-                <div class="form-group">
-                    <label for="category">Category*:</label>
-                    <select id="category" formControlName="categoryId"
-                        class="form-control" required>
-                        <option *ngFor="let category of categories"
-                            [value]="category.id">{{ category.name }}</option>
-                    </select>
-                </div>
+                    <mat-card-title class="center title">
+                        {{isNewItem ? "Create item" : "Edit item"}}
+                    </mat-card-title>
 
-                <button type="submit" [disabled]="itemForm.invalid"
-                    class="btn btn-primary">Submit</button>
-            </form>
+                    <mat-form-field>
+                        <mat-label>Name</mat-label>
+                        <input matInput required maxlength="50"
+                            formControlName="name">
+                    </mat-form-field>
 
+                    <mat-form-field>
+                        <mat-label>Description</mat-label>
+                        <textarea matInput formControlName="description"
+                            class="textarea-height"
+                            maxlength="2000"></textarea>
+                    </mat-form-field>
+
+                    <mat-form-field>
+                        <mat-label>Number</mat-label>
+                        <input matInput required maxlength="50"
+                            formControlName="number" type="number">
+                    </mat-form-field>
+
+                    <mat-form-field>
+                        <mat-label>Category</mat-label>
+                        <mat-select formControlName="categoryId">
+                            <mat-option *ngFor="let category of categories"
+                                [value]="category.id">
+                                {{ category.name }}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+
+                    <div class="center">
+                        <button mat-raised-button color="primary" type="submit"
+                            [disabled]="itemForm.invalid">Submit</button>
+                    </div>
+
+                </form>
+            </mat-card>
         </div>
+
     </ng-template>
 
 </ng-template>
