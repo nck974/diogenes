@@ -13,7 +13,8 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatCardModule } from '@angular/material/card';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
-import {MatDialogModule} from '@angular/material/dialog'; 
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatMenuModule } from '@angular/material/menu';
 
 import { InfiniteScrollModule } from "ngx-infinite-scroll";
 
@@ -33,6 +34,9 @@ import { InventorySorterComponent } from './components/inventory-sorter/inventor
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ErrorCardComponent } from './components/error-card/error-card.component';
 import { ConfirmationDialogComponent } from './components/confirmation-dialog/confirmation-dialog.component';
+import { CategoriesComponent } from './pages/categories/categories.component';
+import { InventoryMenuComponent } from './components/inventory-menu/inventory-menu.component';
+import { CategoryInListComponent } from './components/category-in-list/category-in-list.component';
 
 @NgModule({
   declarations: [
@@ -51,6 +55,9 @@ import { ConfirmationDialogComponent } from './components/confirmation-dialog/co
     InventorySorterComponent,
     ErrorCardComponent,
     ConfirmationDialogComponent,
+    CategoriesComponent,
+    InventoryMenuComponent,
+    CategoryInListComponent,
   ],
   imports: [
     BrowserModule,
@@ -71,6 +78,7 @@ import { ConfirmationDialogComponent } from './components/confirmation-dialog/co
     MatProgressSpinnerModule,
     MatSnackBarModule,
     MatDialogModule,
+    MatMenuModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
