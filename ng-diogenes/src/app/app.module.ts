@@ -18,6 +18,8 @@ import { MatMenuModule } from '@angular/material/menu';
 
 import { InfiniteScrollModule } from "ngx-infinite-scroll";
 
+import { MAT_COLOR_FORMATS, NgxMatColorPickerModule, NGX_MAT_COLOR_FORMATS } from '@angular-material-components/color-picker';
+
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { InventoryComponent } from './pages/inventory/inventory.component';
@@ -37,6 +39,8 @@ import { ConfirmationDialogComponent } from './components/confirmation-dialog/co
 import { CategoriesComponent } from './pages/categories/categories.component';
 import { InventoryMenuComponent } from './components/inventory-menu/inventory-menu.component';
 import { CategoryInListComponent } from './components/category-in-list/category-in-list.component';
+import { CategoryDetailComponent } from './pages/category-detail/category-detail.component';
+import { EditCategoryComponent } from './pages/edit-category/edit-category.component';
 
 @NgModule({
   declarations: [
@@ -58,6 +62,8 @@ import { CategoryInListComponent } from './components/category-in-list/category-
     CategoriesComponent,
     InventoryMenuComponent,
     CategoryInListComponent,
+    CategoryDetailComponent,
+    EditCategoryComponent,
   ],
   imports: [
     BrowserModule,
@@ -67,6 +73,7 @@ import { CategoryInListComponent } from './components/category-in-list/category-
     ReactiveFormsModule,
     BrowserAnimationsModule,
     InfiniteScrollModule,
+    NgxMatColorPickerModule,
     // Material:
     MatButtonModule,
     MatFormFieldModule,
@@ -80,7 +87,7 @@ import { CategoryInListComponent } from './components/category-in-list/category-
     MatDialogModule,
     MatMenuModule,
   ],
-  providers: [],
+  providers: [{ provide: MAT_COLOR_FORMATS, useValue: NGX_MAT_COLOR_FORMATS }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -1,5 +1,6 @@
 import { Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { finalize } from 'rxjs';
 import { Category } from 'src/app/models/Category';
 import { CategoryService } from 'src/app/services/category.service';
@@ -13,7 +14,7 @@ export class CategoriesComponent implements OnInit {
 
   categories: Category[] = [];
   isLoading: boolean = false;
-  constructor(private location: Location, private categoryService: CategoryService) { }
+  constructor(private location: Location, private categoryService: CategoryService, private router: Router) { }
 
   ngOnInit(): void {
     this.fetchCategories();
@@ -31,6 +32,6 @@ export class CategoriesComponent implements OnInit {
   }
 
   onCreateNewCategory(): void {
-    //todo
+    this.router.navigateByUrl("/categories/new");
   }
 }

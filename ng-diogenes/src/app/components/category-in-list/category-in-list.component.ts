@@ -16,8 +16,7 @@ export class CategoryInListComponent {
   }
 
   onOpenDetails() {
-    console.log("Not implemented yet");
-    //   this.router.navigate(["items", this.category.id]);
+    this.router.navigate(["categories", this.category.id]);
   }
 
   getAvatarColor(): string {

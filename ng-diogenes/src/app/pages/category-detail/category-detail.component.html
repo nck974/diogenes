@@ -1,0 +1,58 @@
+<mat-toolbar>
+    <mat-toolbar-row>
+        <button mat-button (click)="onNavigateBack()">
+            <mat-icon>arrow_back</mat-icon>
+        </button>
+    </mat-toolbar-row>
+</mat-toolbar>
+
+<div *ngIf="isLoading; else notLoading">
+    <app-loading-spinner></app-loading-spinner>
+</div>
+
+<ng-template #notLoading>
+
+    <div class="center-card" *ngIf="category; else notFound">
+        <mat-card align="center" class="card">
+            <!-- Header -->
+            <mat-card-header>
+                <mat-card-title>
+                    {{ category.name }}
+                </mat-card-title>
+
+                <div mat-card-avatar [style.background-color]="getAvatarColor()"></div>
+
+            </mat-card-header>
+
+            <!-- Content -->
+            <mat-card-content>
+                <p class="no-overflow">{{ category.description }}</p>
+                <div class="category-metadata">
+                    <p>Last Updated: {{ category.updatedOn | date:'medium' }}</p>
+                    <p>Created On: {{ category.createdOn | date:'medium' }}</p>
+                </div>
+            </mat-card-content>
+
+            <!-- Action buttons -->
+            <mat-card-actions align="end">
+
+                <button mat-icon-button aria-label="Edit category"
+                    (click)="onEditCategory()">
+                    <mat-icon>edit</mat-icon>
+                </button>
+
+                <button mat-icon-button aria-label="Delete category"
+                    (click)="onDeleteCategory()">
+                    <mat-icon>delete</mat-icon>
+                </button>
+
+            </mat-card-actions>
+        </mat-card>
+    </div>
+
+    <ng-template #notFound>
+        <app-error-card [title]="'Category not found'" [icon]="'error'"
+            [content]="'The requested category could not be found'"></app-error-card>
+    </ng-template>
+
+</ng-template>
