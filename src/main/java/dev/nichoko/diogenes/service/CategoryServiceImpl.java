@@ -29,6 +29,7 @@ public class CategoryServiceImpl implements CategoryService {
 
     /**
      * Check if another item with the same name already exists in the database
+     * 
      * @param category
      */
     private void validateName(Category category) {
@@ -66,7 +67,9 @@ public class CategoryServiceImpl implements CategoryService {
                 .map(existingCategory -> {
                     category.setId(existingCategory.getId());
                     category.setCreatedOn(existingCategory.getCreatedOn());
-                    validateName(category);
+                    if (!category.getName().equals(existingCategory.getName())) {
+                        validateName(category);
+                    }
                     return categoryRepository.save(category);
                 })
                 .orElseThrow(() -> new ResourceNotFoundException(id));
