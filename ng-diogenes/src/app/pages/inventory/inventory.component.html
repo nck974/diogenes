@@ -1,6 +1,9 @@
 <mat-toolbar>
     <mat-toolbar-row>
-        xxxx
+        <div class="select-items-container">
+            xxxx
+            <app-inventory-menu></app-inventory-menu>
+        </div>
     </mat-toolbar-row>
     <mat-toolbar-row class="extended-size-row">
         <div class="select-items-container">
@@ -21,7 +24,8 @@
     <app-loading-spinner></app-loading-spinner>
 </div>
 <ng-template #notLoading>
-    <div infiniteScroll (scrolled)="onScroll()" [infiniteScrollDistance]="0.5"
+    <div infiniteScroll (scrolled)="onScroll()"
+        [infiniteScrollDistance]="0.5"
         [infiniteScrollDisabled]="lastPage" id="item-list">
         <div *ngFor="let item of items">
             <app-item-in-list [item]="item"></app-item-in-list>

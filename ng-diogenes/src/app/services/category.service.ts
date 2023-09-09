@@ -32,4 +32,67 @@ export class CategoryService {
         catchError(this.errorHandler.handleError<Category[]>("getCategories", []))
       );
   }
+
+  getCategory(categoryId: number): Observable<Category> {
+    let url = `${this.url}/${categoryId}`;
+
+    console.log(url);
+
+    return this.httpClient.get<Category>(url)
+      .pipe(
+        map((rawCategory) => {
+          const category: Category = { ...rawCategory };
+          return category;
+        }),
+        tap((category) => console.log(category)),
+        catchError(this.errorHandler.handleError<Category>("getCategory"))
+      );
+  }
+
+  deleteCategory(id: number): Observable<any> {
+    const url = `${this.url}/${id}`;
+
+    console.log(url);
+
+    return this.httpClient.delete(url)
+      .pipe(
+        tap(_ => console.log(`Category ${id} deleted`)),
+        catchError(this.errorHandler.handleError<any>("deleteCategory")));
+  }
+
+  postCategory(category: Category): Observable<Category> {
+    let url = `${this.url}/`;
+
+    console.log(url);
+
+    let data = { ...category };
+
+    return this.httpClient.post<Category>(url, data)
+      .pipe(
+        map((rawCategory) => {
+          const category: Category = { ...rawCategory };
+          return category;
+        }),
+        tap((category) => console.log(category)),
+        catchError(this.errorHandler.handleError<Category>("postCategory"))
+      );
+  }
+
+  updateCategory(category: Category): Observable<Category> {
+    let url = `${this.url}/${category.id}`;
+
+    console.log(url);
+
+    let data = { ...category };
+
+    return this.httpClient.put<Category>(url, data)
+      .pipe(
+        map((rawCategory) => {
+          const category: Category = { ...rawCategory };
+          return category;
+        }),
+        tap((category) => console.log(category)),
+        catchError(this.errorHandler.handleError<Category>("updateCategory"))
+      );
+  }
 }

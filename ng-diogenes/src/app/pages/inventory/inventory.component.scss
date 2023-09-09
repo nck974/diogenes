@@ -9,13 +9,9 @@
     min-height: 80px;
 }
 
-// Show button as a mobile app
 .fab-container {
     position: fixed;
     bottom: 20px;
-    /* Adjust the distance from the bottom */
     right: 20px;
-    /* Adjust the distance from the right */
     z-index: 1;
-    /* Ensure it's above other elements */
 }

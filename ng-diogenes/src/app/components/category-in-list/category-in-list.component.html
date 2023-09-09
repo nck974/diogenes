@@ -1,0 +1,13 @@
+<mat-card class="card" *ngIf="category">
+
+    <mat-card-header>
+
+        <mat-card-title class="card-header" (click)="onOpenDetails()" title="{{category.description}}">
+            {{ category.name }}
+        </mat-card-title>
+
+        <div mat-card-avatar [style.background-color]="getAvatarColor()"></div>
+
+    </mat-card-header>
+
+</mat-card>

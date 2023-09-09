@@ -19,9 +19,8 @@ export class ErrorHandlerService {
       console.error(`${operation} failed:`);
       console.error(error);
 
-      // Let the app keep running by returning an empty result.
       if (!result){
-        return throwError(() => new Error(`${operation} could not be executed`));
+        return throwError(() => error);
       }
       return of(result as T);
     };

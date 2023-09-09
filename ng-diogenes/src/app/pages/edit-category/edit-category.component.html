@@ -1,0 +1,63 @@
+<mat-toolbar>
+    <mat-toolbar-row>
+        <button mat-button (click)="onNavigateBack()">
+            <mat-icon>arrow_back</mat-icon>
+        </button>
+    </mat-toolbar-row>
+</mat-toolbar>
+
+<div *ngIf="isLoading; else notLoading">
+    <app-loading-spinner></app-loading-spinner>
+</div>
+
+<ng-template #notLoading>
+
+    <div *ngIf="initializationError; else categoryFormTemplate">
+        <app-error-card [title]="'Category not found'" [icon]="'error'"
+            [content]="initializationError"></app-error-card>
+    </div>
+
+    <ng-template #categoryFormTemplate>
+
+        <div class="center">
+            <mat-card align="center" class="card">
+
+                <form class="form" [formGroup]="categoryForm"
+                    (ngSubmit)="onSubmit()">
+
+                    <mat-card-title class="center title">
+                        {{isNewCategory ? "Create category" : "Edit category"}}
+                    </mat-card-title>
+
+                    <mat-form-field>
+                        <mat-label>Name</mat-label>
+                        <input matInput required maxlength="50"
+                            formControlName="name">
+                    </mat-form-field>
+
+                    <mat-form-field>
+                        <mat-label>Description</mat-label>
+                        <textarea matInput formControlName="description"
+                            class="textarea-height"
+                            maxlength="2000"></textarea>
+                    </mat-form-field>
+
+                    <mat-form-field>
+                        <input matInput [ngxMatColorPicker]="picker"
+                            [formControl]="colorControl">
+                        <ngx-mat-color-toggle matSuffix [for]="picker"></ngx-mat-color-toggle>
+                        <ngx-mat-color-picker #picker></ngx-mat-color-picker>
+                    </mat-form-field>
+
+                    <div class="center">
+                        <button mat-raised-button color="primary" type="submit"
+                            [disabled]="categoryForm.invalid">Submit</button>
+                    </div>
+
+                </form>
+            </mat-card>
+        </div>
+
+    </ng-template>
+
+</ng-template>

@@ -13,9 +13,12 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatCardModule } from '@angular/material/card';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
-import {MatDialogModule} from '@angular/material/dialog'; 
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatMenuModule } from '@angular/material/menu';
 
 import { InfiniteScrollModule } from "ngx-infinite-scroll";
+
+import { MAT_COLOR_FORMATS, NgxMatColorPickerModule, NGX_MAT_COLOR_FORMATS } from '@angular-material-components/color-picker';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -33,6 +36,11 @@ import { InventorySorterComponent } from './components/inventory-sorter/inventor
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ErrorCardComponent } from './components/error-card/error-card.component';
 import { ConfirmationDialogComponent } from './components/confirmation-dialog/confirmation-dialog.component';
+import { CategoriesComponent } from './pages/categories/categories.component';
+import { InventoryMenuComponent } from './components/inventory-menu/inventory-menu.component';
+import { CategoryInListComponent } from './components/category-in-list/category-in-list.component';
+import { CategoryDetailComponent } from './pages/category-detail/category-detail.component';
+import { EditCategoryComponent } from './pages/edit-category/edit-category.component';
 
 @NgModule({
   declarations: [
@@ -51,6 +59,11 @@ import { ConfirmationDialogComponent } from './components/confirmation-dialog/co
     InventorySorterComponent,
     ErrorCardComponent,
     ConfirmationDialogComponent,
+    CategoriesComponent,
+    InventoryMenuComponent,
+    CategoryInListComponent,
+    CategoryDetailComponent,
+    EditCategoryComponent,
   ],
   imports: [
     BrowserModule,
@@ -60,6 +73,7 @@ import { ConfirmationDialogComponent } from './components/confirmation-dialog/co
     ReactiveFormsModule,
     BrowserAnimationsModule,
     InfiniteScrollModule,
+    NgxMatColorPickerModule,
     // Material:
     MatButtonModule,
     MatFormFieldModule,
@@ -71,8 +85,9 @@ import { ConfirmationDialogComponent } from './components/confirmation-dialog/co
     MatProgressSpinnerModule,
     MatSnackBarModule,
     MatDialogModule,
+    MatMenuModule,
   ],
-  providers: [],
+  providers: [{ provide: MAT_COLOR_FORMATS, useValue: NGX_MAT_COLOR_FORMATS }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
