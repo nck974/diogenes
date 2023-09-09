@@ -28,7 +28,7 @@ export class CategoriesComponent implements OnInit {
   }
 
   onNavigateBack(): void {
-    this.location.back();
+    this.router.navigateByUrl("/items");
   }
 
   onCreateNewCategory(): void {
