@@ -14,6 +14,8 @@ jobs:
       uses: actions/setup-java@v1
       with:
         java-version: 17
+    - name: Change directory to spring project 'diogenes'
+      run: cd diogenes
     - name: Install dependencies
       run: mvn install -DskipTests=true -Dmaven.javadoc.skip=true -B -V
     - name: Run tests and collect coverage

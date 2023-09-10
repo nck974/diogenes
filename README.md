@@ -43,8 +43,8 @@ https://start.spring.io/#!type=maven-project&language=java&platformVersion=3.0.4
 
 #### Coverage
 
-1. Execute `mvn test jacoco:report`.
-1. The report will be generated in `target\site\jacoco\index.html`.
+1. Execute `cd diogenes && mvn test jacoco:report`.
+1. The report will be generated in `diogenes\target\site\jacoco\index.html`.
 
 #### Create backend docker container
 
