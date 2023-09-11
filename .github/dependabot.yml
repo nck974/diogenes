@@ -5,7 +5,11 @@
 
 version: 2
 updates:
-  - package-ecosystem: "maven" # See documentation for possible values
-    directory: "/diogenes" # Location of package manifests
+  - package-ecosystem: "maven"
+    directory: "/diogenes"
+    schedule:
+      interval: "monthly"
+  - package-ecosystem: "npm"
+    directory: "/ng-diogenes"
     schedule:
       interval: "monthly"
