@@ -19,6 +19,6 @@ jobs:
     - name: Install dependencies
       run: mvn install -DskipTests=true -Dmaven.javadoc.skip=true -B -V -f diogenes/pom.xml
     - name: Run tests and collect coverage
-      run: mvn -B test jacoco:report -f diogenes/pon.xml
+      run: mvn -B test jacoco:report -f diogenes/pom.xml
     - name: Upload coverage to Codecov
       uses: codecov/codecov-action@v3
