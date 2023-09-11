@@ -39,16 +39,16 @@ https://start.spring.io/#!type=maven-project&language=java&platformVersion=3.0.4
 
 #### Run tests
 
-1. Execute `.\mvnw test`.
+1. Execute `cd diogenes & .\mvnw test`.
 
 #### Coverage
 
-1. Execute `mvn test jacoco:report`.
-1. The report will be generated in `target\site\jacoco\index.html`.
+1. Execute `cd diogenes && mvn test jacoco:report`.
+1. The report will be generated in `diogenes\target\site\jacoco\index.html`.
 
 #### Create backend docker container
 
-1. First build the image with `./mvnw install`.
+1. First build the image with `cd diogenes & ./mvnw install`.
 1. Build the container with `docker build -f docker/Dockerfile -t nck974/diogenes:0.0.7-SNAPSHOT-1 .`
 1. Generate a token in `https://hub.docker.com` and login with `docker login -u <user>`. Paste the generated token as password.
 1. Push the generated container with `docker push nck974/diogenes:0.0.7-SNAPSHOT-1`.
