@@ -3,7 +3,7 @@ services:
 
   diogenes-ng:
     container_name: diogenes-ng
-    image: nck974/diogenes-ng:0.0.1-SNAPSHOT-1
+    image: nck974/diogenes-ng:0.0.1-SNAPSHOT-2
     depends_on:
       - diogenes
     environment:
@@ -15,7 +15,7 @@ services:
 
   diogenes:
     container_name: diogenes
-    image: nck974/diogenes:0.0.7-SNAPSHOT-1
+    image: nck974/diogenes:0.0.8-SNAPSHOT-1
     depends_on:
       - diogenes_db
     environment:
