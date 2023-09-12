@@ -1,43 +1,52 @@
-version: '3.8'
-services:
+version: "3.8"
 
+services:
   diogenes-ng:
     container_name: diogenes-ng
     image: nck974/diogenes-ng:0.0.1-SNAPSHOT-2
+    restart: unless-stopped
     depends_on:
       - diogenes
     environment:
       - PRODUCTION=true
       - DEBUG=false
-      - DIOGENES_BACKEND_URL=http://${SERVER_IP}:8080/diogenes
+      - DIOGENES_BACKEND_URL=http://${SERVER_IP}/diogenes
     ports:
       - 8081:80
 
   diogenes:
     container_name: diogenes
     image: nck974/diogenes:0.0.8-SNAPSHOT-1
+    restart: unless-stopped
     depends_on:
-      - diogenes_db
+      - diogenes-db
     environment:
-      - SPRING_DATASOURCE_JDBC-URL=jdbc:postgresql://diogenes_db:5432/diogenes_db
+      - SPRING_DATASOURCE_JDBC-URL=jdbc:postgresql://diogenes-db:5432/diogenes_db
       - SPRING_DATASOURCE_USERNAME=${DATABASE_USER}
       - SPRING_DATASOURCE_PASSWORD=${DATABASE_PASSWORD}
       - SPRING_APPLICATION_JSON={}
     ports:
       - 8080:8080
 
-  diogenes_db:
-    container_name: diogenes_db
+  diogenes-db:
+    container_name: diogenes-db
     image: postgres:14.1-alpine
-    restart: always
+    restart: unless-stopped
     environment:
       - POSTGRES_USER=${DATABASE_USER}
       - POSTGRES_PASSWORD=${DATABASE_PASSWORD}
       - POSTGRES_DB=diogenes_db
     ports:
-      - '5432:5432'
+      - "5432:5432"
     volumes:
       - db:/var/lib/postgresql/data
+
+  reverse-proxy:
+    container_name: diogenes-reverse-proxy
+    image: nck974/diogenes-reverse-proxy:0.0.1-SNAPSHOT-1
+    restart: unless-stopped
+    ports:
+      - "80:80"
 
 volumes:
   db:

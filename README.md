@@ -12,6 +12,7 @@
       - [Create backend docker container](#create-backend-docker-container)
     - [Frontend](#frontend)
       - [Create frontend docker container](#create-frontend-docker-container)
+    - [Reverse proxy](#reverse-proxy)
 
 ## Usage
 
@@ -78,5 +79,13 @@ npm install -g npm-check-updates
 ```bash
 ncu -u
 ```
+
+### Reverse proxy
+
+1. Backend and frontend can be served using a custom reverse proxy or just use the one provided in the image. To do so build it with:
+
+1. Build the container with `docker build -f docker/Dockerfile.nginx -t nck974/diogenes-reverse-proxy:0.0.1-SNAPSHOT-1 .`
+1. Generate a token in `https://hub.docker.com` and login with `docker login -u <user>`. Paste the generated token as password.
+1. Push the generated container with `docker push nck974/diogenes-reverse-proxy:0.0.1-SNAPSHOT-1`.
 
 TOC generated from [ecotrust-canada](https://ecotrust-canada.github.io/markdown-toc/)
