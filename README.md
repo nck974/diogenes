@@ -12,6 +12,7 @@
       - [Create backend docker container](#create-backend-docker-container)
     - [Frontend](#frontend)
       - [Create frontend docker container](#create-frontend-docker-container)
+    - [Reverse proxy](#reverse-proxy)
 
 ## Usage
 
@@ -19,6 +20,12 @@
 
 1. Pull the project or download the `docker-compose.yaml` and `.example.env`.
 1. Create a copy of the `example.env` into a `.env` file with your own passwords.
+1. Add a certificate or create a self signed one for local network. Put them inside `ssl/cert.pem` and `ssl/cert.key`:
+
+  ```bash
+  openssl req -new -x509 -days 365 -noenc -out ssl/cert.pem -keyout ssl/cert.key
+  ```
+
 1. Start the containers with `docker-compose up -d`
 1. The latest images can be found in the [diogenes](https://hub.docker.com/r/nck974/diogenes/tags) and [diogenes-ng](https://hub.docker.com/r/nck974/diogenes-ng/tags)
 
@@ -78,5 +85,13 @@ npm install -g npm-check-updates
 ```bash
 ncu -u
 ```
+
+### Reverse proxy
+
+1. Backend and frontend can be served using a custom reverse proxy or just use the one provided in the image. To do so build it with:
+
+1. Build the container with `docker build -f docker/Dockerfile.nginx -t nck974/diogenes-reverse-proxy:0.0.1-SNAPSHOT-1 .`
+1. Generate a token in `https://hub.docker.com` and login with `docker login -u <user>`. Paste the generated token as password.
+1. Push the generated container with `docker push nck974/diogenes-reverse-proxy:0.0.1-SNAPSHOT-1`.
 
 TOC generated from [ecotrust-canada](https://ecotrust-canada.github.io/markdown-toc/)
