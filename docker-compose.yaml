@@ -10,7 +10,7 @@ services:
     environment:
       - PRODUCTION=true
       - DEBUG=false
-      - DIOGENES_BACKEND_URL=http://${SERVER_IP}/diogenes
+      - DIOGENES_BACKEND_URL=https://${SERVER_IP}/diogenes
     ports:
       - 8081:80
 
@@ -37,16 +37,21 @@ services:
       - POSTGRES_PASSWORD=${DATABASE_PASSWORD}
       - POSTGRES_DB=diogenes_db
     ports:
-      - "5432:5432"
+      - 5432:5432
     volumes:
       - db:/var/lib/postgresql/data
 
   reverse-proxy:
     container_name: diogenes-reverse-proxy
-    image: nck974/diogenes-reverse-proxy:0.0.1-SNAPSHOT-1
+    image: nck974/diogenes-reverse-proxy:0.0.1-SNAPSHOT-2
     restart: unless-stopped
     ports:
-      - "80:80"
+      - 443:443
+      - 80:80
+    environment:
+      - NGINX_HOST=${SERVER_IP}
+    volumes:
+      - ./ssl/:/etc/nginx/ssl/:ro
 
 volumes:
   db:

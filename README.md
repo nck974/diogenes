@@ -20,6 +20,12 @@
 
 1. Pull the project or download the `docker-compose.yaml` and `.example.env`.
 1. Create a copy of the `example.env` into a `.env` file with your own passwords.
+1. Add a certificate or create a self signed one for local network. Put them inside `ssl/cert.pem` and `ssl/cert.key`:
+
+  ```bash
+  openssl req -new -x509 -days 365 -noenc -out ssl/cert.pem -keyout ssl/cert.key
+  ```
+
 1. Start the containers with `docker-compose up -d`
 1. The latest images can be found in the [diogenes](https://hub.docker.com/r/nck974/diogenes/tags) and [diogenes-ng](https://hub.docker.com/r/nck974/diogenes-ng/tags)
 

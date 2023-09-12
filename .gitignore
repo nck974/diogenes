@@ -6,3 +6,6 @@
 
 ### Python environment ###
 .venv
+
+### Certificates ### 
+ssl/
