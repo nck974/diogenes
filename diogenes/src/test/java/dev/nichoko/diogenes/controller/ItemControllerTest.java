@@ -73,15 +73,20 @@ class ItemControllerTest {
      * Sends the provided item to the API
      */
     private ResultActions createItem(Item item) throws Exception {
-        
+
         // Create first the category and assign the id to the item
-        String categoryString = this.createCategory(item.getCategory()).andReturn().getResponse().getContentAsString();
-        if (categoryString != null) {
-            int categoryId = JsonProcessor
-                    .readJsonString(categoryString)
-                    .get("id")
-                    .asInt(0);
-            item.setCategoryId(categoryId);
+        try {
+            String categoryString = this.createCategory(item.getCategory()).andReturn().getResponse()
+                    .getContentAsString();
+            if (categoryString != null) {
+                int categoryId = JsonProcessor
+                        .readJsonString(categoryString)
+                        .get("id")
+                        .asInt(0);
+                item.setCategoryId(categoryId);
+            }
+        } catch (java.lang.NullPointerException e) {
+
         }
 
         return this.mockMvc.perform(
@@ -206,6 +211,38 @@ class ItemControllerTest {
         item.setDescription(null);
 
         createItem(item)
+                .andExpect(status().isBadRequest());
+    }
+
+    /**
+     * Verify create item validation: Invalid category
+     *
+     * @throws Exception
+     */
+    @Test
+    void canNotCreateNewWithoutValidCategoryId() throws Exception {
+        Item item = getMockItem(1);
+        item.setCategory(null);
+
+        createItem(item)
+                .andExpect(status().isBadRequest());
+    }
+
+    /**
+     * Verify create item validation: Category 0
+     *
+     * @throws Exception
+     */
+    @Test
+    void canNotCreateNewWithoutCategoryId() throws Exception {
+        Item item = getMockItem(1);
+        item.setCategoryId(0);
+
+        this.mockMvc.perform(
+                post("/api/v1/item/")
+                        .content(JsonProcessor.stringifyClass(item))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest());
     }
 
@@ -349,7 +386,8 @@ class ItemControllerTest {
     @ValueSource(strings = {
             "name",
             "number",
-            "description"
+            "description",
+            "categoryId"
     })
     void canFilterByTheAvailableParameters(String filterName) throws Exception {
         IntStream.range(0, 10).forEachOrdered(n -> {

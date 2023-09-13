@@ -125,7 +125,9 @@ public class Item {
 
     public void setCategory(Category category) {
         this.category = category;
-        this.categoryId = category.getId();
+        if (category != null){
+            this.categoryId = category.getId();
+        }
     }
 
     public int getCategoryId() {
