@@ -288,6 +288,29 @@ class CategoryControllerTest {
     }
 
     /**
+     * Verify that a category can be updated and there are no conflicts with the name.
+     * 
+     * This is added because of the validateName(...) method in item
+     *
+     * @throws Exception
+     */
+    @Test
+    void canUpdateCategorySameName() throws Exception {
+        Category category = getMockCategory(1);
+        Category updatedCategory = getMockCategory(2);
+        updatedCategory.setId(category.getId());
+        updatedCategory.setName(category.getName());
+        createCategory(category);
+
+        updateCategory(updatedCategory, category.getId())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").value(updatedCategory.getId()))
+                .andExpect(jsonPath("$.name").value(updatedCategory.getName()))
+                .andExpect(jsonPath("$.description").value(updatedCategory.getDescription()))
+                .andExpect(jsonPath("$.color").value(updatedCategory.getColor()));
+    }
+
+    /**
      * Verify that a non existing category can not be updated
      *
      * @throws Exception

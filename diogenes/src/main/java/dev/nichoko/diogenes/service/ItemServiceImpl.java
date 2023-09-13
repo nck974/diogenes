@@ -65,6 +65,12 @@ public class ItemServiceImpl implements ItemService {
         if (filter.getNumber() != null) {
             spec = spec.and((root, query, cb) -> cb.equal(root.get("number"), filter.getNumber()));
         }
+
+        // Filter by category
+        if (filter.getCategoryId() != null) {
+            spec = spec.and((root, query, cb) -> cb.equal(root.get("category").get("id"), filter.getCategoryId()));
+        }
+
         return spec;
     }
 
