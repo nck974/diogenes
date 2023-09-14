@@ -2,17 +2,24 @@
 
 [![codecov](https://codecov.io/github/nck974/diogenes/branch/main/graph/badge.svg?token=XDI3M0M5AE)](https://codecov.io/github/nck974/diogenes)
 
-- [Diogenes](#diogenes)
-  - [Usage](#usage)
-    - [Docker](#docker)
-  - [Development](#development)
-    - [Backend](#backend)
-      - [Run tests](#run-tests)
-      - [Coverage](#coverage)
-      - [Create backend docker container](#create-backend-docker-container)
-    - [Frontend](#frontend)
-      - [Create frontend docker container](#create-frontend-docker-container)
-    - [Reverse proxy](#reverse-proxy)
+<img src="ng-diogenes/src/assets/logo/logo_transparent.png" alt="Logo" width="300">
+
+Diogenes is an inventory web application designed to help you manage and keep track of your possessions at home. It is completely self-hosted, and no data is collected from users. You have the flexibility to easily migrate your data using the API, which is detailed in the Open API documentation provided by the backend server.
+
+This app is intended to assist you in cataloging everything you own, helping you avoid the clutter often associated with Diogenes Syndrome.
+
+The application goal is to provide a faster and more user-friendly alternative to managing your belongings compared to a plain Excel spreadsheet
+
+- [Usage](#usage)
+  - [Docker](#docker)
+- [Development](#development)
+  - [Backend](#backend)
+    - [Run tests](#run-tests)
+    - [Coverage](#coverage)
+    - [Create backend docker container](#create-backend-docker-container)
+  - [Frontend](#frontend)
+    - [Create frontend docker container](#create-frontend-docker-container)
+  - [Reverse proxy](#reverse-proxy)
 
 ## Usage
 
