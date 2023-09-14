@@ -1,6 +1,9 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, OnDestroy, OnInit, Output } from '@angular/core';
 import { AbstractControl, FormBuilder, FormControl, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
+import { Subscription } from 'rxjs';
+import { Category } from 'src/app/models/Category';
 import { ItemFilter } from 'src/app/models/ItemFilter';
+import { CategoryService } from 'src/app/services/category.service';
 
 export function isNumberValidator(): ValidatorFn {
 
@@ -17,7 +20,7 @@ export function isNumberValidator(): ValidatorFn {
   templateUrl: './inventory-filter.component.html',
   styleUrls: ['./inventory-filter.component.scss']
 })
-export class InventoryFilterComponent {
+export class InventoryFilterComponent implements OnInit, OnDestroy {
   @Output() filterItems = new EventEmitter<ItemFilter>();
 
   form: FormGroup;
@@ -25,15 +28,27 @@ export class InventoryFilterComponent {
   nameFilterName: string = 'name';
   descriptionFilterName: string = 'description';
   numberFilterName: string = 'number';
+  categoryIdFilterName: string = 'categoryId';
 
+  categorySubscription?: Subscription;
+  categories: Category[] = [];
   filterIsActive = false;
 
-  constructor(private fb: FormBuilder) {
+  constructor(private fb: FormBuilder, private categoryService: CategoryService) {
     this.form = this.fb.group({
       name: new FormControl("", [Validators.maxLength(50)]),
       number: new FormControl("", [isNumberValidator()]),
-      description: new FormControl("", [Validators.maxLength(200)])
+      description: new FormControl("", [Validators.maxLength(200)]),
+      categoryId: new FormControl("")
     });
+  }
+
+  ngOnDestroy(): void {
+    this.categorySubscription?.unsubscribe();
+  }
+
+  ngOnInit(): void {
+    this.categorySubscription = this.categoryService.getCategories().subscribe(categories => this.categories = categories);
   }
 
   getFilterControl(filterName: string): FormControl {

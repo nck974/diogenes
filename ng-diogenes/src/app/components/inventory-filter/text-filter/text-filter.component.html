@@ -1,15 +1,15 @@
-<div class="text-filter-wrapper" *ngIf="filterName && formControl">
+<div class="text-filter-wrapper" *ngIf="filterName && control">
 
     <mat-form-field>
 
         <mat-label>{{filterName | capitalizeFirstLetter}}</mat-label>
-        <input matInput type="text" [formControl]="formControl"
+        <input matInput type="text" [formControl]="control"
             id="filter-{{filterName}}">
 
         <!-- Display errors -->
         <mat-error
-            *ngIf="formControl.invalid && (formControl.dirty || formControl.touched) && formControl.errors">
-            <span *ngFor="let key of formControl.errors | keys">
+            *ngIf="control.invalid && (control.dirty || control.touched) && control.errors">
+            <span *ngFor="let key of control.errors | keys">
                 {{ getErrorMessage(key) }}
             </span>
         </mat-error>
