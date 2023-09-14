@@ -41,6 +41,8 @@ import { InventoryMenuComponent } from './components/inventory-menu/inventory-me
 import { CategoryInListComponent } from './components/category-in-list/category-in-list.component';
 import { CategoryDetailComponent } from './pages/category-detail/category-detail.component';
 import { EditCategoryComponent } from './pages/edit-category/edit-category.component';
+import { SelectFilterComponent } from './components/inventory-filter/select-filter/select-filter.component';
+import { GenerateSelectBoxOptionsPipe } from './pipes/generate-select-box-options.pipe';
 
 @NgModule({
   declarations: [
@@ -64,6 +66,8 @@ import { EditCategoryComponent } from './pages/edit-category/edit-category.compo
     CategoryInListComponent,
     CategoryDetailComponent,
     EditCategoryComponent,
+    SelectFilterComponent,
+    GenerateSelectBoxOptionsPipe,
   ],
   imports: [
     BrowserModule,

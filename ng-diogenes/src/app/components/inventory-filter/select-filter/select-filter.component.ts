@@ -1,27 +1,24 @@
 import { Component, Input, forwardRef } from '@angular/core';
 import { FormControl, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { ValidationMessages } from 'src/app/models/ValidationMessages';
 
+type SelectBoxOptions = [string, string | number];
 
 @Component({
-  selector: 'app-text-filter',
-  templateUrl: './text-filter.component.html',
-  styleUrls: ['./text-filter.component.scss', '../inventory-filter.component.scss'],
+  selector: 'app-select-filter',
+  templateUrl: './select-filter.component.html',
+  styleUrls: ['./select-filter.component.scss'],
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,
-      useExisting: forwardRef(() => TextFilterComponent),
+      useExisting: forwardRef(() => SelectFilterComponent),
       multi: true,
     }
   ]
 })
-export class TextFilterComponent {
+export class SelectFilterComponent {
   @Input() filterName?: string;
   @Input() control?: FormControl;
-
-  validationMessages: ValidationMessages = {
-    isNotANumber: 'Enter a valid number',
-  };
+  @Input() options: SelectBoxOptions[] = [];
 
   writeValue(value: any): void {
     if (value !== this.control?.value) {
@@ -33,7 +30,4 @@ export class TextFilterComponent {
   registerOnChange: (fn: any) => void = () => { };
   registerOnTouched: (fn: any) => void = () => { };
 
-  getErrorMessage(key: string): string {
-    return this.validationMessages[key as keyof ValidationMessages];
-  }
 }
