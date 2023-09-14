@@ -56,9 +56,9 @@ https://start.spring.io/#!type=maven-project&language=java&platformVersion=3.0.4
 #### Create backend docker container
 
 1. First build the image with `cd diogenes & ./mvnw install`.
-1. Build the container with `docker build -f docker/Dockerfile -t nck974/diogenes:0.0.8-SNAPSHOT-1 .`
+1. Build the container with `docker build -f docker/Dockerfile -t nck974/diogenes:0.0.1 .`
 1. Generate a token in `https://hub.docker.com` and login with `docker login -u <user>`. Paste the generated token as password.
-1. Push the generated container with `docker push nck974/diogenes:0.0.8-SNAPSHOT-1`.
+1. Push the generated container with `docker push nck974/diogenes:0.0.1`.
 1. Run the image with docker compose to pass the environment variables of the database.
 
 ### Frontend
@@ -67,9 +67,9 @@ To run the app in development mode just access the folder `diogenes-ng` and star
 
 #### Create frontend docker container
 
-1. Build the container with `docker build -f docker/Dockerfile.angular -t nck974/diogenes-ng:0.0.1-SNAPSHOT-2 .`
+1. Build the container with `docker build -f docker/Dockerfile.angular -t nck974/diogenes-ng:0.0.1 .`
 1. Generate a token in `https://hub.docker.com` and login with `docker login -u <user>`. Paste the generated token as password.
-1. Push the generated container with `docker push nck974/diogenes-ng:0.0.1-SNAPSHOT-2`.
+1. Push the generated container with `docker push nck974/diogenes-ng:0.0.1`.
 1. Run the image with docker compose to pass the environment variables of the database.
 
 #### Checking updates
@@ -90,8 +90,8 @@ ncu -u
 
 1. Backend and frontend can be served using a custom reverse proxy or just use the one provided in the image. To do so build it with:
 
-1. Build the container with `docker build -f docker/Dockerfile.nginx -t nck974/diogenes-reverse-proxy:0.0.1-SNAPSHOT-1 .`
+1. Build the container with `docker build -f docker/Dockerfile.nginx -t nck974/diogenes-reverse-proxy:0.0.1 .`
 1. Generate a token in `https://hub.docker.com` and login with `docker login -u <user>`. Paste the generated token as password.
-1. Push the generated container with `docker push nck974/diogenes-reverse-proxy:0.0.1-SNAPSHOT-1`.
+1. Push the generated container with `docker push nck974/diogenes-reverse-proxy:0.0.1`.
 
 TOC generated from [ecotrust-canada](https://ecotrust-canada.github.io/markdown-toc/)
