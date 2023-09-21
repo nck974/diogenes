@@ -58,6 +58,10 @@ public class Item {
     @JsonProperty(access = Access.READ_ONLY)
     private LocalDateTime createdOn;
 
+    @Column(name = "image_path")
+    @JsonProperty(access = Access.READ_ONLY)
+    private String imagePath;
+
     @OneToOne()
     @JoinColumn(name = "category_id")
     @JsonProperty(access = Access.READ_ONLY)
@@ -85,6 +89,14 @@ public class Item {
     @PreUpdate
     protected void onUpdate() {
         updatedOn = LocalDateTime.now();
+    }
+
+    public String getImagePath() {
+        return imagePath;
+    }
+
+    public void setImagePath(String imagePath) {
+        this.imagePath = imagePath;
     }
 
     public int getId() {
@@ -125,7 +137,7 @@ public class Item {
 
     public void setCategory(Category category) {
         this.category = category;
-        if (category != null){
+        if (category != null) {
             this.categoryId = category.getId();
         }
     }

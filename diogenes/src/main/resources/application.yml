@@ -2,18 +2,29 @@ server:
   port: "8080"
   servlet:
     context-path: /diogenes
+  # Tell tomcat not to cancel large requests on file uploads
+  tomcat:
+    max-swallow-size: 100MB
 
 spring:
   application:
     name: diogenes
+  # Configure database
   datasource:
     jdbc-url: jdbc:postgresql://localhost:5432/diogenes_db
     username: postgres
     password: postgres
     driver-class-name: org.postgresql.Driver
+  # Add colors to console
   output:
     ansi:
       enabled: always
+  # Allow uploading larger filers than 1KB
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 10MB
+      max-request-size: 10MB
 
   # See:
   # https://stackoverflow.com/questions/30549489/what-is-this-spring-jpa-open-in-view-true-property-in-spring-boot
@@ -23,3 +34,8 @@ spring:
 logging:
   level:
     org.springframework.security: DEBUG
+
+# Configure the root folder where images will be uploaded. This is read through the
+# FileStorageConfig
+file:
+  upload-dir: ./uploads
