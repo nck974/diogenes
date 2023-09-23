@@ -10,3 +10,7 @@ spring:
 
 security:
   disable-security: true
+
+# Configure the root folder to verify the uploads paths
+file:
+  upload-dir: uploads

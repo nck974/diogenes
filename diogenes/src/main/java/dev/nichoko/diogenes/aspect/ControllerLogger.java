@@ -31,9 +31,6 @@ public class ControllerLogger {
 
             Object[] args = joinPoint.getArgs();
             for (Object arg : args) {
-                if (arg == null) {
-                    continue;
-                }
                 logger.info("Argument ({}): {}", arg.getClass().getSimpleName(), arg);
             }
         }

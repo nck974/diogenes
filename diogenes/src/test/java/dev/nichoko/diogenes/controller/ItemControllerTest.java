@@ -1,6 +1,10 @@
 package dev.nichoko.diogenes.controller;
 
+import java.io.FileInputStream;
+import java.io.UnsupportedEncodingException;
+import java.nio.file.Paths;
 import java.util.List;
+import java.util.regex.Pattern;
 import java.util.stream.IntStream;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -12,6 +16,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
 import org.flywaydb.core.Flyway;
+import org.hamcrest.Matchers;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
@@ -21,9 +26,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
 
 import dev.nichoko.diogenes.model.domain.Category;
 import dev.nichoko.diogenes.model.domain.Item;
@@ -69,12 +78,16 @@ class ItemControllerTest {
         return item;
     }
 
-    /*
-     * Sends the provided item to the API
+    /**
+     * Create first the category and assign the id to the item
+     * 
+     * @param item
+     * @throws UnsupportedEncodingException
+     * @throws Exception
+     * @throws JsonProcessingException
      */
-    private ResultActions createItem(Item item) throws Exception {
-
-        // Create first the category and assign the id to the item
+    private void tryCreateCategoryIfNotExists(Item item)
+            throws UnsupportedEncodingException, Exception, JsonProcessingException {
         try {
             String categoryString = this.createCategory(item.getCategory()).andReturn().getResponse()
                     .getContentAsString();
@@ -88,11 +101,43 @@ class ItemControllerTest {
         } catch (java.lang.NullPointerException e) {
 
         }
+    }
+
+    /*
+     * Sends the provided item to the API
+     */
+    private ResultActions createItem(Item item) throws Exception {
+
+        tryCreateCategoryIfNotExists(item);
 
         return this.mockMvc.perform(
                 post("/api/v1/item/")
                         .content(JsonProcessor.stringifyClass(item))
                         .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON));
+    }
+
+    /*
+     * Sends the provided item to the API with the given image
+     */
+    private ResultActions createItemWithImage(Item item, MockMultipartFile imagePart) throws Exception {
+
+        tryCreateCategoryIfNotExists(item);
+
+        // Create a MockMultipartFile for the JSON content
+        MockMultipartFile itemPart = new MockMultipartFile(
+                "item",
+                null, // Provide a filename for the JSON content
+                MediaType.APPLICATION_JSON_VALUE, // Set the content type for JSON
+                JsonProcessor.stringifyClass(item).getBytes());
+
+        return this.mockMvc.perform(
+                MockMvcRequestBuilders.multipart("/api/v1/item/")
+                        // post("/api/v1/item/")
+                        .file(itemPart)
+                        .file(imagePart)
+                        // .content(JsonProcessor.stringifyClass(item))
+                        .contentType(MediaType.MULTIPART_FORM_DATA)
                         .accept(MediaType.APPLICATION_JSON));
     }
 
@@ -160,6 +205,56 @@ class ItemControllerTest {
                 .andExpect(jsonPath("$.name").value(item.getName()))
                 .andExpect(jsonPath("$.description").value(item.getDescription()))
                 .andExpect(jsonPath("$.number").value(item.getNumber()));
+    }
+
+    /**
+     * Can create a new item with image
+     *
+     * @throws Exception
+     */
+    @Test
+    void canCreateNewItemWithImage() throws Exception {
+        Item item = getMockItem(1);
+
+        String imagePath = "src/test/resources/sample/example.jpg";
+
+        MockMultipartFile imagePart = new MockMultipartFile(
+                "image",
+                Paths.get(imagePath).getFileName().toString(),
+                MediaType.IMAGE_JPEG_VALUE,
+                new FileInputStream(imagePath));
+
+        createItemWithImage(item, imagePart)
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.id").isNumber())
+                .andExpect(jsonPath("$.name").value(item.getName()))
+                .andExpect(jsonPath("$.description").value(item.getDescription()))
+                .andExpect(jsonPath("$.number").value(item.getNumber()))
+                .andExpect(jsonPath("$.imagePath")
+                        .value(Matchers
+                                .matchesPattern(
+                                        "^.+" + Pattern.quote(Paths.get(imagePath).getFileName().toString()) + "$")));
+    }
+
+    /**
+     * Can not create a new item with invalid image format
+     *
+     * @throws Exception
+     */
+    @Test
+    void canNotCreateNewItemWithInvalidImageFormat() throws Exception {
+        Item item = getMockItem(1);
+
+        String imagePath = "src/test/resources/sample/example.txt";
+
+        MockMultipartFile imagePart = new MockMultipartFile(
+                "image",
+                Paths.get(imagePath).getFileName().toString(),
+                MediaType.TEXT_PLAIN_VALUE,
+                new FileInputStream(imagePath));
+
+        createItemWithImage(item, imagePart)
+                .andExpect(status().isBadRequest());
     }
 
     /**
