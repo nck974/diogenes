@@ -131,12 +131,18 @@ class ItemControllerTest {
                 MediaType.APPLICATION_JSON_VALUE, // Set the content type for JSON
                 JsonProcessor.stringifyClass(item).getBytes());
 
+        if (imagePart != null) {
+            return this.mockMvc.perform(
+                    MockMvcRequestBuilders.multipart("/api/v1/item/")
+                            .file(itemPart)
+                            .file(imagePart)
+                            .contentType(MediaType.MULTIPART_FORM_DATA)
+                            .accept(MediaType.APPLICATION_JSON));
+
+        }
         return this.mockMvc.perform(
                 MockMvcRequestBuilders.multipart("/api/v1/item/")
-                        // post("/api/v1/item/")
                         .file(itemPart)
-                        .file(imagePart)
-                        // .content(JsonProcessor.stringifyClass(item))
                         .contentType(MediaType.MULTIPART_FORM_DATA)
                         .accept(MediaType.APPLICATION_JSON));
     }
@@ -234,6 +240,25 @@ class ItemControllerTest {
                         .value(Matchers
                                 .matchesPattern(
                                         "^.+" + Pattern.quote(Paths.get(imagePath).getFileName().toString()) + "$")));
+    }
+
+    /**
+     * Can create a new item using multipart without image
+     *
+     * @throws Exception
+     */
+    @Test
+    void canCreateNewItemWithMultipartContentType() throws Exception {
+        Item item = getMockItem(1);
+
+        createItemWithImage(item, null)
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.id").isNumber())
+                .andExpect(jsonPath("$.name").value(item.getName()))
+                .andExpect(jsonPath("$.description").value(item.getDescription()))
+                .andExpect(jsonPath("$.number").value(item.getNumber()))
+                .andExpect(jsonPath("$.imagePath")
+                        .isEmpty());
     }
 
     /**

@@ -31,6 +31,12 @@ public class FileSystemLogger {
 
             Object[] args = joinPoint.getArgs();
             for (Object arg : args) {
+
+                if (arg == null) {
+                    logger.info("Argument: null");
+                    continue;
+                }
+
                 logger.info("Argument ({}): {}", arg.getClass().getSimpleName(), arg);
 
                 if (arg instanceof MultipartFile) {

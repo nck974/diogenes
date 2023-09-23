@@ -53,9 +53,9 @@ public class ItemController {
     @PostMapping(path = "/", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<Item> createItem(@Valid @RequestPart Item item,
             @RequestPart(name = "image", required = false) MultipartFile imageFile) {
-
-        String imagePath = fileStorageService.saveItemImage(imageFile);
-        if (imagePath != null) {
+        
+        if (imageFile != null){
+            String imagePath = fileStorageService.saveItemImage(imageFile);
             item.setImagePath(imagePath);
         }
 
