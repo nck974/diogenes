@@ -14,3 +14,6 @@ security:
 # Configure the root folder to verify the uploads paths
 file:
   upload-dir: uploads
+  # The requests to the servlet context does not seem to work
+  images-base-path: /api/v1/files/images/
+

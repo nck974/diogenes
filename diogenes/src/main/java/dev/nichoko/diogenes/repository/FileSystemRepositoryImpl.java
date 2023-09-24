@@ -12,6 +12,8 @@ import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Repository;
 
 import dev.nichoko.diogenes.config.FileStorageConfig;
+import dev.nichoko.diogenes.exception.FileNotReadableException;
+import dev.nichoko.diogenes.exception.ResourceNotFoundException;
 
 @Repository
 public class FileSystemRepositoryImpl implements FileSystemRepository {
@@ -40,10 +42,10 @@ public class FileSystemRepositoryImpl implements FileSystemRepository {
         Resource resource = new UrlResource(filePath.toUri());
 
         if (!resource.exists()) {
-            throw new IOException("The file " + filename + " could not be found");
+            throw new ResourceNotFoundException("The file " + filename + " could not be found");
         }
         if (!resource.isReadable()) {
-            throw new IOException("The file " + filename + " could not be read");
+            throw new FileNotReadableException("The file " + filename + " could not be read");
         }
         return resource;
     }

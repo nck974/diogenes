@@ -169,8 +169,8 @@ public class Item {
     @Override
     public String toString() {
         return "Item [id=" + id + ", name=" + name + ", description=" + description + ", number=" + number
-                + ", updatedOn=" + updatedOn + ", createdOn=" + createdOn + ", category=" + category + ", categoryId="
-                + categoryId + "]";
+                + ", updatedOn=" + updatedOn + ", createdOn=" + createdOn + ", imagePath=" + imagePath + ", category="
+                + category + ", categoryId=" + categoryId + "]";
     }
 
 }

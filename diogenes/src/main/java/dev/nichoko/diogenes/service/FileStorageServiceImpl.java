@@ -10,9 +10,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import dev.nichoko.diogenes.config.FileStorageConfig;
 import dev.nichoko.diogenes.exception.ErrorReadingImageException;
-import dev.nichoko.diogenes.exception.FileNotReadableException;
 import dev.nichoko.diogenes.exception.ImageCouldNotBeSavedException;
-import dev.nichoko.diogenes.exception.ResourceNotFoundException;
 import dev.nichoko.diogenes.exception.UnsupportedImageFormatException;
 import dev.nichoko.diogenes.repository.FileSystemRepository;
 import dev.nichoko.diogenes.utils.FileNameCleaner;
@@ -49,16 +47,7 @@ public class FileStorageServiceImpl implements FileStorageService {
     @Override
     public Resource readItemImage(String filename) {
         try {
-            Resource image = fileSystemRepository.read(filename, fileStorageConfig.getImagesDir());
-            if (!image.exists()) {
-                throw new ResourceNotFoundException("The image " + filename + " could not be found");
-            }
-
-            if (!image.isReadable()) {
-                throw new FileNotReadableException("The image " + filename + "can not be read");
-            }
-
-            return image;
+            return fileSystemRepository.read(filename, fileStorageConfig.getImagesDir());
         } catch (IOException exception) {
             throw new ErrorReadingImageException(exception.getMessage());
         }

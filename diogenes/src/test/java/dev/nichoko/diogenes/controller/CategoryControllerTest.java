@@ -4,7 +4,6 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -20,8 +19,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.ResultActions;
 
+import dev.nichoko.diogenes.common.CategoryManager;
+import dev.nichoko.diogenes.mock.CategoryMock;
 import dev.nichoko.diogenes.model.domain.Category;
 import dev.nichoko.diogenes.utils.JsonProcessor;
 
@@ -46,40 +46,6 @@ class CategoryControllerTest {
     public void cleanUp() {
         flyway.clean();
         flyway.migrate();
-    }
-
-    /*
-     * Return a mock of an category
-     */
-    private static Category getMockCategory(Integer number) {
-        return new Category(
-                number,
-                "TestName" + number.toString(),
-                "Description" + number.toString(),
-                "AB02" + number.toString());
-    }
-
-    /*
-     * Sends the provided category to the API
-     */
-    private ResultActions createCategory(Category category) throws Exception {
-        return this.mockMvc.perform(
-                post("/api/v1/categories/")
-                        .content(JsonProcessor.stringifyClass(category))
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .accept(MediaType.APPLICATION_JSON));
-    }
-
-    /*
-     * Sends the provided category to the API
-     */
-    private ResultActions updateCategory(Category category, int categoryId) throws Exception {
-        return this.mockMvc.perform(
-                put("/api/v1/categories/" + Integer.toString(categoryId))
-                        .content(JsonProcessor.stringifyClass(category))
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .accept(MediaType.APPLICATION_JSON));
-
     }
 
     /*
@@ -109,8 +75,8 @@ class CategoryControllerTest {
      */
     @Test
     void canSearchCategoryById() throws Exception {
-        Category category = getMockCategory(1);
-        createCategory(category);
+        Category category = CategoryMock.getMockCategory(1);
+        CategoryManager.createCategory(this.mockMvc, category);
 
         this.mockMvc.perform(get("/api/v1/categories/1"))
                 .andExpect(status().isOk())
@@ -127,9 +93,9 @@ class CategoryControllerTest {
      */
     @Test
     void canCreateNewCategory() throws Exception {
-        Category category = getMockCategory(1);
+        Category category = CategoryMock.getMockCategory(1);
 
-        createCategory(category)
+        CategoryManager.createCategory(this.mockMvc, category)
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.id").isNumber())
                 .andExpect(jsonPath("$.name").value(category.getName()))
@@ -144,10 +110,10 @@ class CategoryControllerTest {
      */
     @Test
     void canNotCreateCategoryWithTheSameName() throws Exception {
-        Category category = getMockCategory(1);
+        Category category = CategoryMock.getMockCategory(1);
 
-        createCategory(category);
-        createCategory(category)
+        CategoryManager.createCategory(this.mockMvc, category);
+        CategoryManager.createCategory(this.mockMvc, category)
                 .andExpect(status().isConflict())
                 .andExpect(
                         jsonPath("message").value("Category with the name " + category.getName() + " already exists."));
@@ -160,13 +126,13 @@ class CategoryControllerTest {
      */
     @Test
     void canNotUpdateCategoryWithTheSameName() throws Exception {
-        Category category = getMockCategory(1);
-        Category categoryUpdate = getMockCategory(2);
+        Category category = CategoryMock.getMockCategory(1);
+        Category categoryUpdate = CategoryMock.getMockCategory(2);
 
-        createCategory(category);
-        createCategory(categoryUpdate);
+        CategoryManager.createCategory(this.mockMvc, category);
+        CategoryManager.createCategory(this.mockMvc, categoryUpdate);
         categoryUpdate.setName(category.getName());
-        updateCategory(categoryUpdate, categoryUpdate.getId())
+        CategoryManager.updateCategory(this.mockMvc, categoryUpdate, categoryUpdate.getId())
                 .andExpect(status().isConflict())
                 .andExpect(
                         jsonPath("message").value("Category with the name " + category.getName() + " already exists."));
@@ -179,10 +145,10 @@ class CategoryControllerTest {
      */
     @Test
     void canCreateCategoryWithoutDescription() throws Exception {
-        Category category = getMockCategory(1);
+        Category category = CategoryMock.getMockCategory(1);
         category.setDescription(null);
 
-        createCategory(category)
+        CategoryManager.createCategory(this.mockMvc, category)
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.id").isNumber())
                 .andExpect(jsonPath("$.name").value(category.getName()))
@@ -197,9 +163,10 @@ class CategoryControllerTest {
      */
     @Test
     void canGetAllCategories() throws Exception {
-        List<Category> categories = List.of(getMockCategory(2), getMockCategory(3), getMockCategory(4));
+        List<Category> categories = List.of(CategoryMock.getMockCategory(2), CategoryMock.getMockCategory(3),
+                CategoryMock.getMockCategory(4));
         for (Category category : categories) {
-            createCategory(category);
+            CategoryManager.createCategory(this.mockMvc, category);
         }
         this.mockMvc.perform(get("/api/v1/categories/"))
                 .andExpect(status().isOk())
@@ -216,11 +183,11 @@ class CategoryControllerTest {
      */
     @Test
     void canNotCreateNewCategoryWithoutName() throws Exception {
-        Category category = getMockCategory(1);
+        Category category = CategoryMock.getMockCategory(1);
         category.setName(null);
         category.setDescription(null);
 
-        createCategory(category)
+        CategoryManager.createCategory(this.mockMvc, category)
                 .andExpect(status().isBadRequest());
     }
 
@@ -231,11 +198,11 @@ class CategoryControllerTest {
      */
     @Test
     void canNotCreateNewEmptyName() throws Exception {
-        Category category = getMockCategory(1);
+        Category category = CategoryMock.getMockCategory(1);
         category.setName("");
         category.setDescription("");
 
-        createCategory(category)
+        CategoryManager.createCategory(this.mockMvc, category)
                 .andExpect(status().isBadRequest());
     }
 
@@ -246,10 +213,10 @@ class CategoryControllerTest {
      */
     @Test
     void canNotCreateNewCategoryTooLongDescription() throws Exception {
-        Category category = getMockCategory(1);
+        Category category = CategoryMock.getMockCategory(1);
         category.setDescription("a".repeat(2001));
 
-        createCategory(category)
+        CategoryManager.createCategory(this.mockMvc, category)
                 .andExpect(status().isBadRequest());
     }
 
@@ -260,10 +227,10 @@ class CategoryControllerTest {
      */
     @Test
     void canNotCreateNewWithNameTooLong() throws Exception {
-        Category category = getMockCategory(1);
+        Category category = CategoryMock.getMockCategory(1);
         category.setName("a".repeat(51));
 
-        createCategory(category)
+        CategoryManager.createCategory(this.mockMvc, category)
                 .andExpect(status().isBadRequest());
     }
 
@@ -274,12 +241,12 @@ class CategoryControllerTest {
      */
     @Test
     void canUpdateCategory() throws Exception {
-        Category category = getMockCategory(1);
-        Category updatedCategory = getMockCategory(2);
+        Category category = CategoryMock.getMockCategory(1);
+        Category updatedCategory = CategoryMock.getMockCategory(2);
         updatedCategory.setId(category.getId());
-        createCategory(category);
+        CategoryManager.createCategory(this.mockMvc, category);
 
-        updateCategory(updatedCategory, category.getId())
+        CategoryManager.updateCategory(this.mockMvc, updatedCategory, category.getId())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value(updatedCategory.getId()))
                 .andExpect(jsonPath("$.name").value(updatedCategory.getName()))
@@ -288,7 +255,8 @@ class CategoryControllerTest {
     }
 
     /**
-     * Verify that a category can be updated and there are no conflicts with the name.
+     * Verify that a category can be updated and there are no conflicts with the
+     * name.
      * 
      * This is added because of the validateName(...) method in item
      *
@@ -296,13 +264,13 @@ class CategoryControllerTest {
      */
     @Test
     void canUpdateCategorySameName() throws Exception {
-        Category category = getMockCategory(1);
-        Category updatedCategory = getMockCategory(2);
+        Category category = CategoryMock.getMockCategory(1);
+        Category updatedCategory = CategoryMock.getMockCategory(2);
         updatedCategory.setId(category.getId());
         updatedCategory.setName(category.getName());
-        createCategory(category);
+        CategoryManager.createCategory(this.mockMvc, category);
 
-        updateCategory(updatedCategory, category.getId())
+        CategoryManager.updateCategory(this.mockMvc, updatedCategory, category.getId())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value(updatedCategory.getId()))
                 .andExpect(jsonPath("$.name").value(updatedCategory.getName()))
@@ -317,7 +285,7 @@ class CategoryControllerTest {
      */
     @Test
     void canNotUpdateNotExistingCategory() throws Exception {
-        Category category = getMockCategory(1);
+        Category category = CategoryMock.getMockCategory(1);
         this.mockMvc.perform(
                 put("/api/v1/categories/" + Integer.toString(category.getId()))
                         .content(JsonProcessor.stringifyClass(category))
@@ -333,8 +301,8 @@ class CategoryControllerTest {
      */
     @Test
     void canDeleteCategory() throws Exception {
-        Category category = getMockCategory(1);
-        createCategory(category);
+        Category category = CategoryMock.getMockCategory(1);
+        CategoryManager.createCategory(this.mockMvc, category);
 
         this.mockMvc.perform(
                 delete("/api/v1/categories/" + Integer.toString(category.getId()))
@@ -350,7 +318,7 @@ class CategoryControllerTest {
      */
     @Test
     void canNotDeleteNonExistingCategory() throws Exception {
-        Category category = getMockCategory(1);
+        Category category = CategoryMock.getMockCategory(1);
 
         this.mockMvc.perform(
                 delete("/api/v1/categories/" + Integer.toString(category.getId()))
