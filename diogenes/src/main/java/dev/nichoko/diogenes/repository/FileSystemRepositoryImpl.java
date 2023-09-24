@@ -7,6 +7,8 @@ import java.nio.file.Paths;
 import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Repository;
 
 import dev.nichoko.diogenes.config.FileStorageConfig;
@@ -22,12 +24,28 @@ public class FileSystemRepositoryImpl implements FileSystemRepository {
     }
 
     @Override
-    public String save(byte[] content, String fileName, String folder) throws IOException {
-        Path newFile = Paths.get(fileStorageConfig.getUploadDir(), folder, new Date().getTime() + "-" + fileName);
+    public String save(byte[] content, String filename, String folder) throws IOException {
+        Path newFile = Paths.get(fileStorageConfig.getUploadsDir(), folder, new Date().getTime() + "-" + filename);
         Files.createDirectories(newFile.getParent());
 
         Files.write(newFile, content);
 
         return newFile.toString();
     }
+
+    @Override
+    public Resource read(String filename, String folder) throws IOException {
+        Path filePath = Paths.get(fileStorageConfig.getUploadsDir(), folder, filename);
+
+        Resource resource = new UrlResource(filePath.toUri());
+
+        if (!resource.exists()) {
+            throw new IOException("The file " + filename + " could not be found");
+        }
+        if (!resource.isReadable()) {
+            throw new IOException("The file " + filename + " could not be read");
+        }
+        return resource;
+    }
+
 }

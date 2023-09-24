@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import dev.nichoko.diogenes.exception.MissingCategoryException;
 import dev.nichoko.diogenes.exception.ResourceNotFoundException;
+import dev.nichoko.diogenes.config.FileStorageConfig;
 import dev.nichoko.diogenes.exception.InvalidCategoryException;
 import dev.nichoko.diogenes.model.ItemFilter;
 import dev.nichoko.diogenes.model.domain.Category;
@@ -23,11 +24,48 @@ public class ItemServiceImpl implements ItemService {
 
     private final ItemRepository itemRepository;
     private final CategoryRepository categoryRepository;
+    private final FileStorageConfig fileStorageConfig;
 
     @Autowired
-    public ItemServiceImpl(ItemRepository itemRepository, CategoryRepository categoryRepository) {
+    public ItemServiceImpl(ItemRepository itemRepository, CategoryRepository categoryRepository,
+            FileStorageConfig fileStorageConfig) {
         this.itemRepository = itemRepository;
         this.categoryRepository = categoryRepository;
+        this.fileStorageConfig = fileStorageConfig;
+    }
+
+    /**
+     * Add the url where the item can be retrieved to the provided item
+     * 
+     * @param item
+     */
+    private void setImageBasePath(Item item) {
+        if (item.getImagePath() != null) {
+            item.setImagePath(fileStorageConfig.getImagesBasePath() + item.getImagePath());
+        }
+    }
+
+    /**
+     * For some reason the categoryId does not seem to be automatically filled by
+     * JPA
+     * 
+     * @param item
+     */
+    private void setCategoryId(Item item) {
+        if (item.getCategory() != null) {
+            item.setCategoryId(item.getCategory().getId());
+        }
+    }
+
+    /**
+     * Set fields that will be returned to the user and are not stored in the
+     * database as such
+     * 
+     * @param createdItem
+     */
+    private void setTransientFields(Item createdItem) {
+        setImageBasePath(createdItem);
+        setCategoryId(createdItem);
     }
 
     /*
@@ -35,7 +73,10 @@ public class ItemServiceImpl implements ItemService {
      */
     @Override
     public Item getItemById(int id) {
-        return itemRepository.findById(id)
+        return itemRepository.findById(id).map(itemFound -> {
+            setTransientFields(itemFound);
+            return itemFound;
+        })
                 .orElseThrow(
                         () -> new ResourceNotFoundException(id));
     }
@@ -95,7 +136,10 @@ public class ItemServiceImpl implements ItemService {
 
         // Query pageable
         Pageable pageable = PageRequest.of(offset, pageSize, sorting);
-        return itemRepository.findAll(spec, pageable);
+        return itemRepository.findAll(spec, pageable).map(existingItem -> {
+            setTransientFields(existingItem);
+            return existingItem;
+        });
     }
 
     /**
@@ -115,7 +159,6 @@ public class ItemServiceImpl implements ItemService {
 
         return categoryRepository.findById(categoryId)
                 .orElseThrow(() -> new InvalidCategoryException(categoryId));
-
     }
 
     /*
@@ -126,7 +169,9 @@ public class ItemServiceImpl implements ItemService {
 
         item.setCategory(this.findCategory(item));
 
-        return itemRepository.save(item);
+        Item createdItem = itemRepository.save(item);
+        setTransientFields(createdItem);
+        return createdItem;
     }
 
     /*
@@ -136,11 +181,15 @@ public class ItemServiceImpl implements ItemService {
     public Item updateItem(int id, Item item) {
         return itemRepository.findById(id)
                 .map(existingItem -> {
+                    // Set fields that shall not be changed
                     item.setId(existingItem.getId());
                     item.setCategory(this.findCategory(item));
                     item.setCreatedOn(existingItem.getCreatedOn());
+                    item.setImagePath(existingItem.getImagePath());
 
-                    return itemRepository.save(item);
+                    Item updatedItem = itemRepository.save(item);
+                    setTransientFields(updatedItem);
+                    return updatedItem;
                 })
                 .orElseThrow(() -> new ResourceNotFoundException(id));
     }

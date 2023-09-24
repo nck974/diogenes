@@ -7,4 +7,8 @@ public class ResourceNotFoundException extends RuntimeException {
     public ResourceNotFoundException(int id) {
         super(ID_NOT_FOUND + id);
     }
+
+    public ResourceNotFoundException(String string) {
+        super(string);
+    }
 }
