@@ -1,5 +1,6 @@
 package dev.nichoko.diogenes.common;
 
+import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.web.servlet.MockMvc;
@@ -9,6 +10,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 
 import java.io.UnsupportedEncodingException;
 
@@ -58,6 +60,20 @@ public class ItemManager {
     }
 
     /*
+     * Sends the provided item to the API
+     */
+    public static ResultActions updateItem(MockMvc mockMvc, Item item) throws Exception {
+
+        tryCreateCategoryIfNotExists(mockMvc, item);
+
+        return mockMvc.perform(
+                put("/api/v1/item/" + Integer.toString(item.getId()))
+                        .content(JsonProcessor.stringifyClass(item))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON));
+    }
+
+    /*
      * Sends the provided item to the API with the given image
      */
     public static ResultActions createItemWithImage(MockMvc mockMvc, Item item, MockMultipartFile imagePart)
@@ -82,6 +98,34 @@ public class ItemManager {
         }
         return mockMvc.perform(
                 MockMvcRequestBuilders.multipart("/api/v1/item/")
+                        .file(itemPart)
+                        .contentType(MediaType.MULTIPART_FORM_DATA)
+                        .accept(MediaType.APPLICATION_JSON));
+    }
+
+    /*
+     * Updates the provided item to the API with the given image
+     */
+    public static ResultActions updateItemWithImage(MockMvc mockMvc, String id, Item item, MockMultipartFile imagePart)
+            throws Exception {
+
+        // Create a MockMultipartFile for the JSON content
+        MockMultipartFile itemPart = new MockMultipartFile(
+                "item",
+                null, // Provide a filename for the JSON content
+                MediaType.APPLICATION_JSON_VALUE, // Set the content type for JSON
+                JsonProcessor.stringifyClass(item).getBytes());
+
+        if (imagePart != null) {
+            return mockMvc.perform(
+                    MockMvcRequestBuilders.multipart(HttpMethod.PUT, "/api/v1/item/" + id)
+                            .file(itemPart)
+                            .file(imagePart)
+                            .contentType(MediaType.MULTIPART_FORM_DATA)
+                            .accept(MediaType.APPLICATION_JSON));
+        }
+        return mockMvc.perform(
+                MockMvcRequestBuilders.multipart(HttpMethod.PUT, "/api/v1/item/" + id)
                         .file(itemPart)
                         .contentType(MediaType.MULTIPART_FORM_DATA)
                         .accept(MediaType.APPLICATION_JSON));

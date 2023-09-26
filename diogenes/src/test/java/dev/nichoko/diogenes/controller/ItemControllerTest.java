@@ -10,7 +10,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
@@ -156,6 +155,62 @@ class ItemControllerTest {
         String itemId = JsonProcessor.readJsonString(createdItemJson).get("id").asText();
         mockMvc.perform(delete("/api/v1/item/" + itemId + "/image"))
                 .andExpect(status().isNoContent());
+    }
+
+    /**
+     * Can update the image of an item
+     *
+     * @throws Exception
+     */
+    @Test
+    void canUpdateItemImage() throws Exception {
+        Item item = ItemMock.getMockItem(1);
+
+        String imagePath = "src/test/resources/sample/example.jpg";
+
+        MockMultipartFile imagePart = ImageMock.getMockMultipartImage(imagePath);
+
+        String createdItemJson = ItemManager.createItemWithImage(this.mockMvc, item, imagePart).andReturn()
+                .getResponse().getContentAsString();
+        String itemId = JsonProcessor.readJsonString(createdItemJson).get("id").asText();
+        ItemManager.updateItemWithImage(this.mockMvc, itemId, item, imagePart)
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").value(item.getId()))
+                .andExpect(jsonPath("$.name").value(item.getName()))
+                .andExpect(jsonPath("$.description").value(item.getDescription()))
+                .andExpect(jsonPath("$.imagePath")
+                        .value(Matchers
+                                .matchesPattern(
+                                        "^.+" + Pattern.quote(Paths.get(imagePath).getFileName().toString()) + "$")));
+
+    }
+
+    /**
+     * Can update the image of an item that did not have any image
+     *
+     * @throws Exception
+     */
+    @Test
+    void canUpdateItemImageOfItemWithoutImage() throws Exception {
+        Item item = ItemMock.getMockItem(1);
+
+        String imagePath = "src/test/resources/sample/example.jpg";
+
+        MockMultipartFile imagePart = ImageMock.getMockMultipartImage(imagePath);
+
+        String createdItemJson = ItemManager.createItemWithImage(this.mockMvc, item, null).andReturn()
+                .getResponse().getContentAsString();
+        String itemId = JsonProcessor.readJsonString(createdItemJson).get("id").asText();
+        ItemManager.updateItemWithImage(this.mockMvc, itemId, item, imagePart)
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").value(item.getId()))
+                .andExpect(jsonPath("$.name").value(item.getName()))
+                .andExpect(jsonPath("$.description").value(item.getDescription()))
+                .andExpect(jsonPath("$.imagePath")
+                        .value(Matchers
+                                .matchesPattern(
+                                        "^.+" + Pattern.quote(Paths.get(imagePath).getFileName().toString()) + "$")));
+
     }
 
     /**
@@ -379,11 +434,7 @@ class ItemControllerTest {
         updatedItem.setCategory(item.getCategory());
         ItemManager.createItem(this.mockMvc, item);
 
-        this.mockMvc.perform(
-                put("/api/v1/item/" + Integer.toString(item.getId()))
-                        .content(JsonProcessor.stringifyClass(updatedItem))
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .accept(MediaType.APPLICATION_JSON))
+        ItemManager.updateItem(this.mockMvc, updatedItem)
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value(updatedItem.getId()))
                 .andExpect(jsonPath("$.name").value(updatedItem.getName()))
@@ -399,11 +450,7 @@ class ItemControllerTest {
     @Test
     void canNotUpdateNotExistingItem() throws Exception {
         Item item = ItemMock.getMockItem(1);
-        this.mockMvc.perform(
-                put("/api/v1/item/" + Integer.toString(item.getId()))
-                        .content(JsonProcessor.stringifyClass(item))
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .accept(MediaType.APPLICATION_JSON))
+        ItemManager.updateItem(this.mockMvc, item)
                 .andExpect(status().isNotFound());
     }
 
