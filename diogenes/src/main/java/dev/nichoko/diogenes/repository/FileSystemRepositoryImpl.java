@@ -42,12 +42,24 @@ public class FileSystemRepositoryImpl implements FileSystemRepository {
         Resource resource = new UrlResource(filePath.toUri());
 
         if (!resource.exists()) {
-            throw new ResourceNotFoundException("The file " + filename + " could not be found");
+            throw new ResourceNotFoundException(filename + " could not be found");
         }
         if (!resource.isReadable()) {
-            throw new FileNotReadableException("The file " + filename + " could not be read");
+            throw new FileNotReadableException(filename + " could not be read");
         }
         return resource;
+    }
+
+    @Override
+    public void delete(String filename, String folder) throws IOException {
+        Path filePath = Paths.get(fileStorageConfig.getUploadsDir(), folder, filename);
+
+        // Check if the file exists
+        if (!Files.exists(filePath)) {
+            throw new ResourceNotFoundException(filename + " could not be found");
+        }
+
+        Files.delete(filePath);
     }
 
 }

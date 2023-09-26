@@ -5,6 +5,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 public interface FileStorageService {
     String saveItemImage(MultipartFile imageFile);
-
     Resource readItemImage(String filename);
+    void deleteItemImage(String filename);
 }

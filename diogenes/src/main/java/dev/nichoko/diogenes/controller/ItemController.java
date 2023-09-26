@@ -53,8 +53,8 @@ public class ItemController {
     @PostMapping(path = "/", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<Item> createItem(@Valid @RequestPart Item item,
             @RequestPart(name = "image", required = false) MultipartFile imageFile) {
-        
-        if (imageFile != null){
+
+        if (imageFile != null) {
             String imagePath = fileStorageService.saveItemImage(imageFile);
             item.setImagePath(imagePath);
         }
@@ -86,6 +86,16 @@ public class ItemController {
     @DeleteMapping("/{id}")
     public ResponseEntity<Object> deleteItem(@Valid @PathVariable int id) {
         itemService.deleteItem(id);
+        return ResponseEntity.noContent().build();
+    }
+
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @DeleteMapping("/{id}/image")
+    public ResponseEntity<Object> deleteItemImage(@Valid @PathVariable int id) {
+
+        String imageFilename = itemService.deleteItemImage(id);
+        fileStorageService.deleteItemImage(imageFilename);
+
         return ResponseEntity.noContent().build();
     }
 

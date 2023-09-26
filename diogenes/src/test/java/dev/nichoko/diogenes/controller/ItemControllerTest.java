@@ -30,6 +30,7 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 
 import dev.nichoko.diogenes.common.ItemManager;
+import dev.nichoko.diogenes.mock.ImageMock;
 import dev.nichoko.diogenes.mock.ItemMock;
 import dev.nichoko.diogenes.model.domain.Item;
 import dev.nichoko.diogenes.utils.JsonProcessor;
@@ -123,11 +124,7 @@ class ItemControllerTest {
 
         String imagePath = "src/test/resources/sample/example.jpg";
 
-        MockMultipartFile imagePart = new MockMultipartFile(
-                "image",
-                Paths.get(imagePath).getFileName().toString(),
-                MediaType.IMAGE_JPEG_VALUE,
-                new FileInputStream(imagePath));
+        MockMultipartFile imagePart = ImageMock.getMockMultipartImage(imagePath);
 
         ItemManager.createItemWithImage(this.mockMvc, item, imagePart)
                 .andExpect(status().isCreated())
@@ -139,6 +136,53 @@ class ItemControllerTest {
                         .value(Matchers
                                 .matchesPattern(
                                         "^.+" + Pattern.quote(Paths.get(imagePath).getFileName().toString()) + "$")));
+    }
+
+    /**
+     * Can delete the image of an item
+     *
+     * @throws Exception
+     */
+    @Test
+    void canDeleteItemImage() throws Exception {
+        Item item = ItemMock.getMockItem(1);
+
+        String imagePath = "src/test/resources/sample/example.jpg";
+
+        MockMultipartFile imagePart = ImageMock.getMockMultipartImage(imagePath);
+
+        String createdItemJson = ItemManager.createItemWithImage(this.mockMvc, item, imagePart).andReturn()
+                .getResponse().getContentAsString();
+        String itemId = JsonProcessor.readJsonString(createdItemJson).get("id").asText();
+        mockMvc.perform(delete("/api/v1/item/" + itemId + "/image"))
+                .andExpect(status().isNoContent());
+    }
+
+    /**
+     * Can not delete the image of an item without images
+     *
+     * @throws Exception
+     */
+    @Test
+    void canNotDeleteItemImageOfItemWithoutImages() throws Exception {
+        Item item = ItemMock.getMockItem(1);
+
+        String createdItemJson = ItemManager.createItem(this.mockMvc, item).andReturn()
+                .getResponse().getContentAsString();
+        String itemId = JsonProcessor.readJsonString(createdItemJson).get("id").asText();
+        mockMvc.perform(delete("/api/v1/item/" + itemId + "/image"))
+                .andExpect(status().isNotFound());
+    }
+
+    /**
+     * Can not delete the image of a non existent item
+     *
+     * @throws Exception
+     */
+    @Test
+    void canNotDeleteItemImageOfNonExistentItems() throws Exception {
+        mockMvc.perform(delete("/api/v1/item/33/image"))
+                .andExpect(status().isNotFound());
     }
 
     /**

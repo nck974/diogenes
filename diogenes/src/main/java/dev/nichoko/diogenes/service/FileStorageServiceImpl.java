@@ -73,4 +73,13 @@ public class FileStorageServiceImpl implements FileStorageService {
         }
     }
 
+    @Override
+    public void deleteItemImage(String filename) {
+        try {
+            fileSystemRepository.delete(filename, fileStorageConfig.getImagesDir());
+        } catch (IOException exception) {
+            throw new ErrorReadingImageException(exception.getMessage());
+        }
+    }
+
 }

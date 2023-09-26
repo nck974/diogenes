@@ -205,4 +205,25 @@ public class ItemServiceImpl implements ItemService {
         itemRepository.delete(item);
     }
 
+    /*
+     * Delete an existing item or throw a not found exception
+     */
+    @Override
+    public String deleteItemImage(int id) {
+        Item item = itemRepository.findById(id)
+                .orElseThrow(
+                        () -> new ResourceNotFoundException(id));
+
+        String imagePath = item.getImagePath();
+        if (imagePath == null) {
+            throw new ResourceNotFoundException("The items does not have an image");
+        }
+
+        // Remove filename from the file
+        item.setImagePath(null);
+        itemRepository.save(item);
+
+        return imagePath;
+    }
+
 }
