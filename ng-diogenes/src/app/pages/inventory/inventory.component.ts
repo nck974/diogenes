@@ -1,11 +1,11 @@
-import { Component, HostListener, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { Subscription, catchError, finalize } from 'rxjs';
+import { Subscription, catchError } from 'rxjs';
 import { Item } from 'src/app/models/Item';
 import { ItemFilter } from 'src/app/models/ItemFilter';
 import { ItemSorter } from 'src/app/models/ItemSorter';
-import { ItemService } from 'src/app/services/item.service';
-import { MessageService } from 'src/app/services/message.service';
+import { ItemService } from 'src/app/shared/services/item.service';
+import { MessageService } from 'src/app/shared/services/message.service';
 
 @Component({
   selector: 'app-inventory',

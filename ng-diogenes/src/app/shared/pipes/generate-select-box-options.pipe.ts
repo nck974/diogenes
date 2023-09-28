@@ -1,5 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { Category } from '../models/Category';
+import { Category } from '../../models/Category';
 
 @Pipe({
   name: 'generateSelectBoxOptions'

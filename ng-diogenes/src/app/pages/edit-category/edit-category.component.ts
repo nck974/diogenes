@@ -3,9 +3,9 @@ import { Location } from '@angular/common';
 import { Observable, Subscription, catchError, finalize, map, of, switchMap, take, throwError } from 'rxjs';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Category } from 'src/app/models/Category';
-import { CategoryService } from 'src/app/services/category.service';
+import { CategoryService } from 'src/app/shared/services/category.service';
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
-import { MessageService } from 'src/app/services/message.service';
+import { MessageService } from 'src/app/shared/services/message.service';
 import { Color, NgxMatColorPickerInput } from '@angular-material-components/color-picker';
 import { hexToRgb } from 'src/app/utils/color';
 

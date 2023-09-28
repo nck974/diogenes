@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, catchError, map, tap } from 'rxjs';
 
-import { Category } from '../models/Category';
+import { Category } from '../../models/Category';
 import { ErrorHandlerService } from './error-handler.service';
 import { environment } from 'src/environments/environment';
 

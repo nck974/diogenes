@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Subscription } from 'rxjs';
-import { MessageService } from 'src/app/services/message.service';
+import { MessageService } from 'src/app/shared/services/message.service';
 
 const MESSAGE_TIMEOUT_MS = 5000;
 

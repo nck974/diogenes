@@ -5,9 +5,9 @@ import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 import { Observable, Subscription, catchError, combineLatest, finalize, map, of, switchMap, take, tap, throwError } from 'rxjs';
 import { Category } from 'src/app/models/Category';
 import { Item } from 'src/app/models/Item';
-import { CategoryService } from 'src/app/services/category.service';
-import { ItemService } from 'src/app/services/item.service';
-import { MessageService } from 'src/app/services/message.service';
+import { CategoryService } from 'src/app/shared/services/category.service';
+import { ItemService } from 'src/app/shared/services/item.service';
+import { MessageService } from 'src/app/shared/services/message.service';
 
 @Component({
   selector: 'app-edit-item',

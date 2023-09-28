@@ -3,10 +3,10 @@ import { Location, } from '@angular/common';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable, Subscription, catchError, finalize, of } from 'rxjs';
-import { ConfirmationDialogComponent } from 'src/app/components/confirmation-dialog/confirmation-dialog.component';
 import { Category } from 'src/app/models/Category';
-import { CategoryService } from 'src/app/services/category.service';
-import { MessageService } from 'src/app/services/message.service';
+import { CategoryService } from 'src/app/shared/services/category.service';
+import { MessageService } from 'src/app/shared/services/message.service';
+import { ConfirmationDialogComponent } from 'src/app/shared/components/confirmation-dialog/confirmation-dialog.component';
 
 @Component({
   selector: 'app-category-detail',

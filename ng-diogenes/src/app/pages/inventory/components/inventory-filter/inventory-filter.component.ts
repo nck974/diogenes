@@ -3,7 +3,7 @@ import { AbstractControl, FormBuilder, FormControl, FormGroup, ValidationErrors,
 import { Subscription } from 'rxjs';
 import { Category } from 'src/app/models/Category';
 import { ItemFilter } from 'src/app/models/ItemFilter';
-import { CategoryService } from 'src/app/services/category.service';
+import { CategoryService } from 'src/app/shared/services/category.service';
 
 export function isNumberValidator(): ValidatorFn {
 

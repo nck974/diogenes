@@ -1,11 +1,11 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, catchError, map, of, tap } from 'rxjs';
-import { Page } from '../models/Page';
-import { Item } from '../models/Item';
-import { ItemFilter } from '../models/ItemFilter';
+import { Page } from '../../models/Page';
+import { Item } from '../../models/Item';
+import { ItemFilter } from '../../models/ItemFilter';
 import { ErrorHandlerService } from './error-handler.service';
-import { ItemSorter } from '../models/ItemSorter';
+import { ItemSorter } from '../../models/ItemSorter';
 import { environment } from 'src/environments/environment';
 
 @Injectable({
