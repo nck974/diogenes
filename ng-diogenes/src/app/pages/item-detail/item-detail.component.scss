@@ -17,3 +17,16 @@
 .no-overflow {
     word-wrap: break-word;
 }
+
+.item-image-container {
+    max-width: 60rem;
+}
+
+.item-image {
+    width: 100%;
+    height: auto;
+}
+
+.item-description {
+    padding: 1rem 0rem;
+}

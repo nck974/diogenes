@@ -19,7 +19,7 @@ export class InventoryComponent implements OnInit, OnDestroy {
   private currentPage: number = 0;
   lastPage: boolean = false
   private itemFilter?: ItemFilter;
-  private itemSorter: ItemSorter = { field: "ID", direction: "ASC" };
+  private itemSorter: ItemSorter = { field: "ID", direction: "DESC" };
 
   items: Item[] = [];
   isLoading = false;

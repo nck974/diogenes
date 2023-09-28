@@ -8,5 +8,6 @@ export interface Item {
     category: Category;
     createdOn: Date;
     updatedOn: Date;
+    imagePath: string | undefined;
     categoryId: number | undefined;
 }
