@@ -109,12 +109,23 @@ export class ItemService {
         catchError(this.errorHandler.handleError<any>("deleteItem", [])));
   }
 
-  postItem(item: Item): Observable<Item> {
+  deleteItemImage(id: number): Observable<any> {
+    const url = `${this.url}/${id}/image`;
+
+    console.log(url);
+
+    return this.httpClient.delete(url)
+      .pipe(
+        tap(_ => console.log(`Item ${id} image deleted`)),
+        catchError(this.errorHandler.handleError<any>("deleteItemImage", [])));
+  }
+
+  postItem(item: Item, image: Blob | undefined): Observable<Item> {
     let url = `${this.url}/`;
 
     console.log(url);
 
-    let data = { ...item };
+    let data: FormData | {} = this.buildItemBody(item, image);
 
     return this.httpClient.post<Item>(url, data)
       .pipe(
@@ -127,12 +138,12 @@ export class ItemService {
       );
   }
 
-  updateItem(item: Item): Observable<Item> {
+  updateItem(item: Item, image?: Blob): Observable<Item> {
     let url = `${this.url}/${item.id}`;
 
     console.log(url);
 
-    let data = { ...item };
+    let data: FormData | {} = this.buildItemBody(item, image);
 
     return this.httpClient.put<Item>(url, data)
       .pipe(
@@ -143,5 +154,18 @@ export class ItemService {
         tap((item) => console.log(item)),
         catchError(this.errorHandler.handleError<Item>("updateItem"))
       );
+  }
+
+  /// Switch between multipart and application/json
+  private buildItemBody(item: Item, image: Blob | undefined) {
+    let data: FormData | {};
+    if (!image) {
+      data = { ...item };
+    } else {
+      data = new FormData();
+      (data as FormData).append('item', JSON.stringify(item));
+      (data as FormData).append('image', image);
+    }
+    return data;
   }
 }

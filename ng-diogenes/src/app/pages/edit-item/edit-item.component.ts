@@ -8,6 +8,8 @@ import { Item } from 'src/app/models/Item';
 import { CategoryService } from 'src/app/shared/services/category.service';
 import { ItemService } from 'src/app/shared/services/item.service';
 import { MessageService } from 'src/app/shared/services/message.service';
+import { MatDialog } from '@angular/material/dialog';
+import { ConfirmationDialogComponent } from 'src/app/shared/components/confirmation-dialog/confirmation-dialog.component';
 
 @Component({
   selector: 'app-edit-item',
@@ -24,6 +26,10 @@ export class EditItemComponent implements OnInit, OnDestroy {
   isNewItem: boolean = true;
   isLoading: boolean = true;
 
+  imagePath?: string;
+  selectedImage?: string;
+  selectedImageBlob?: Blob;
+
   constructor(
     private fb: FormBuilder,
     private itemService: ItemService,
@@ -31,6 +37,7 @@ export class EditItemComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private router: Router,
     private messageService: MessageService,
+    public dialogService: MatDialog,
     private location: Location) {
     this.itemForm = this.fb.group({
       name: ['', [Validators.required, Validators.maxLength(50)]],
@@ -39,6 +46,7 @@ export class EditItemComponent implements OnInit, OnDestroy {
       categoryId: [null, Validators.required]
     });
   }
+
   ngOnDestroy(): void {
     this.initializationSubscription?.unsubscribe();
   }
@@ -100,12 +108,73 @@ export class EditItemComponent implements OnInit, OnDestroy {
   }
 
   private initializeEditFormWithItemData(item: Item): void {
+
+    if (item.imagePath) {
+      this.imagePath = item.imagePath;
+    }
+
     this.itemForm.patchValue({
       name: item.name,
       description: item.description,
       number: item.number,
       categoryId: item.category.id,
     })
+  }
+
+  onFileSelected(event: any) {
+    const file = event.target.files[0];
+    if (file) {
+      this.selectedImageBlob = file;
+      if (file.type.match(/image\/(gif|jpeg|png)/)) {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          this.selectedImage = e.target?.result as string;
+        };
+        reader.readAsDataURL(file);
+      }
+    }
+  }
+
+  onFileDeselected() {
+    this.selectedImage = undefined;
+  }
+
+
+  private deleteImage() {
+    this.isLoading = true;
+    this.itemService.deleteItemImage(this.item!.id)
+      .pipe(
+        finalize(() => {
+          this.isLoading = false;
+        })
+      )
+      .subscribe(() => {
+        this.messageService.add(`The ${this.item!.name} image was deleted`);
+
+        this.imagePath = undefined;
+      },
+      );
+  }
+
+  private openConfirmDeleteDialog(): Observable<any> {
+    const dialogRef = this.dialogService.open(ConfirmationDialogComponent, {
+      data: { title: "Delete image?", content: `Do you really want to delete the image?` },
+    });
+
+    return dialogRef.afterClosed();
+  }
+
+  onDeleteImage(): void {
+    if (!this.imagePath) {
+      console.error("Trying to delete an image that is not defined");
+      return;
+    }
+
+    this.openConfirmDeleteDialog().subscribe(result => {
+      if (result as boolean) {
+        this.deleteImage();
+      }
+    });
   }
 
   onSubmit(): void {
@@ -116,11 +185,11 @@ export class EditItemComponent implements OnInit, OnDestroy {
       console.log(newItem);
 
       // Select service
-      let manageItemObservable = this.itemService.postItem(newItem);
+      let manageItemObservable = this.itemService.postItem(newItem, this.selectedImageBlob);
       let itemTypeMessage = "created";
       if (!this.isNewItem) {
         newItem.id = this.item?.id!;
-        manageItemObservable = this.itemService.updateItem(newItem);
+        manageItemObservable = this.itemService.updateItem(newItem, this.selectedImageBlob);
         itemTypeMessage = "updated";
       }
 
