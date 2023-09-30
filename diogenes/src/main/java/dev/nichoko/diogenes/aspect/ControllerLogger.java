@@ -19,7 +19,8 @@ public class ControllerLogger {
     }
 
     /**
-     * Log each request to any controller showing which method is called and with which arguments
+     * Log each request to any controller showing which method is called and with
+     * which arguments
      * 
      * @param joinPoint
      */
@@ -30,6 +31,10 @@ public class ControllerLogger {
 
             Object[] args = joinPoint.getArgs();
             for (Object arg : args) {
+                if (arg == null){
+                    logger.info("Argument: null");
+                    continue;
+                }
                 logger.info("Argument ({}): {}", arg.getClass().getSimpleName(), arg);
             }
         }

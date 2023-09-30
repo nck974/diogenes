@@ -1,0 +1,32 @@
+
+<mat-card class="card" *ngIf="item">
+
+    <!-- header -->
+    <mat-card-header>
+
+        <mat-card-title class="card-header" (click)="onOpenDetails()"
+            title="{{item.description}}">
+            {{ item.name }}
+        </mat-card-title>
+
+        <mat-card-subtitle>
+
+            <span>
+                {{item.category.name}}
+            </span>
+
+            <span class="item-number">
+                <span class="item-number-label">x</span>{{ item.number }}
+            </span>
+
+            <span *ngIf="item.imagePath">
+                <mat-icon class="item-image">image</mat-icon>
+            </span>
+
+        </mat-card-subtitle>
+
+        <div mat-card-avatar [style.background-color]="getAvatarColor()"></div>
+
+    </mat-card-header>
+
+</mat-card>

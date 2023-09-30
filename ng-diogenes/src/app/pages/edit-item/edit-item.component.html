@@ -22,12 +22,71 @@
         <div class="center">
             <mat-card align="center" class="card">
 
+                <mat-card-title class="center title">
+                    {{isNewItem ? "Create item" : "Edit item"}}
+                </mat-card-title>
+
+                <!-- Item Image -->
+
+                <!-- Hidden form to select files -->
+                <input #fileInput type="file"
+                    accept="image/gif, image/jpeg, image/png"
+                    (change)="onFileSelected($event)"
+                    style="display: none">
+                
+                <!-- Show actual image -->
+                <div class="item-image-container"
+                    *ngIf="imagePath && !selectedImage; else addNewImageTemplate">
+                    <img src="{{imagePath}}"
+                        class="item-image"
+                        alt="item-image">
+                    <div class="item-image-buttons-container">
+                        <button mat-icon-button class="edit-button"
+                            (click)="fileInput.click()">
+                            <mat-icon>edit</mat-icon>
+                        </button>
+                        <button mat-icon-button class="delete-button"
+                            (click)="onDeleteImage()">
+                            <mat-icon>delete</mat-icon>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- New Image Form -->
+                <ng-template #addNewImageTemplate>
+                    <!-- Preview -->
+                    <div class="item-image-container"
+                        *ngIf="selectedImage; else addImageForm">
+                        <img [src]="selectedImage"
+                            class="item-image"
+                            alt="selected-image">
+                        <div class="item-image-buttons-container">
+                            <button mat-icon-button class="delete-button"
+                                (click)="onFileDeselected()">
+                                <mat-icon>delete</mat-icon>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Form -->
+                    <ng-template #addImageForm>
+                        <label for="file-input">
+                            <div class="item-add-new-image-container">
+                                <button mat-icon-button class="add-image-button"
+                                    (click)="fileInput.click()">
+                                    <mat-icon>add_a_photo</mat-icon>
+                                </button>
+                            </div>
+                        </label>
+                    </ng-template>
+
+                </ng-template>
+
+                <!-- JSON form -->
                 <form class="form" [formGroup]="itemForm"
                     (ngSubmit)="onSubmit()">
 
-                    <mat-card-title class="center title">
-                        {{isNewItem ? "Create item" : "Edit item"}}
-                    </mat-card-title>
+                    <br>
 
                     <mat-form-field>
                         <mat-label>Name</mat-label>
@@ -60,7 +119,8 @@
 
                     <div class="center">
                         <button mat-raised-button color="primary" type="submit"
-                            [disabled]="itemForm.invalid">Submit</button>
+                            [disabled]="itemForm.invalid">{{isNewItem ? "Submit"
+                            : "Save"}}</button>
                     </div>
 
                 </form>

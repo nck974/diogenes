@@ -1,0 +1,7 @@
+<button mat-icon-button [matMenuTriggerFor]="menu">
+    <mat-icon>more_vert</mat-icon>
+</button>
+<!-- Displayed on open menu -->
+<mat-menu #menu="matMenu">
+    <button mat-menu-item (click)="onNavigateToCategories()">Categories</button>
+</mat-menu>

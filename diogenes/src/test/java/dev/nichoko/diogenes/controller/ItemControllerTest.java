@@ -1,17 +1,20 @@
 package dev.nichoko.diogenes.controller;
 
+import java.io.FileInputStream;
+import java.nio.file.Paths;
 import java.util.List;
+import java.util.regex.Pattern;
 import java.util.stream.IntStream;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
 import org.flywaydb.core.Flyway;
+import org.hamcrest.Matchers;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
@@ -21,11 +24,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.ResultActions;
 
-import dev.nichoko.diogenes.model.domain.Category;
+import dev.nichoko.diogenes.common.ItemManager;
+import dev.nichoko.diogenes.mock.ImageMock;
+import dev.nichoko.diogenes.mock.ItemMock;
 import dev.nichoko.diogenes.model.domain.Item;
 import dev.nichoko.diogenes.utils.JsonProcessor;
 
@@ -50,61 +55,6 @@ class ItemControllerTest {
     public void cleanUp() {
         flyway.clean();
         flyway.migrate();
-    }
-
-    /*
-     * Return a mock of an item
-     */
-    private static Item getMockItem(Integer number) {
-        Item item = new Item(
-                number,
-                "TestName" + number.toString(),
-                "Description" + number.toString(),
-                number);
-        item.setCategory(new Category(
-                number,
-                "name" + number,
-                "description" + number,
-                "col" + number));
-        return item;
-    }
-
-    /*
-     * Sends the provided item to the API
-     */
-    private ResultActions createItem(Item item) throws Exception {
-
-        // Create first the category and assign the id to the item
-        try {
-            String categoryString = this.createCategory(item.getCategory()).andReturn().getResponse()
-                    .getContentAsString();
-            if (categoryString != null) {
-                int categoryId = JsonProcessor
-                        .readJsonString(categoryString)
-                        .get("id")
-                        .asInt(0);
-                item.setCategoryId(categoryId);
-            }
-        } catch (java.lang.NullPointerException e) {
-
-        }
-
-        return this.mockMvc.perform(
-                post("/api/v1/item/")
-                        .content(JsonProcessor.stringifyClass(item))
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .accept(MediaType.APPLICATION_JSON));
-    }
-
-    /*
-     * Sends the provided category API
-     */
-    private ResultActions createCategory(Category category) throws Exception {
-        return this.mockMvc.perform(
-                post("/api/v1/categories/")
-                        .content(JsonProcessor.stringifyClass(category))
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .accept(MediaType.APPLICATION_JSON));
     }
 
     /*
@@ -134,8 +84,8 @@ class ItemControllerTest {
      */
     @Test
     void canSearchItemById() throws Exception {
-        Item item = getMockItem(1);
-        createItem(item);
+        Item item = ItemMock.getMockItem(1);
+        ItemManager.createItem(this.mockMvc, item);
 
         this.mockMvc.perform(get("/api/v1/item/1"))
                 .andExpect(status().isOk())
@@ -152,14 +102,182 @@ class ItemControllerTest {
      */
     @Test
     void canCreateNewItem() throws Exception {
-        Item item = getMockItem(1);
+        Item item = ItemMock.getMockItem(1);
 
-        createItem(item)
+        ItemManager.createItem(this.mockMvc, item)
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.id").isNumber())
                 .andExpect(jsonPath("$.name").value(item.getName()))
                 .andExpect(jsonPath("$.description").value(item.getDescription()))
                 .andExpect(jsonPath("$.number").value(item.getNumber()));
+    }
+
+    /**
+     * Can create a new item with image
+     *
+     * @throws Exception
+     */
+    @Test
+    void canCreateNewItemWithImage() throws Exception {
+        Item item = ItemMock.getMockItem(1);
+
+        String imagePath = "src/test/resources/sample/example.jpg";
+
+        MockMultipartFile imagePart = ImageMock.getMockMultipartImage(imagePath);
+
+        ItemManager.createItemWithImage(this.mockMvc, item, imagePart)
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.id").isNumber())
+                .andExpect(jsonPath("$.name").value(item.getName()))
+                .andExpect(jsonPath("$.description").value(item.getDescription()))
+                .andExpect(jsonPath("$.number").value(item.getNumber()))
+                .andExpect(jsonPath("$.imagePath")
+                        .value(Matchers
+                                .matchesPattern(
+                                        "^.+" + Pattern.quote(Paths.get(imagePath).getFileName().toString()) + "$")));
+    }
+
+    /**
+     * Can delete the image of an item
+     *
+     * @throws Exception
+     */
+    @Test
+    void canDeleteItemImage() throws Exception {
+        Item item = ItemMock.getMockItem(1);
+
+        String imagePath = "src/test/resources/sample/example.jpg";
+
+        MockMultipartFile imagePart = ImageMock.getMockMultipartImage(imagePath);
+
+        String createdItemJson = ItemManager.createItemWithImage(this.mockMvc, item, imagePart).andReturn()
+                .getResponse().getContentAsString();
+        String itemId = JsonProcessor.readJsonString(createdItemJson).get("id").asText();
+        mockMvc.perform(delete("/api/v1/item/" + itemId + "/image"))
+                .andExpect(status().isNoContent());
+    }
+
+    /**
+     * Can update the image of an item
+     *
+     * @throws Exception
+     */
+    @Test
+    void canUpdateItemImage() throws Exception {
+        Item item = ItemMock.getMockItem(1);
+
+        String imagePath = "src/test/resources/sample/example.jpg";
+
+        MockMultipartFile imagePart = ImageMock.getMockMultipartImage(imagePath);
+
+        String createdItemJson = ItemManager.createItemWithImage(this.mockMvc, item, imagePart).andReturn()
+                .getResponse().getContentAsString();
+        String itemId = JsonProcessor.readJsonString(createdItemJson).get("id").asText();
+        ItemManager.updateItemWithImage(this.mockMvc, itemId, item, imagePart)
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").value(item.getId()))
+                .andExpect(jsonPath("$.name").value(item.getName()))
+                .andExpect(jsonPath("$.description").value(item.getDescription()))
+                .andExpect(jsonPath("$.imagePath")
+                        .value(Matchers
+                                .matchesPattern(
+                                        "^.+" + Pattern.quote(Paths.get(imagePath).getFileName().toString()) + "$")));
+
+    }
+
+    /**
+     * Can update the image of an item that did not have any image
+     *
+     * @throws Exception
+     */
+    @Test
+    void canUpdateItemImageOfItemWithoutImage() throws Exception {
+        Item item = ItemMock.getMockItem(1);
+
+        String imagePath = "src/test/resources/sample/example.jpg";
+
+        MockMultipartFile imagePart = ImageMock.getMockMultipartImage(imagePath);
+
+        String createdItemJson = ItemManager.createItemWithImage(this.mockMvc, item, null).andReturn()
+                .getResponse().getContentAsString();
+        String itemId = JsonProcessor.readJsonString(createdItemJson).get("id").asText();
+        ItemManager.updateItemWithImage(this.mockMvc, itemId, item, imagePart)
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").value(item.getId()))
+                .andExpect(jsonPath("$.name").value(item.getName()))
+                .andExpect(jsonPath("$.description").value(item.getDescription()))
+                .andExpect(jsonPath("$.imagePath")
+                        .value(Matchers
+                                .matchesPattern(
+                                        "^.+" + Pattern.quote(Paths.get(imagePath).getFileName().toString()) + "$")));
+
+    }
+
+    /**
+     * Can not delete the image of an item without images
+     *
+     * @throws Exception
+     */
+    @Test
+    void canNotDeleteItemImageOfItemWithoutImages() throws Exception {
+        Item item = ItemMock.getMockItem(1);
+
+        String createdItemJson = ItemManager.createItem(this.mockMvc, item).andReturn()
+                .getResponse().getContentAsString();
+        String itemId = JsonProcessor.readJsonString(createdItemJson).get("id").asText();
+        mockMvc.perform(delete("/api/v1/item/" + itemId + "/image"))
+                .andExpect(status().isNotFound());
+    }
+
+    /**
+     * Can not delete the image of a non existent item
+     *
+     * @throws Exception
+     */
+    @Test
+    void canNotDeleteItemImageOfNonExistentItems() throws Exception {
+        mockMvc.perform(delete("/api/v1/item/33/image"))
+                .andExpect(status().isNotFound());
+    }
+
+    /**
+     * Can create a new item using multipart without image
+     *
+     * @throws Exception
+     */
+    @Test
+    void canCreateNewItemWithMultipartContentType() throws Exception {
+        Item item = ItemMock.getMockItem(1);
+
+        ItemManager.createItemWithImage(this.mockMvc, item, null)
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.id").isNumber())
+                .andExpect(jsonPath("$.name").value(item.getName()))
+                .andExpect(jsonPath("$.description").value(item.getDescription()))
+                .andExpect(jsonPath("$.number").value(item.getNumber()))
+                .andExpect(jsonPath("$.imagePath")
+                        .isEmpty());
+    }
+
+    /**
+     * Can not create a new item with invalid image format
+     *
+     * @throws Exception
+     */
+    @Test
+    void canNotCreateNewItemWithInvalidImageFormat() throws Exception {
+        Item item = ItemMock.getMockItem(1);
+
+        String imagePath = "src/test/resources/sample/example.txt";
+
+        MockMultipartFile imagePart = new MockMultipartFile(
+                "image",
+                Paths.get(imagePath).getFileName().toString(),
+                MediaType.TEXT_PLAIN_VALUE,
+                new FileInputStream(imagePath));
+
+        ItemManager.createItemWithImage(this.mockMvc, item, imagePart)
+                .andExpect(status().isBadRequest());
     }
 
     /**
@@ -169,10 +287,10 @@ class ItemControllerTest {
      */
     @Test
     void canCreateItemWithoutDescription() throws Exception {
-        Item item = getMockItem(1);
+        Item item = ItemMock.getMockItem(1);
         item.setDescription(null);
 
-        createItem(item)
+        ItemManager.createItem(this.mockMvc, item)
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.id").isNumber())
                 .andExpect(jsonPath("$.name").value(item.getName()))
@@ -187,9 +305,9 @@ class ItemControllerTest {
      */
     @Test
     void canGetAllItems() throws Exception {
-        List<Item> items = List.of(getMockItem(2), getMockItem(3), getMockItem(4));
+        List<Item> items = List.of(ItemMock.getMockItem(2), ItemMock.getMockItem(3), ItemMock.getMockItem(4));
         for (Item item : items) {
-            createItem(item);
+            ItemManager.createItem(this.mockMvc, item);
         }
         this.mockMvc.perform(get("/api/v1/item/"))
                 .andExpect(status().isOk())
@@ -206,11 +324,11 @@ class ItemControllerTest {
      */
     @Test
     void canNotCreateNewWithoutName() throws Exception {
-        Item item = getMockItem(1);
+        Item item = ItemMock.getMockItem(1);
         item.setName(null);
         item.setDescription(null);
 
-        createItem(item)
+        ItemManager.createItem(this.mockMvc, item)
                 .andExpect(status().isBadRequest());
     }
 
@@ -221,10 +339,10 @@ class ItemControllerTest {
      */
     @Test
     void canNotCreateNewWithoutValidCategoryId() throws Exception {
-        Item item = getMockItem(1);
+        Item item = ItemMock.getMockItem(1);
         item.setCategory(null);
 
-        createItem(item)
+        ItemManager.createItem(this.mockMvc, item)
                 .andExpect(status().isBadRequest());
     }
 
@@ -235,7 +353,7 @@ class ItemControllerTest {
      */
     @Test
     void canNotCreateNewWithoutCategoryId() throws Exception {
-        Item item = getMockItem(1);
+        Item item = ItemMock.getMockItem(1);
         item.setCategoryId(0);
 
         this.mockMvc.perform(
@@ -253,11 +371,11 @@ class ItemControllerTest {
      */
     @Test
     void canNotCreateNewEmptyName() throws Exception {
-        Item item = getMockItem(1);
+        Item item = ItemMock.getMockItem(1);
         item.setName("");
         item.setDescription("");
 
-        createItem(item)
+        ItemManager.createItem(this.mockMvc, item)
                 .andExpect(status().isBadRequest());
     }
 
@@ -268,10 +386,10 @@ class ItemControllerTest {
      */
     @Test
     void canNotCreateNewItemNegativeNumber() throws Exception {
-        Item item = getMockItem(1);
+        Item item = ItemMock.getMockItem(1);
         item.setNumber(-3);
 
-        createItem(item)
+        ItemManager.createItem(this.mockMvc, item)
                 .andExpect(status().isBadRequest());
     }
 
@@ -282,10 +400,10 @@ class ItemControllerTest {
      */
     @Test
     void canNotCreateNewItemTooLongDescription() throws Exception {
-        Item item = getMockItem(1);
+        Item item = ItemMock.getMockItem(1);
         item.setDescription("a".repeat(2001));
 
-        createItem(item)
+        ItemManager.createItem(this.mockMvc, item)
                 .andExpect(status().isBadRequest());
     }
 
@@ -296,10 +414,10 @@ class ItemControllerTest {
      */
     @Test
     void canNotCreateNewWithNameTooLong() throws Exception {
-        Item item = getMockItem(1);
+        Item item = ItemMock.getMockItem(1);
         item.setName("a".repeat(51));
 
-        createItem(item)
+        ItemManager.createItem(this.mockMvc, item)
                 .andExpect(status().isBadRequest());
     }
 
@@ -310,17 +428,13 @@ class ItemControllerTest {
      */
     @Test
     void canUpdateItem() throws Exception {
-        Item item = getMockItem(1);
-        Item updatedItem = getMockItem(2);
+        Item item = ItemMock.getMockItem(1);
+        Item updatedItem = ItemMock.getMockItem(2);
         updatedItem.setId(item.getId());
         updatedItem.setCategory(item.getCategory());
-        createItem(item);
+        ItemManager.createItem(this.mockMvc, item);
 
-        this.mockMvc.perform(
-                put("/api/v1/item/" + Integer.toString(item.getId()))
-                        .content(JsonProcessor.stringifyClass(updatedItem))
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .accept(MediaType.APPLICATION_JSON))
+        ItemManager.updateItem(this.mockMvc, updatedItem)
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value(updatedItem.getId()))
                 .andExpect(jsonPath("$.name").value(updatedItem.getName()))
@@ -335,12 +449,8 @@ class ItemControllerTest {
      */
     @Test
     void canNotUpdateNotExistingItem() throws Exception {
-        Item item = getMockItem(1);
-        this.mockMvc.perform(
-                put("/api/v1/item/" + Integer.toString(item.getId()))
-                        .content(JsonProcessor.stringifyClass(item))
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .accept(MediaType.APPLICATION_JSON))
+        Item item = ItemMock.getMockItem(1);
+        ItemManager.updateItem(this.mockMvc, item)
                 .andExpect(status().isNotFound());
     }
 
@@ -351,8 +461,8 @@ class ItemControllerTest {
      */
     @Test
     void canDeleteItem() throws Exception {
-        Item item = getMockItem(1);
-        createItem(item);
+        Item item = ItemMock.getMockItem(1);
+        ItemManager.createItem(this.mockMvc, item);
 
         this.mockMvc.perform(
                 delete("/api/v1/item/" + Integer.toString(item.getId()))
@@ -368,7 +478,7 @@ class ItemControllerTest {
      */
     @Test
     void canNotDeleteNonExistingItem() throws Exception {
-        Item item = getMockItem(1);
+        Item item = ItemMock.getMockItem(1);
 
         this.mockMvc.perform(
                 delete("/api/v1/item/" + Integer.toString(item.getId()))
@@ -392,7 +502,7 @@ class ItemControllerTest {
     void canFilterByTheAvailableParameters(String filterName) throws Exception {
         IntStream.range(0, 10).forEachOrdered(n -> {
             try {
-                createItem(getMockItem(n));
+                ItemManager.createItem(this.mockMvc, ItemMock.getMockItem(n));
             } catch (Exception e) {
                 System.out.println(e.getMessage());
                 e.printStackTrace();
@@ -414,7 +524,7 @@ class ItemControllerTest {
     void canFilterByTwoParameters() throws Exception {
         IntStream.range(0, 10).forEachOrdered(n -> {
             try {
-                createItem(getMockItem(n));
+                ItemManager.createItem(this.mockMvc, ItemMock.getMockItem(n));
             } catch (Exception e) {
                 e.printStackTrace();
                 throw new RuntimeException();
@@ -435,7 +545,7 @@ class ItemControllerTest {
     void canFilterWithEmptyParameters() throws Exception {
         IntStream.range(0, 10).forEachOrdered(n -> {
             try {
-                createItem(getMockItem(n));
+                ItemManager.createItem(this.mockMvc, ItemMock.getMockItem(n));
             } catch (Exception e) {
                 e.printStackTrace();
                 throw new RuntimeException();
@@ -454,9 +564,9 @@ class ItemControllerTest {
      */
     @Test
     void canSortItems() throws Exception {
-        List<Item> items = List.of(getMockItem(1), getMockItem(2), getMockItem(3));
+        List<Item> items = List.of(ItemMock.getMockItem(1), ItemMock.getMockItem(2), ItemMock.getMockItem(3));
         for (Item item : items) {
-            createItem(item);
+            ItemManager.createItem(this.mockMvc, item);
         }
         String sortParameter = "?sortDirection=DESC";
         this.mockMvc.perform(get("/api/v1/item/" + sortParameter))
