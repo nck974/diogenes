@@ -3,7 +3,7 @@ version: "3.8"
 services:
   diogenes-ng:
     container_name: diogenes-ng
-    image: nck974/diogenes-ng:0.0.1
+    image: nck974/diogenes-ng:latest
     restart: unless-stopped
     depends_on:
       - diogenes
@@ -16,7 +16,7 @@ services:
 
   diogenes:
     container_name: diogenes
-    image: nck974/diogenes:0.0.1
+    image: nck974/diogenes:latest
     restart: unless-stopped
     depends_on:
       - diogenes-db
@@ -27,6 +27,9 @@ services:
       - SPRING_APPLICATION_JSON={}
     ports:
       - 8080:8080
+    volumes:
+      - files:/uploads
+
 
   diogenes-db:
     container_name: diogenes-db
@@ -43,7 +46,7 @@ services:
 
   reverse-proxy:
     container_name: diogenes-reverse-proxy
-    image: nck974/diogenes-reverse-proxy:0.0.1
+    image: nck974/diogenes-reverse-proxy:latest
     restart: unless-stopped
     ports:
       - 443:443
@@ -57,3 +60,6 @@ volumes:
   db:
     driver: local
     name: diogenes_db_volume
+  files:
+    driver: local
+    name: diogenes_files_volume
