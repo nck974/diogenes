@@ -1,6 +1,8 @@
 .card {
     margin: 1rem;
     max-width: 70rem;
+    min-width: 35rem;
+
 }
 
 .center-card {
@@ -20,6 +22,9 @@
 
 .item-image-container {
     max-width: 60rem;
+    max-height: 40rem;
+    justify-content: center;
+    display: flex;
 }
 
 .item-image {

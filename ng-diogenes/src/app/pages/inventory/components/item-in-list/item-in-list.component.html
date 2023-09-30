@@ -4,7 +4,8 @@
     <!-- header -->
     <mat-card-header>
 
-        <mat-card-title class="card-header" (click)="onOpenDetails()" title="{{item.description}}">
+        <mat-card-title class="card-header" (click)="onOpenDetails()"
+            title="{{item.description}}">
             {{ item.name }}
         </mat-card-title>
 
@@ -16,6 +17,10 @@
 
             <span class="item-number">
                 <span class="item-number-label">x</span>{{ item.number }}
+            </span>
+
+            <span *ngIf="item.imagePath">
+                <mat-icon class="item-image">image</mat-icon>
             </span>
 
         </mat-card-subtitle>
