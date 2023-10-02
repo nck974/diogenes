@@ -11,11 +11,13 @@ import { MatCardModule } from '@angular/material/card';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SharedComponentsModule } from 'src/app/shared/components/shared.components.module';
+import { EditItemImageComponent } from './components/edit-item-image/edit-item-image.component';
 
 
 @NgModule({
   declarations: [
     EditItemComponent,
+    EditItemImageComponent,
   ],
   imports: [
     // Angular

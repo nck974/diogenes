@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, catchError, map, of, tap } from 'rxjs';
+import { Observable, catchError, map, tap } from 'rxjs';
 import { Page } from '../../models/Page';
 import { Item } from '../../models/Item';
 import { ItemFilter } from '../../models/ItemFilter';

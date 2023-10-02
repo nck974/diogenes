@@ -2,14 +2,13 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Location } from '@angular/common';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
-import { Observable, Subscription, catchError, combineLatest, finalize, map, of, switchMap, take, tap, throwError } from 'rxjs';
+import { Observable, Subscription, catchError, combineLatest, finalize, map, of, switchMap, take, throwError } from 'rxjs';
 import { Category } from 'src/app/models/Category';
 import { Item } from 'src/app/models/Item';
 import { CategoryService } from 'src/app/shared/services/category.service';
 import { ItemService } from 'src/app/shared/services/item.service';
 import { MessageService } from 'src/app/shared/services/message.service';
 import { MatDialog } from '@angular/material/dialog';
-import { ConfirmationDialogComponent } from 'src/app/shared/components/confirmation-dialog/confirmation-dialog.component';
 
 @Component({
   selector: 'app-edit-item',
@@ -27,7 +26,6 @@ export class EditItemComponent implements OnInit, OnDestroy {
   isLoading: boolean = true;
 
   imagePath?: string;
-  selectedImage?: string;
   selectedImageBlob?: Blob;
 
   constructor(
@@ -70,6 +68,10 @@ export class EditItemComponent implements OnInit, OnDestroy {
           this.initializeEditFormWithItemData(item);
         }
       });
+  }
+
+  onAddNewImage(newValue?: Blob) {
+    this.selectedImageBlob = newValue;
   }
 
   private getItemToEdit(): Observable<Item | undefined> {
@@ -121,62 +123,6 @@ export class EditItemComponent implements OnInit, OnDestroy {
     })
   }
 
-  onFileSelected(event: any) {
-    const file = event.target.files[0];
-    if (file) {
-      this.selectedImageBlob = file;
-      if (file.type.match(/image\/(gif|jpeg|png)/)) {
-        const reader = new FileReader();
-        reader.onload = (e) => {
-          this.selectedImage = e.target?.result as string;
-        };
-        reader.readAsDataURL(file);
-      }
-    }
-  }
-
-  onFileDeselected() {
-    this.selectedImage = undefined;
-  }
-
-
-  private deleteImage() {
-    this.isLoading = true;
-    this.itemService.deleteItemImage(this.item!.id)
-      .pipe(
-        finalize(() => {
-          this.isLoading = false;
-        })
-      )
-      .subscribe(() => {
-        this.messageService.add(`The ${this.item!.name} image was deleted`);
-
-        this.imagePath = undefined;
-      },
-      );
-  }
-
-  private openConfirmDeleteDialog(): Observable<any> {
-    const dialogRef = this.dialogService.open(ConfirmationDialogComponent, {
-      data: { title: "Delete image?", content: `Do you really want to delete the image?` },
-    });
-
-    return dialogRef.afterClosed();
-  }
-
-  onDeleteImage(): void {
-    if (!this.imagePath) {
-      console.error("Trying to delete an image that is not defined");
-      return;
-    }
-
-    this.openConfirmDeleteDialog().subscribe(result => {
-      if (result as boolean) {
-        this.deleteImage();
-      }
-    });
-  }
-
   onSubmit(): void {
     if (this.itemForm.valid) {
 
@@ -214,4 +160,3 @@ export class EditItemComponent implements OnInit, OnDestroy {
     this.location.back();
   }
 }
-
