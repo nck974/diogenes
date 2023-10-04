@@ -12,5 +12,9 @@ export class InventoryMenuComponent {
 
   onNavigateToCategories() {
     this.router.navigateByUrl("/categories");
+  }  
+  
+  onNavigateToBulkImport() {
+    this.router.navigateByUrl("/items/edit/new/bulk");
   }
 }

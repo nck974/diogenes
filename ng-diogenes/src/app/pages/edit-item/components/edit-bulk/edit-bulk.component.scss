@@ -1,0 +1,26 @@
+.bulk-wrapper{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.bulk-container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 2px dashed #ccc; /* Add a border */
+    padding: 20px;
+    margin: 20px;
+    text-align: center;
+    width: 100%;
+    max-width: 600px;
+    min-height: 200px;
+}
+
+.stepper-container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}

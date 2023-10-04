@@ -91,7 +91,7 @@ export class InventoryComponent implements OnInit, OnDestroy {
   }
 
   onCreateNewItem() {
-    this.router.navigateByUrl("/items/new")
+    this.router.navigateByUrl("/items/edit/new")
   }
 
 }

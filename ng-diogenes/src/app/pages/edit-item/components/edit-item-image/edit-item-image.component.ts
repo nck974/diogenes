@@ -1,6 +1,7 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Observable, finalize } from 'rxjs';
+import { ImageTransfer } from 'src/app/models/ImageTransfer';
 import { Item } from 'src/app/models/Item';
 import { ConfirmationDialogComponent } from 'src/app/shared/components/confirmation-dialog/confirmation-dialog.component';
 import { ItemService } from 'src/app/shared/services/item.service';
@@ -11,8 +12,9 @@ import { MessageService } from 'src/app/shared/services/message.service';
   templateUrl: './edit-item-image.component.html',
   styleUrls: ['./edit-item-image.component.scss']
 })
-export class EditItemImageComponent {
+export class EditItemImageComponent implements OnInit {
 
+  @Input() initializeImage?: ImageTransfer;
   @Input() imagePath?: string;
   @Input({ required: true }) isLoading!: boolean;
   @Output() imageBlobChanged = new EventEmitter<Blob>();
@@ -22,7 +24,13 @@ export class EditItemImageComponent {
 
   constructor(private dialogService: MatDialog, private itemService: ItemService, private messageService: MessageService) { }
 
-  onFileSelected(event: any) {
+  ngOnInit(): void {
+    if (this.initializeImage){
+      this.selectedImage = this.initializeImage.displayableImage;
+    }
+  }
+
+  onFileSelected(event: any): void {
     const file = event.target.files[0];
     if (file) {
       this.imageBlobChanged.emit(file);
@@ -36,12 +44,12 @@ export class EditItemImageComponent {
     }
   }
 
-  onFileDeselected() {
+  onFileDeselected(): void {
     this.selectedImage = undefined;
     this.imageBlobChanged.emit(undefined);
   }
 
-  private deleteImage() {
+  private deleteImage(): void {
     this.isLoading = true;
     this.itemService.deleteItemImage(this.item!.id)
       .pipe(

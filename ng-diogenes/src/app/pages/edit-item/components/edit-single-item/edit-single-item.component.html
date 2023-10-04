@@ -1,0 +1,76 @@
+
+<div *ngIf="isLoading; else notLoading">
+    <app-loading-spinner></app-loading-spinner>
+</div>
+
+<ng-template #notLoading>
+
+    <div *ngIf="initializationError; else itemFormTemplate">
+        <app-error-card [title]="'Item not found'" [icon]="'error'"
+            [content]="initializationError"></app-error-card>
+    </div>
+
+    <ng-template #itemFormTemplate>
+
+        <div class="center">
+            <mat-card align="center" class="card">
+
+                <mat-card-title class="center title">
+                    {{isNewItem ? "Create item" : "Edit item"}}
+                </mat-card-title>
+
+                <!-- Item Image -->
+                <app-edit-item-image [item]="item"
+                    [initializeImage]="createFromImage"
+                    (imageBlobChanged)="onAddNewImage($event)"
+                    [imagePath]="imagePath"
+                    [isLoading]="isLoading"></app-edit-item-image>
+
+                <!-- JSON form -->
+                <form class="form" [formGroup]="itemForm"
+                    (ngSubmit)="onSubmit()">
+
+                    <br>
+
+                    <mat-form-field>
+                        <mat-label>Name</mat-label>
+                        <input matInput required maxlength="50"
+                            formControlName="name">
+                    </mat-form-field>
+
+                    <mat-form-field>
+                        <mat-label>Description</mat-label>
+                        <textarea matInput formControlName="description"
+                            class="textarea-height"
+                            maxlength="2000"></textarea>
+                    </mat-form-field>
+
+                    <mat-form-field>
+                        <mat-label>Number</mat-label>
+                        <input matInput required maxlength="50"
+                            formControlName="number" type="number">
+                    </mat-form-field>
+
+                    <mat-form-field>
+                        <mat-label>Category</mat-label>
+                        <mat-select formControlName="categoryId">
+                            <mat-option *ngFor="let category of categories"
+                                [value]="category.id">
+                                {{ category.name }}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+
+                    <div class="center">
+                        <button mat-raised-button color="primary" type="submit"
+                            [disabled]="itemForm.invalid">{{isNewItem ? "Submit"
+                            : "Save"}}</button>
+                    </div>
+
+                </form>
+            </mat-card>
+        </div>
+
+    </ng-template>
+
+</ng-template>

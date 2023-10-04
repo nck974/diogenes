@@ -6,14 +6,22 @@ import { EditItemComponent } from './pages/edit-item/edit-item.component';
 import { CategoriesComponent } from './pages/categories/categories.component';
 import { CategoryDetailComponent } from './pages/category-detail/category-detail.component';
 import { EditCategoryComponent } from './pages/edit-category/edit-category.component';
+import { EditSingleItemComponent } from './pages/edit-item/components/edit-single-item/edit-single-item.component';
 
 const routes: Routes = [
   { path: 'categories/new', component: EditCategoryComponent },
   { path: 'categories/:id/edit', component: EditCategoryComponent },
   { path: 'categories/:id', component: CategoryDetailComponent },
   { path: 'categories', component: CategoriesComponent },
-  { path: 'items/new', component: EditItemComponent },
-  { path: 'items/:id/edit', component: EditItemComponent },
+  {
+    path: 'items/edit', component: EditItemComponent,
+    children: [
+      { path: '', redirectTo: 'new', pathMatch: 'full'},
+      { path: 'new', component: EditSingleItemComponent, pathMatch: 'full'},
+      { path: 'new/bulk', component: EditSingleItemComponent },
+      { path: ':id', component: EditSingleItemComponent },
+    ]
+  },
   { path: 'items/:id', component: ItemDetailComponent },
   { path: 'items', component: InventoryComponent },
   { path: '', component: InventoryComponent },
