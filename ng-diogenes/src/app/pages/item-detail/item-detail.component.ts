@@ -76,7 +76,7 @@ export class ItemDetailComponent implements OnInit, OnDestroy {
   }
 
   onEditItem(): void {
-    this.router.navigateByUrl(`/items/${this.item?.id}/edit`);
+    this.router.navigateByUrl(`/items/edit/${this.item?.id}`);
   }
 
   private deleteItem() {

@@ -8,14 +8,21 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSelectModule } from '@angular/material/select';
 import { MatCardModule } from '@angular/material/card';
+import { MatStepperModule } from '@angular/material/stepper';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SharedComponentsModule } from 'src/app/shared/components/shared.components.module';
+import { EditItemImageComponent } from './components/edit-item-image/edit-item-image.component';
+import { EditSingleItemComponent } from './components/edit-single-item/edit-single-item.component';
+import { EditBulkComponent } from './components/edit-bulk/edit-bulk.component';
 
 
 @NgModule({
   declarations: [
     EditItemComponent,
+    EditItemImageComponent,
+    EditSingleItemComponent,
+    EditBulkComponent,
   ],
   imports: [
     // Angular
@@ -35,6 +42,7 @@ import { SharedComponentsModule } from 'src/app/shared/components/shared.compone
     MatSelectModule,
     MatCardModule,
     MatProgressSpinnerModule,
+    MatStepperModule,
   ]
 })
 export class EditItemModule { }

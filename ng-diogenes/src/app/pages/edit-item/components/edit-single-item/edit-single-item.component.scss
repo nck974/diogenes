@@ -1,0 +1,28 @@
+.center {
+    display: flex;
+    align-self: center;
+    justify-content: center;
+}
+
+.card {
+    margin: 1rem;
+    max-width: 600px;
+    padding: 1rem;
+}
+
+.title {
+    margin: 1rem;
+}
+
+.form {
+    min-width: 150px;
+    width: 100%;
+}
+
+.form mat-form-field {
+    width: 100%;
+}
+
+.textarea-height {
+    min-height: 150px;
+}
