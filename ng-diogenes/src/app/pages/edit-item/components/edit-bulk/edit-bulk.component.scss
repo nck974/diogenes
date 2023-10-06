@@ -9,13 +9,14 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    border: 2px dashed #ccc; /* Add a border */
+    border: 2px dashed #ccc;
     padding: 20px;
     margin: 20px;
     text-align: center;
     width: 100%;
     max-width: 600px;
     min-height: 200px;
+    cursor: pointer;
 }
 
 .stepper-container{
@@ -23,4 +24,8 @@
     justify-content: center;
     align-items: center;
     padding: 20px;
+}
+
+.drag-over{
+    border: 4px dashed;
 }

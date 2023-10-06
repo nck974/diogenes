@@ -20,8 +20,12 @@
         accept="image/gif, image/jpeg, image/png"
         (change)="onFilesSelected($event)"
         style="display: none" multiple>
-    <div class="bulk-wrapper">
-        <div class="bulk-container">
+    <div class="bulk-wrapper"
+        (dragover)="onDragOver($event)"
+        (drop)="onDrop($event)"
+        (click)="fileInput.click()"
+        (dragleave)="onDragLeave($event)">
+        <div class="bulk-container" [ngClass]="{ 'drag-over': isDragging }">
             <div>
                 <label for="file-input">
                     <div class="item-add-new-image-container">
