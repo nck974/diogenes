@@ -11,7 +11,7 @@
 	</parent>
 	<groupId>dev.nichoko</groupId>
 	<artifactId>diogenes</artifactId>
-	<version>0.0.2</version>
+	<version>0.0.3</version>
 	<name>diogenes</name>
 	<description>Software to manage the personal inventary of items that you own.</description>
 
@@ -35,6 +35,24 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-validation</artifactId>
+		</dependency>
+
+		<!-- Authenticathion -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-security</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>io.jsonwebtoken</groupId>
+			<artifactId>jjwt</artifactId>
+			<version>0.12.2</version>
+		</dependency>
+
+		<!-- Test authentication -->
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-test</artifactId>
+			<scope>test</scope>
 		</dependency>
 
 		<!-- Standard database interfaces -->

@@ -8,18 +8,24 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 
+import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;
+import io.swagger.v3.oas.models.security.SecurityRequirement;
+import io.swagger.v3.oas.models.security.SecurityScheme;
 
 @Configuration
 public class OpenApiConfig {
 
     /**
      * 
-     * This method is needed to allow sending multipart requests. For example, when an item is 
-     * created together with an image. If this is not set the request will return an exception with:
+     * This method is needed to allow sending multipart requests. For example, when
+     * an item is
+     * created together with an image. If this is not set the request will return an
+     * exception with:
      * 
-     * Resolved [org.springframework.web.HttpMediaTypeNotSupportedException: Content-Type 
+     * Resolved [org.springframework.web.HttpMediaTypeNotSupportedException:
+     * Content-Type
      * 'application/octet-stream' is not supported]
      * 
      * @param converter
@@ -36,7 +42,15 @@ public class OpenApiConfig {
                 .info(new Info()
                         .title(buildProperties.getArtifact())
                         .description("API to manage the inventory.")
-                        .version(buildProperties.getVersion()));
+                        .version(buildProperties.getVersion()))
+                .components(new Components()
+                        .addSecuritySchemes("jwtAuth", new SecurityScheme()
+                                .type(SecurityScheme.Type.HTTP)
+                                .scheme("bearer")
+                                .bearerFormat("JWT")
+                                .in(SecurityScheme.In.HEADER)
+                                .name("Authorization")))
+                .addSecurityItem(new SecurityRequirement().addList("jwtAuth"));
     }
 
 }
