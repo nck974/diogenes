@@ -1,38 +1,42 @@
 package dev.nichoko.diogenes.config;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import javax.sql.DataSource;
+
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.provisioning.JdbcUserDetailsManager;
+import org.springframework.security.provisioning.UserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.servlet.util.matcher.MvcRequestMatcher;
+import org.springframework.web.filter.OncePerRequestFilter;
 import org.springframework.web.servlet.handler.HandlerMappingIntrospector;
-
-import dev.nichoko.diogenes.auth.JwtAuthenticationEntryPoint;
-import dev.nichoko.diogenes.auth.JwtRequestFilter;
 
 @Configuration
 @EnableWebSecurity
 @ConditionalOnProperty(name = "diogenes.security.enabled", havingValue = "true", matchIfMissing = true)
-public class WebSecurityConfig {
+public class SecurityConfig {
 
-    @Autowired
-    private UserDetailsService jwtUserDetailsService;
-
-    @Autowired
-    JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
-
-    @Autowired
-    JwtRequestFilter jwtRequestFilter;
+    /**
+     * This bean is used by the JWT authentication endpoint to authenticate a user
+     * with the token
+     * 
+     * @param authenticationConfiguration
+     * @return
+     * @throws Exception
+     */
+    @Bean
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration)
+            throws Exception {
+        return authenticationConfiguration.getAuthenticationManager();
+    }
 
     /**
      * @param introspector
@@ -48,22 +52,31 @@ public class WebSecurityConfig {
         return new MvcRequestMatcher.Builder(introspector);
     }
 
+    /**
+     * Override the default authentication mechanism of spring to select some custom
+     * tables
+     * 
+     * @param dataSource
+     * @return
+     */
     @Bean
-    public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration)
-            throws Exception {
-        return authenticationConfiguration.getAuthenticationManager();
+    UserDetailsManager userDetailsManager(DataSource dataSource) {
+
+        JdbcUserDetailsManager jdbcUserDetailsManager = new JdbcUserDetailsManager(dataSource);
+
+        jdbcUserDetailsManager
+                .setUsersByUsernameQuery("SELECT username, password_hash, active FROM users WHERE username=?");
+        jdbcUserDetailsManager.setAuthoritiesByUsernameQuery("SELECT username, role" +
+                "   FROM users u" +
+                "   JOIN user_roles ur ON u.id = ur.user_id" +
+                "   JOIN roles r ON ur.role_id = r.id" +
+                "   WHERE u.username = ?;");
+        return jdbcUserDetailsManager;
     }
 
-    @Autowired
-    public void configureGlobal(AuthenticationManagerBuilder auth, PasswordEncoder encoder) throws Exception {
-        // configure AuthenticationManager so that it knows from where to load
-        // user for matching credentials
-        // Use BCryptPasswordEncoder
-        auth.userDetailsService(jwtUserDetailsService).passwordEncoder(encoder);
-    }
-
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http, MvcRequestMatcher.Builder mvc)
+    public SecurityFilterChain securityFilterChain(HttpSecurity http, MvcRequestMatcher.Builder mvc,
+            OncePerRequestFilter jwtRequestFilter)
             throws Exception {
         http
                 .csrf(csrf -> csrf.disable())
@@ -80,11 +93,14 @@ public class WebSecurityConfig {
                         .requestMatchers(mvc.pattern("/admin/**")).hasRole("ADMIN")
                         .requestMatchers(mvc.pattern("/api/v1/**")).hasRole("USER")
                         .anyRequest().authenticated())
-                .exceptionHandling(exp -> exp.authenticationEntryPoint(jwtAuthenticationEntryPoint))
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
         // Add a filter to validate the tokens with every request
-        http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
+        http.addFilterBefore(jwtRequestFilter,
+                UsernamePasswordAuthenticationFilter.class);
+
+        // Use basic authentication
+        http.httpBasic(Customizer.withDefaults());
 
         return http.build();
     }

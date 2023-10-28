@@ -1,15 +1,20 @@
 package dev.nichoko.diogenes.utils;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 import javax.crypto.SecretKey;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
@@ -42,6 +47,20 @@ public class JwtUtils implements Serializable {
         return claimsResolver.apply(claims);
     }
 
+    public Collection<GrantedAuthority> getAuthorities(String token) {
+        List<?> roles = getClaimFromToken(token, claims -> claims.get("roles", List.class));
+        List<GrantedAuthority> authorities = new ArrayList<>();
+
+        if (roles != null && roles.stream().allMatch(String.class::isInstance)) {
+            roles.stream()
+                    .map(Object::toString)
+                    .map(SimpleGrantedAuthority::new) // Convert to SimpleGrantedAuthority
+                    .forEach(authorities::add);
+        }
+
+        return authorities;
+    }
+
     // for retrieving any information from token we will need the secret key
     private Claims getAllClaimsFromToken(String token) {
         SecretKey secretKey = Keys.hmacShaKeyFor(this.secret.getBytes());
@@ -56,8 +75,13 @@ public class JwtUtils implements Serializable {
 
     // generate token for user
     public String generateToken(UserDetails userDetails) {
+        List<String> authorities = userDetails.getAuthorities().stream()
+                .map(GrantedAuthority::getAuthority)
+                .collect(Collectors.toList());
+
         Map<String, Object> claims = new HashMap<>();
-        userDetails.getAuthorities().forEach(authority -> claims.put("roles", List.of(authority.getAuthority())));
+        claims.put("roles", authorities);
+
         return doGenerateToken(claims, userDetails.getUsername());
     }
 
@@ -83,8 +107,7 @@ public class JwtUtils implements Serializable {
     }
 
     // validate token
-    public Boolean validateToken(String token, UserDetails userDetails) {
-        final String username = getUsernameFromToken(token);
-        return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
+    public Boolean validateToken(String token) {
+        return !isTokenExpired(token);
     }
 }
