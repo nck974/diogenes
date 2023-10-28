@@ -33,7 +33,7 @@ spring:
 
 logging:
   level:
-    org.springframework.security: TRACE
+    org.springframework.security: DEBUG
 
 # Configure the root folder where images will be uploaded. This is read through the
 # FileStorageConfig
