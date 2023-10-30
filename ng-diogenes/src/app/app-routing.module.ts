@@ -7,6 +7,7 @@ import { CategoriesComponent } from './pages/categories/categories.component';
 import { CategoryDetailComponent } from './pages/category-detail/category-detail.component';
 import { EditCategoryComponent } from './pages/edit-category/edit-category.component';
 import { EditSingleItemComponent } from './pages/edit-item/components/edit-single-item/edit-single-item.component';
+import { LoginComponent } from './pages/login/login.component';
 
 const routes: Routes = [
   { path: 'categories/new', component: EditCategoryComponent },
@@ -24,7 +25,7 @@ const routes: Routes = [
   },
   { path: 'items/:id', component: ItemDetailComponent },
   { path: 'items', component: InventoryComponent },
-  { path: '', component: InventoryComponent },
+  { path: '', component: LoginComponent },
 ];
 
 @NgModule({

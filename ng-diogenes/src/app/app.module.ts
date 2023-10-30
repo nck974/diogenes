@@ -13,6 +13,7 @@ import { ItemDetailModule } from './pages/item-detail/item-detail.module';
 import { CategoryDetailModule } from './pages/category-detail/category-detail.module';
 import { CategoriesModule } from './pages/categories/categories.module';
 import { InventoryModule } from './pages/inventory/inventory.module';
+import { LoginModule } from './pages/login/login.module';
 import { SharedComponentsModule } from './shared/components/shared.components.module';
 
 @NgModule({
@@ -32,6 +33,7 @@ import { SharedComponentsModule } from './shared/components/shared.components.mo
     EditCategoryModule,
     InventoryModule,
     ItemDetailModule,
+    LoginModule,
 
     SharedComponentsModule,
 
