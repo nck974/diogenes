@@ -5,6 +5,7 @@ import javax.sql.DataSource;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
@@ -90,6 +91,7 @@ public class SecurityConfig {
                                 mvc.pattern("/authenticate"),
                                 mvc.pattern("/error"))
                         .permitAll()
+                        .requestMatchers(mvc.pattern(HttpMethod.OPTIONS, "/**")).permitAll()
                         .requestMatchers(mvc.pattern("/admin/**")).hasRole("ADMIN")
                         .requestMatchers(mvc.pattern("/api/v1/**")).hasRole("USER")
                         .anyRequest().authenticated())
