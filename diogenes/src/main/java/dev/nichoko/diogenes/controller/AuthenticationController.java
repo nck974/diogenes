@@ -2,6 +2,7 @@ package dev.nichoko.diogenes.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -43,13 +44,18 @@ public class AuthenticationController {
                 // Generate a JWT token
                 UserDetails userDetails = (UserDetails) authentication.getPrincipal();
                 String token = jwtUtils.generateToken(userDetails);
-                return ResponseEntity.ok(token);
+                return ResponseEntity.ok()
+                        .contentType(MediaType.TEXT_PLAIN)
+                        .body(token);
             }
 
         } catch (BadCredentialsException exception) {
             // pass
         }
 
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("User not authenticated");
+        return ResponseEntity
+                .status(HttpStatus.UNAUTHORIZED)
+                .contentType(MediaType.TEXT_PLAIN)
+                .body("User not authenticated");
     }
 }
