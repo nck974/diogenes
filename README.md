@@ -27,7 +27,7 @@ The application goal is to provide a faster and more user-friendly alternative t
 ### Docker
 
 1. Pull the project or download the `docker-compose.yaml` and `.example.env`.
-1. Create a copy of the `example.env` into a `.env` file with your own passwords.
+1. Create a copy of the `example.env` into a `.env` file with your own passwords (*NOTE*: Make sure the `TOKEN_SECRET` is at least 32 characters long).
 1. Add a certificate or create a self signed one for local network. Put them inside `ssl/cert.pem` and `ssl/cert.key`:
 
   ```bash
