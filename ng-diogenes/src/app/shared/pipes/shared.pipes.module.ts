@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { CapitalizeFirstLetterPipe } from './capitalize-first-letter.pipe';
 import { KeysPipe } from './keys.pipe';
 import { GenerateSelectBoxOptionsPipe } from './generate-select-box-options.pipe';
+import { SecureImagePipe } from './secure-image.pipe';
 
 
 
@@ -11,6 +12,7 @@ import { GenerateSelectBoxOptionsPipe } from './generate-select-box-options.pipe
     CapitalizeFirstLetterPipe,
     KeysPipe,
     GenerateSelectBoxOptionsPipe,
+    SecureImagePipe,
 
   ],
   imports: [
@@ -20,6 +22,7 @@ import { GenerateSelectBoxOptionsPipe } from './generate-select-box-options.pipe
     CapitalizeFirstLetterPipe,
     KeysPipe,
     GenerateSelectBoxOptionsPipe,
+    SecureImagePipe
   ]
 })
 export class SharedPipesModule { }

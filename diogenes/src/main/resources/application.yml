@@ -43,3 +43,12 @@ file:
   images-dir: files/items/images
   # API Endpoint path
   images-base-path: ${server.servlet.context-path}/api/v1/files/images/
+
+diogenes:
+  # Enable authentication
+  security:
+    enabled: true
+
+jwt:
+  # Secret password used in combination with other parameters to generate JWT
+  secret: random-password-todo-reconfigure

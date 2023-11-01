@@ -15,6 +15,7 @@ import { SharedComponentsModule } from 'src/app/shared/components/shared.compone
 import { EditItemImageComponent } from './components/edit-item-image/edit-item-image.component';
 import { EditSingleItemComponent } from './components/edit-single-item/edit-single-item.component';
 import { EditBulkComponent } from './components/edit-bulk/edit-bulk.component';
+import { SharedPipesModule } from 'src/app/shared/pipes/shared.pipes.module';
 
 
 @NgModule({
@@ -32,6 +33,7 @@ import { EditBulkComponent } from './components/edit-bulk/edit-bulk.component';
 
     // Local
     SharedComponentsModule,
+    SharedPipesModule,
 
     // Material
     MatButtonModule,

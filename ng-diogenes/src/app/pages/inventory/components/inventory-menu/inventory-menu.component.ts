@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
+import { AuthenticationService } from 'src/app/shared/services/authentication.service';
 
 @Component({
   selector: 'app-inventory-menu',
@@ -8,13 +9,18 @@ import { Router } from '@angular/router';
 })
 export class InventoryMenuComponent {
 
-  constructor(private router: Router) { }
+  constructor(private router: Router, private authenticationService: AuthenticationService) { }
 
-  onNavigateToCategories() {
+  onNavigateToCategories(): void {
     this.router.navigateByUrl("/categories");
-  }  
-  
-  onNavigateToBulkImport() {
+  }
+
+  onNavigateToBulkImport(): void {
     this.router.navigateByUrl("/items/edit/new/bulk");
+  }
+
+  onLogout(): void {
+    this.authenticationService.logout();
+    this.router.navigateByUrl("/");
   }
 }
