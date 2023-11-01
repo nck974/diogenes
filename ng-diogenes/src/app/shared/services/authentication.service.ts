@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable, tap, } from 'rxjs';
 import { User } from 'src/app/models/User';
 import { environment } from 'src/environments/environment';
+import { JwtHelperService } from '@auth0/angular-jwt';
 
 @Injectable({
   providedIn: 'root'
@@ -13,6 +14,7 @@ export class AuthenticationService {
   private static backendUrl = environment.diogenesBackendURL;
   private static urlPath = "authenticate";
   private url = `${AuthenticationService.backendUrl}/${AuthenticationService.urlPath}`;
+  private jwtHelper = new JwtHelperService();
 
   constructor(private http: HttpClient) { }
 
@@ -33,11 +35,23 @@ export class AuthenticationService {
   }
 
   getToken(): string | null {
-    return this.readToken();
+    const token = this.readToken();
+
+    if (token) {
+      if (this.isTokenExpired(token)) {
+        this.removeToken();
+        return null;
+      }
+    }
+
+    return token;
+  }
+
+  private isTokenExpired(token: string): boolean {
+    return this.jwtHelper.isTokenExpired(token);
   }
 
   private readToken(): string | null {
-
     return localStorage.getItem(AuthenticationService.tokenName);
   }
 

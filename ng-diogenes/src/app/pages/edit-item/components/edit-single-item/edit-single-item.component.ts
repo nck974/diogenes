@@ -66,7 +66,6 @@ export class EditSingleItemComponent implements OnDestroy, OnInit {
           this.item = item;
           this.initializeEditFormWithItemData(item);
         } else if (this.createFromImage) {
-          console.log("Setting image...");
           this.selectedImageBlob = this.createFromImage.file;
         }
       });
