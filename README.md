@@ -36,6 +36,37 @@ The application goal is to provide a faster and more user-friendly alternative t
 1. Start the containers with `docker-compose up -d`
 1. The latest images can be found in the [diogenes](https://hub.docker.com/r/nck974/diogenes/tags) and [diogenes-ng](https://hub.docker.com/r/nck974/diogenes-ng/tags)
 
+### User
+
+1. The default user is username: `test1`, password: `test1`.
+1. It can be modified by generating a new bcrypt hash which can be generated from a site like <https://bcrypt-generator.com/>:
+
+1. First copy the hash and username to the following command into a new file named `token.tmp`. (Make sure to copy it after `{bcrypt}`).
+
+  ```sql
+  UPDATE public.users SET username='test1', password_hash='{bcrypt}$2a$12$8VhADH4b.DnQqSxPa/3BeOxgyl9lD2IT7NrynrZjBACTdJdny1ZNG', active=true WHERE id=1;
+  ```
+
+  1. Copy and execute the update in the container and then delete the file
+
+  ```shell
+  docker cp token.tmp diogenes-db:/tmp
+  docker exec diogenes-db sh -c "psql diogenes_db -U <YOUR_POSTGRES_USER> -f /tmp/token.tmp"
+  docker exec -it diogenes-db rm /tmp/token.tmp
+  ```
+
+1. To add an extra user change the command in the file to insert into and map the role in the table user_roles to the id of the new user.
+
+  ```sql
+  INSERT INTO public.users
+    (username, password_hash, active)
+  VALUES('test1', '{bcrypt}$2a$12$8VhADH4b.DnQqSxPa/3BeOxgyl9lD2IT7NrynrZjBACTdJdny1ZNG', true);
+
+  INSERT INTO public.user_roles
+      (user_id, role_id)
+  VALUES(<ID_OF_THE_USER>, 1);
+  ```
+
 ## Development
 
 ### Backend
