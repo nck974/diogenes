@@ -8,7 +8,9 @@ from faker import Faker
 from faker.providers import DynamicProvider
 import requests
 
-SERVER = "http://localhost:8080/diogenes/api/v1"
+SERVER = "http://localhost:8080/diogenes"
+BASE_URL = f"{SERVER}/api/v1"
+
 
 class Item(BaseModel):
     """
@@ -39,43 +41,57 @@ def generate_random_color() -> str:
     return '%02X%02X%02X' % (r,g,b)
 
 
-def post_categories(categories: list[Category]):
+def post_categories(token: str, categories: list[Category]):
     """
     Create a set of categories
     """
-    url = f"{SERVER}/categories/"
-    headers = {"Content-Type": "application/json"}
+    url = f"{BASE_URL}/categories/"
+    headers = {
+        "Content-Type": "application/json",
+        "Authorization": f"Bearer {token}"
+    }
     for category in categories:
         data = category.model_dump(by_alias=True)
         try:
             res = requests.post(url, json = data, headers = headers, timeout=30)
             res.raise_for_status()
         except requests.exceptions.HTTPError as err:
-            print(f"{category.name} could not be created {err.response.status_code}")
+            if err.response:
+                code = err.response.status_code
+                print(f"{category.name} could not be created {code}")
             continue
 
-def post_items(items: list[Item]):
+def post_items(token: str, items: list[Item]):
     """
     Create a set of items
     """
-    url = f"{SERVER}/item/"
-    headers = {"Content-Type": "application/json"}
+    url = f"{BASE_URL}/item/"
+    headers = {
+        "Content-Type": "application/json",
+        "Authorization": f"Bearer {token}"
+    }
     for item in items:
         data = item.model_dump(by_alias=True)
         try:
             res = requests.post(url, json = data, headers = headers, timeout=30)
             res.raise_for_status()
         except requests.exceptions.HTTPError as err:
-            print(f"{item.name} could not be created {err.response.status_code}")
+            if err.response:
+                print(f"{item.name} could not be created {err.response.status_code}")
             continue
 
 
-def get_all_categories() -> list[Category]:
+def get_all_categories(token: str) -> list[Category]:
     """
     Retrieve all categories
     """
-    url = f"{SERVER}/categories/"
-    res = requests.get(url, timeout=30)
+    url = f"{BASE_URL}/categories/"
+
+    headers = {
+        "Authorization": f"Bearer {token}"
+    }
+
+    res = requests.get(url, headers=headers, timeout=30)
     res.raise_for_status()
     raw_categories = json.loads(res.content)
 
@@ -137,16 +153,31 @@ def create_items(categories: list[Category]) -> list[Item]:
         items.append(item)
     return items
 
+def get_token():
+    """
+    Query to get the token
+    """
+    url = f"{SERVER}/authenticate"
+    data = {
+        "username": "test1",
+        "password": "test1"
+    }
+    res = requests.post(url, json = data, timeout=30)
+    res.raise_for_status()
+
+    return res.content.decode()
+
 
 def main():
     """
     Main code execution
     """
+    token = get_token()
     categories = create_categories()
-    post_categories(categories)
-    categories = get_all_categories()
+    post_categories(token, categories)
+    categories = get_all_categories(token)
     items = create_items(categories)
-    post_items(items)
+    post_items(token, items)
 
 if __name__ == "__main__":
     main()
