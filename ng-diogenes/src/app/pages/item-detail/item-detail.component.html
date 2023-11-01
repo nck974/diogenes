@@ -33,7 +33,7 @@
                 
                 <!-- Image -->
                 <div class="item-image-container item-metadata" *ngIf="item.imagePath">
-                    <img src="{{item.imagePath}}"
+                    <img [attr.src]="item.imagePath | secureImage | async"
                         class="item-image"
                         alt="item-image">
                 </div>

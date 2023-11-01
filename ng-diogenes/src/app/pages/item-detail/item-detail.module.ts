@@ -6,6 +6,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatCardModule } from '@angular/material/card';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
+import { SharedPipesModule } from 'src/app/shared/pipes/shared.pipes.module';
 
 
 
@@ -16,6 +17,7 @@ import { MatButtonModule } from '@angular/material/button';
 
     // Internal
     SharedComponentsModule,
+    SharedPipesModule,
 
     // External
     MatIconModule,

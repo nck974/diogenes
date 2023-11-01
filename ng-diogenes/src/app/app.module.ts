@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
-import { HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -15,6 +15,7 @@ import { CategoriesModule } from './pages/categories/categories.module';
 import { InventoryModule } from './pages/inventory/inventory.module';
 import { LoginModule } from './pages/login/login.module';
 import { SharedComponentsModule } from './shared/components/shared.components.module';
+import { AuthenticationInterceptor } from './shared/interceptors/authentication.interceptor';
 
 @NgModule({
   declarations: [
@@ -38,6 +39,13 @@ import { SharedComponentsModule } from './shared/components/shared.components.mo
     SharedComponentsModule,
 
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  providers: [
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthenticationInterceptor,
+      multi: true
+    }
+  ]
 })
 export class AppModule { }
