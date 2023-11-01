@@ -12,6 +12,7 @@ The application goal is to provide a faster and more user-friendly alternative t
 
 - [Usage](#usage)
   - [Docker](#docker)
+  - [Users](#users)
 - [Development](#development)
   - [Backend](#backend)
     - [Run tests](#run-tests)
@@ -26,7 +27,7 @@ The application goal is to provide a faster and more user-friendly alternative t
 ### Docker
 
 1. Pull the project or download the `docker-compose.yaml` and `.example.env`.
-1. Create a copy of the `example.env` into a `.env` file with your own passwords.
+1. Create a copy of the `example.env` into a `.env` file with your own passwords (*NOTE*: Make sure the `TOKEN_SECRET` is at least 32 characters long).
 1. Add a certificate or create a self signed one for local network. Put them inside `ssl/cert.pem` and `ssl/cert.key`:
 
   ```bash
@@ -36,7 +37,7 @@ The application goal is to provide a faster and more user-friendly alternative t
 1. Start the containers with `docker-compose up -d`
 1. The latest images can be found in the [diogenes](https://hub.docker.com/r/nck974/diogenes/tags) and [diogenes-ng](https://hub.docker.com/r/nck974/diogenes-ng/tags)
 
-### User
+### Users
 
 1. The default user is username: `test1`, password: `test1`.
 1. It can be modified by generating a new bcrypt hash which can be generated from a site like <https://bcrypt-generator.com/>:
