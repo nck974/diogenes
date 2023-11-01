@@ -1,17 +1,17 @@
 -- create the roles used by the app
 INSERT INTO
-    public.roles (id, "role")
+    roles (id, "role")
 VALUES
     (1, 'ROLE_USER');
 
 INSERT INTO
-    public.roles (id, "role")
+    roles (id, "role")
 VALUES
     (2, 'ROLE_ADMIN');
 
 -- create a user test1 with password test1
 INSERT INTO
-    public.users (id, username, password_hash, active)
+    users (id, username, password_hash, active)
 VALUES
     (
         1,
@@ -22,6 +22,6 @@ VALUES
 
 -- map user role to the user
 INSERT INTO
-    public.user_roles (user_id, role_id)
+    user_roles (user_id, role_id)
 VALUES
 (1, 1);

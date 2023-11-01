@@ -7,7 +7,7 @@ CREATE TABLE users (
 
 CREATE TABLE roles (
     id SERIAL PRIMARY KEY,
-    role varchar(50) NOT NULL
+    "role" varchar(50) NOT NULL
 );
 
 CREATE TABLE user_roles (
