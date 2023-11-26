@@ -1,14 +1,14 @@
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, ParamMap } from '@angular/router';
 import { Observable, Subscription, catchError, combineLatest, finalize, map, of, switchMap, take, throwError } from 'rxjs';
 import { Category } from 'src/app/models/Category';
+import { ImageTransfer } from 'src/app/models/ImageTransfer';
 import { Item } from 'src/app/models/Item';
 import { CategoryService } from 'src/app/shared/services/category.service';
 import { ItemService } from 'src/app/shared/services/item.service';
 import { MessageService } from 'src/app/shared/services/message.service';
-import { MatDialog } from '@angular/material/dialog';
-import { ImageTransfer } from 'src/app/models/ImageTransfer';
 
 @Component({
   selector: 'app-edit-single-item',
@@ -68,7 +68,27 @@ export class EditSingleItemComponent implements OnDestroy, OnInit {
         } else if (this.createFromImage) {
           this.selectedImageBlob = this.createFromImage.file;
         }
+        this.preselectPreviousCategory();
       });
+  }
+
+  /// If there is ca category saved in the browser and it is a new item auto-select the category
+  /// as it is likely to be creating items from a similar category
+  private preselectPreviousCategory(): void {
+
+    if (!this.isNewItem) {
+      return;
+    }
+
+    let lastCategory = localStorage.getItem("last-category");
+    if (lastCategory && this.categories) {
+      for (let category of this.categories) {
+        if (category.name == lastCategory) {
+          this.itemForm.get("categoryId")?.setValue(category.id);
+          break;
+        }
+      }
+    }
   }
 
   onAddNewImage(newValue?: Blob) {
@@ -157,6 +177,10 @@ export class EditSingleItemComponent implements OnDestroy, OnInit {
         .subscribe(
           item => {
             this.messageService.add(`Item ${item.name} was ${itemTypeMessage}`);
+
+            // Save the current category for the next item creation
+            localStorage.setItem("last-category", item.category.name);
+
             this.onItemCreate.emit(true);
           }
         );
