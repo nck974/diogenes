@@ -1,6 +1,9 @@
 // This file contains the styling of the card components, e.g. showing the content of an item
-.material-card-element {
+.card-wrapper {
     margin: 0.5rem;
+}
+
+.material-card-element {
     max-width: 600px;
     padding: 1rem;
     width: 100%;

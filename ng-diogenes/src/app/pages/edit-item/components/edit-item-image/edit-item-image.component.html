@@ -5,7 +5,7 @@
     class="hidden-input">
 
 <!-- Show current image -->
-<div class="item-image-container"
+<div class="item-image-container thin-border"
     *ngIf="imagePath && !selectedImage; else addNewImageTemplate">
     <img [attr.src]="imagePath | secureImage | async"
         class="item-image"
@@ -26,7 +26,7 @@
 <ng-template #addNewImageTemplate>
 
     <!-- Preview -->
-    <div class="item-image-container"
+    <div class="item-image-container thin-border"
         *ngIf="selectedImage; else addImageForm">
         <img [src]="selectedImage"
             class="item-image"

@@ -12,8 +12,8 @@
 
 <ng-template #notLoading>
 
-    <div class="center-card" *ngIf="item; else notFound">
-        <mat-card align="center" class="card">
+    <div class="flex-center card-wrapper" *ngIf="item; else notFound">
+        <mat-card class="material-card-element">
             <!-- Header -->
             <mat-card-header>
                 <mat-card-title>
@@ -30,9 +30,10 @@
 
             <!-- Content -->
             <mat-card-content>
-                
+
                 <!-- Image -->
-                <div class="item-image-container item-metadata" *ngIf="item.imagePath">
+                <div class="item-image-container thin-border"
+                    *ngIf="item.imagePath">
                     <img [attr.src]="item.imagePath | secureImage | async"
                         class="item-image"
                         alt="item-image">
@@ -40,7 +41,7 @@
 
                 <p class="item-description no-overflow">{{ item.description }}</p>
 
-                <div class="item-metadata">
+                <div class="item-image-container thin-border">
                     <p>Number of items: {{ item.number }}</p>
                     <p>Last Updated: {{ item.updatedOn | date:'medium' }}</p>
                     <p>Created On: {{ item.createdOn | date:'medium' }}</p>
