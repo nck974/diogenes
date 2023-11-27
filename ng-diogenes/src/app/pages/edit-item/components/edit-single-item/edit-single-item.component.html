@@ -12,11 +12,11 @@
 
     <ng-template #itemFormTemplate>
 
-        <div class="center">
-            <mat-card align="center" class="card">
+        <div class="flex-center">
+            <mat-card class="material-card-element">
 
-                <mat-card-title class="center title">
-                    {{isNewItem ? "Create item" : "Edit item"}}
+                <mat-card-title class="flex-center material-card-title">
+                    {{isNewItem ? "Create new item" : "Edit item"}}
                 </mat-card-title>
 
                 <!-- Item Image -->
@@ -27,22 +27,13 @@
                     [isLoading]="isLoading"></app-edit-item-image>
 
                 <!-- JSON form -->
-                <form class="form" [formGroup]="itemForm"
+                <form class="space-one-line" [formGroup]="itemForm"
                     (ngSubmit)="onSubmit()">
-
-                    <br>
 
                     <mat-form-field>
                         <mat-label>Name</mat-label>
                         <input matInput required maxlength="50"
                             formControlName="name">
-                    </mat-form-field>
-
-                    <mat-form-field>
-                        <mat-label>Description</mat-label>
-                        <textarea matInput formControlName="description"
-                            class="textarea-height"
-                            maxlength="2000"></textarea>
                     </mat-form-field>
 
                     <mat-form-field>
@@ -61,7 +52,14 @@
                         </mat-select>
                     </mat-form-field>
 
-                    <div class="center">
+                    <mat-form-field>
+                        <mat-label>Description</mat-label>
+                        <textarea matInput formControlName="description"
+                            class="textarea-height"
+                            maxlength="2000"></textarea>
+                    </mat-form-field>
+
+                    <div class="flex-center">
                         <button mat-raised-button color="primary" type="submit"
                             [disabled]="itemForm.invalid">{{isNewItem ? "Submit"
                             : "Save"}}</button>

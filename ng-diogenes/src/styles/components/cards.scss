@@ -1,0 +1,15 @@
+// This file contains the styling of the card components, e.g. showing the content of an item
+.material-card-element {
+    margin: 0.5rem;
+    max-width: 600px;
+    padding: 1rem;
+}
+
+.material-card-title {
+    margin: 1rem 1rem 2rem 1rem !important;
+    font-weight: bolder;
+}
+
+.material-card-element mat-form-field {
+    width: 100%;
+}

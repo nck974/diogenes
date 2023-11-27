@@ -1,0 +1,11 @@
+// This file contains common styling to align items
+
+.flex-center {
+    display: flex;
+    align-self: center;
+    justify-content: center;
+}
+
+.space-one-line {
+    padding-top: 1rem;
+}
