@@ -1,21 +1,3 @@
-// Image
-.item-image-container {
-    max-width: 60rem;
-    padding: 10px;
-    border: 1px solid #ccc;
-}
-
-.item-image {
-    width: 100%;
-    height: auto;
-}
-
-.item-image-buttons-container {
-    display: flex;
-    justify-content: flex-end;
-}
-
-.item-add-new-image-container {
-    display: flex;
-    justify-content: center;
+.hidden-input {
+    display: none;
 }
