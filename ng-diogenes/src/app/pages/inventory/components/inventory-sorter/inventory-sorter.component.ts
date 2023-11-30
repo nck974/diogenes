@@ -1,4 +1,5 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { ItemSorter } from 'src/app/models/ItemSorter';
 import { SortingField } from 'src/app/models/SortingField';
 
@@ -8,19 +9,22 @@ import { SortingField } from 'src/app/models/SortingField';
   styleUrls: ['./inventory-sorter.component.scss']
 })
 export class InventorySorterComponent implements OnInit {
-  @Output() sortItems = new EventEmitter<ItemSorter>();
   options: string[] = []
-  selectedOption: string = "Order by...";
-  isOpen: boolean = false;
-  optionHasBeenSelected: boolean = false;
+  selectedOption: string = "Sort by...";
 
+  constructor(public dialogRef: MatDialogRef<InventorySorterComponent>,
+    @Inject(MAT_DIALOG_DATA) public previousSorter: ItemSorter
+  ) { }
 
   ngOnInit(): void {
     this.options = this.generateSortingOptions();
+    this.preselectPreviousSorter();
   }
 
-  toggleDropdown() {
-    this.isOpen = !this.isOpen;
+  private preselectPreviousSorter() {
+    if (this.previousSorter) {
+      this.selectedOption = `${this.previousSorter.field}__${this.previousSorter.direction}`;
+    }
   }
 
   generateSortingOptions(): string[] {
@@ -38,11 +42,10 @@ export class InventorySorterComponent implements OnInit {
   }
 
   onSelectOption(option: string): void {
-    this.optionHasBeenSelected = true;
     this.selectedOption = option;
-    this.isOpen = false;
     const [filterName, filterDirection] = option.split('__');
-    this.sortItems.emit({ field: filterName, direction: filterDirection });
+    let itemSorter: ItemSorter = { field: filterName, direction: filterDirection };
+    this.dialogRef.close(itemSorter);
   }
 
   private getOptionDetails(option: string): { filterName: string, isAscending: boolean } {
@@ -51,18 +54,10 @@ export class InventorySorterComponent implements OnInit {
     return { filterName, isAscending };
   }
 
-  isSortAscending(option: string): boolean {
-    const { isAscending } = this.getOptionDetails(option)
-    if (isAscending) {
-      return true;
-    }
-    return false;
-  }
-
   displayOption(option: string): string {
     const { filterName, isAscending } = this.getOptionDetails(option)
 
-    if (isAscending){
+    if (isAscending) {
       return filterName + " ↑";
     }
 

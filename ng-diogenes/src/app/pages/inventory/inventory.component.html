@@ -1,19 +1,25 @@
+<!-- Toolbar -->
 <mat-toolbar>
-    <mat-toolbar-row>
-        <div class="select-items-container">
-            <span class="logo-container">
-                <img class="logo" src="assets/logo/logo_transparent.png" alt="Logo">
-                Diogenes
-            </span>
+    <!-- Logo and menu -->
+    <mat-toolbar-row class="flex-row-spaced-apart">
+        <div class="flex-center">
+            <img class="logo" src="assets/logo/logo_transparent.png"
+                alt="Logo">
+            Diogenes
+        </div>
+        <div class="flex-end">
+            <button mat-icon-button aria-label="Filter" (click)="onOpenFilter()"
+                title=Filter>
+                <mat-icon>filter_list</mat-icon>
+            </button>
+            <button mat-icon-button aria-label="Sorter" (click)="onOpenSorter()"
+                title=Sort>
+                <mat-icon>swap_vert</mat-icon>
+            </button>
             <app-inventory-menu></app-inventory-menu>
         </div>
     </mat-toolbar-row>
-    <mat-toolbar-row class="extended-size-row">
-        <div class="select-items-container">
-            <app-inventory-filter (filterItems)="onFilterItems($event)"></app-inventory-filter>
-            <app-inventory-sorter (sortItems)="onSortItems($event)"></app-inventory-sorter>
-        </div>
-    </mat-toolbar-row>
+
 </mat-toolbar>
 
 <!-- Show a add item as float action button -->

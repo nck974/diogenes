@@ -4,12 +4,31 @@
     display: flex;
     align-self: center;
     justify-content: center;
+    align-items: center;
+}
+
+.full-width {
+    width: 100%;
 }
 
 .flex-end {
     display: flex;
     justify-content: flex-end;
+    align-items: center;
 }
+
+.flex-start {
+    display: flex;
+    justify-content: flex-start;
+}
+
+.flex-row-spaced-apart {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
 
 .space-one-line {
     padding-top: 1rem;

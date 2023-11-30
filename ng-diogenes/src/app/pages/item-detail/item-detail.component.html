@@ -38,9 +38,13 @@
                         class="item-image"
                         alt="item-image">
                 </div>
+                
+                <!-- Description -->
+                <p class="item-description no-overflow" *ngIf="item.description">
+                    {{ item.description }}
+                </p>
 
-                <p class="item-description no-overflow">{{ item.description }}</p>
-
+                <!-- Metadata -->
                 <div class="item-image-container thin-border">
                     <p>Number of items: {{ item.number }}</p>
                     <p>Last Updated: {{ item.updatedOn | date:'medium' }}</p>
