@@ -9,6 +9,11 @@
     width: 100%;
 }
 
+.material-card-element-no-padding {
+    max-width: 600px;
+    width: 100%;
+}
+
 .material-card-title {
     margin: 1rem 1rem 2rem 1rem !important;
     font-weight: bolder;
@@ -16,4 +21,10 @@
 
 .material-card-element mat-form-field {
     width: 100%;
+}
+
+
+.card-with-hover-effect:hover {
+    border: 1px solid white;
+    box-shadow: 8px 8px 2px 1px #7b1fa21a;
 }
