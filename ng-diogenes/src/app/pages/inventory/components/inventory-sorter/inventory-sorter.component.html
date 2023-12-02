@@ -1,10 +1,18 @@
-<mat-form-field>
-    <mat-label>Order by</mat-label>
-    <mat-select [(ngModel)]="selectedOption"
-        (selectionChange)="onSelectOption($event.value)">
-        <mat-option *ngFor="let option of generateSortingOptions()"
-            [value]="option">
-            {{ displayOption(option) | lowercase | capitalizeFirstLetter }}
-        </mat-option>
-    </mat-select>
-</mat-form-field>
+<h1 mat-dialog-title>
+    Sort
+</h1>
+
+<div mat-dialog-content>
+
+    <mat-form-field>
+        <mat-label>Order by</mat-label>
+        <mat-select [(ngModel)]="selectedOption"
+            (selectionChange)="onSelectOption($event.value)">
+            <mat-option *ngFor="let option of generateSortingOptions()"
+                [value]="option">
+                {{ displayOption(option) | lowercase | capitalizeFirstLetter }}
+            </mat-option>
+        </mat-select>
+    </mat-form-field>
+
+</div>

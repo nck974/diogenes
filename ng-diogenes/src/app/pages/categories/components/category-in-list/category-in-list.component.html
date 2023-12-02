@@ -1,13 +1,17 @@
-<mat-card class="card" *ngIf="category">
+<div class="card-wrapper flex-center">
+    <mat-card class="material-card-element-no-padding card-with-hover-effect"
+        *ngIf="category">
 
-    <mat-card-header>
+        <mat-card-header>
 
-        <mat-card-title class="card-header" (click)="onOpenDetails()" title="{{category.description}}">
-            {{ category.name }}
-        </mat-card-title>
+            <mat-card-title class="show-pointer" (click)="onOpenDetails()"
+                title="{{category.description}}">
+                {{ category.name }}
+            </mat-card-title>
 
-        <div mat-card-avatar [style.background-color]="getAvatarColor()"></div>
+            <div mat-card-avatar [style.background-color]="getAvatarColor()"></div>
 
-    </mat-card-header>
+        </mat-card-header>
 
-</mat-card>
+    </mat-card>
+</div>

@@ -9,6 +9,7 @@ import { ErrorCardComponent } from './error-card/error-card.component';
 import { ConfirmationDialogComponent } from './confirmation-dialog/confirmation-dialog.component';
 import { MessageComponent } from './messages/message.component';
 import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
 
 
 
@@ -28,6 +29,7 @@ import { MatButtonModule } from '@angular/material/button';
     MatCardModule,
     MatProgressSpinnerModule,
     MatSnackBarModule,
+    MatIconModule,
   ],
   exports: [
     LoadingSpinnerComponent,

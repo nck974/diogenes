@@ -1,11 +1,13 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { Subscription, catchError } from 'rxjs';
 import { Item } from 'src/app/models/Item';
 import { ItemFilter } from 'src/app/models/ItemFilter';
 import { ItemSorter } from 'src/app/models/ItemSorter';
 import { ItemService } from 'src/app/shared/services/item.service';
-import { MessageService } from 'src/app/shared/services/message.service';
+import { InventoryFilterComponent } from './components/inventory-filter/inventory-filter.component';
+import { InventorySorterComponent } from './components/inventory-sorter/inventory-sorter.component';
 
 @Component({
   selector: 'app-inventory',
@@ -25,7 +27,7 @@ export class InventoryComponent implements OnInit, OnDestroy {
   isLoading = false;
   fetchingInProgress = false;
 
-  constructor(private itemService: ItemService, private messageService: MessageService, private router: Router) { }
+  constructor(private itemService: ItemService, private router: Router, private dialog: MatDialog,) { }
 
   ngOnInit(): void {
     this.fetchNextPage()
@@ -72,16 +74,48 @@ export class InventoryComponent implements OnInit, OnDestroy {
     this.isLoading = false;
   }
 
-  onFilterItems(filter: ItemFilter) {
+  onOpenFilter(): void {
+    const dialogRef = this.dialog.open(InventoryFilterComponent, {
+      data: this.itemFilter,
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result === undefined) {
+        return;
+      }
+      this.onFilterItems(result);
+    });
+  }
+
+  onOpenSorter(): void {
+    const dialogRef = this.dialog.open(InventorySorterComponent, {
+      data: this.itemSorter,
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result === undefined) {
+        return;
+      }
+      this.onSortItems(result);
+    });
+  }
+
+  private onFilterItems(filter?: ItemFilter | null): void {
     if (JSON.stringify(filter) === JSON.stringify(this.itemFilter)) {
       return;
     }
 
-    this.itemFilter = filter;
+    // Reset filter (different from closing the popup with undefined)
+    if (filter != null) {
+      this.itemFilter = filter;
+    } else {
+      this.itemFilter = undefined;
+    }
+
     this.resetLoadedItems()
   }
 
-  onSortItems(sorter: ItemSorter) {
+  private onSortItems(sorter: ItemSorter) {
     if (JSON.stringify(sorter) === JSON.stringify(this.itemSorter)) {
       return;
     }

@@ -1,18 +1,30 @@
-<form [formGroup]="form" (ngSubmit)="onApplyFilters()">
-    <div class="filter-container">
-        <app-text-filter [filterName]="nameFilterName"
-            [control]="getFilterControl(nameFilterName)"></app-text-filter>
-        <app-text-filter [filterName]="numberFilterName"
-            [control]="getFilterControl(numberFilterName)"></app-text-filter>
-        <app-text-filter [filterName]="descriptionFilterName"
-            [control]="getFilterControl(descriptionFilterName)"></app-text-filter>
-        <app-select-filter [filterName]="'category'"
-            [control]="getFilterControl(categoryIdFilterName)" [options]="categories | generateSelectBoxOptions"></app-select-filter>
 
-        <div class="action-container">
-            <button mat-raised-button color="primary" type="submit">Apply Filters</button>
-            <button mat-raised-button color="accent"
-                (click)="onClearFilters()" *ngIf="filterIsActive">Clear Filters</button>
+<h1 mat-dialog-title>
+    Filter
+</h1>
+
+<div mat-dialog-content>
+    <form [formGroup]="form" (ngSubmit)="onApplyFilters()">
+        <div>
+            <!-- Filters -->
+            <app-text-filter [filterName]="nameFilterName"
+                [control]="getFilterControl(nameFilterName)"></app-text-filter>
+            <app-text-filter [filterName]="numberFilterName"
+                [control]="getFilterControl(numberFilterName)"></app-text-filter>
+            <app-text-filter [filterName]="descriptionFilterName"
+                [control]="getFilterControl(descriptionFilterName)"></app-text-filter>
+            <app-select-filter [filterName]="'category'"
+                [control]="getFilterControl(categoryIdFilterName)"
+                [options]="categories | generateSelectBoxOptions"></app-select-filter>
+
+            <!-- Actions -->
+            <div mat-dialog-actions>
+                <div class="flex-center full-width">
+                    <button mat-raised-button color="accent"
+                        (click)="onClearFilters()" *ngIf="filterIsActive">Clear</button>
+                    <button mat-raised-button color="primary" type="submit">Filter</button>
+                </div>
+            </div>
         </div>
-    </div>
-</form>
+    </form>
+</div>

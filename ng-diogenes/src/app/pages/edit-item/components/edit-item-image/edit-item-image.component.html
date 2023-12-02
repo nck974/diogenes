@@ -2,20 +2,20 @@
 <input #fileInput type="file"
     accept="image/gif, image/jpeg, image/png"
     (change)="onFileSelected($event)"
-    style="display: none">
+    class="hidden-input">
 
-<!-- Show actual image -->
-<div class="item-image-container"
+<!-- Show current image -->
+<div class="item-image-container thin-border"
     *ngIf="imagePath && !selectedImage; else addNewImageTemplate">
     <img [attr.src]="imagePath | secureImage | async"
         class="item-image"
         alt="item-image">
-    <div class="item-image-buttons-container">
-        <button mat-icon-button class="edit-button"
+    <div class="flex-end">
+        <button mat-icon-button
             (click)="fileInput.click()">
             <mat-icon>edit</mat-icon>
         </button>
-        <button mat-icon-button class="delete-button"
+        <button mat-icon-button
             (click)="onDeleteImage()">
             <mat-icon>delete</mat-icon>
         </button>
@@ -26,13 +26,13 @@
 <ng-template #addNewImageTemplate>
 
     <!-- Preview -->
-    <div class="item-image-container"
+    <div class="item-image-container thin-border"
         *ngIf="selectedImage; else addImageForm">
         <img [src]="selectedImage"
             class="item-image"
             alt="selected-image">
-        <div class="item-image-buttons-container">
-            <button mat-icon-button class="delete-button"
+        <div class="flex-end">
+            <button mat-icon-button
                 (click)="onFileDeselected()">
                 <mat-icon>delete</mat-icon>
             </button>
@@ -42,7 +42,7 @@
     <!-- Form -->
     <ng-template #addImageForm>
         <label for="file-input">
-            <div class="item-add-new-image-container">
+            <div class="flex-center">
                 <button mat-icon-button class="add-image-button"
                     (click)="fileInput.click()">
                     <mat-icon>add_a_photo</mat-icon>
