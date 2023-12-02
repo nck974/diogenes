@@ -19,16 +19,18 @@
 
     <ng-template #categoryFormTemplate>
 
-        <div class="center">
-            <mat-card align="center" class="card">
+        <div class="flex-center card-wrapper">
+            <mat-card class="material-card-element">
 
-                <form class="form" [formGroup]="categoryForm"
+                <!-- Title -->
+                <mat-card-title class="flex-center material-card-title">
+                    {{isNewCategory ? "Create category" : "Edit category"}}
+                </mat-card-title>
+
+                <form [formGroup]="categoryForm"
                     (ngSubmit)="onSubmit()">
 
-                    <mat-card-title class="center title">
-                        {{isNewCategory ? "Create category" : "Edit category"}}
-                    </mat-card-title>
-
+                    <!-- Fields -->
                     <mat-form-field>
                         <mat-label>Name</mat-label>
                         <input matInput required maxlength="50"
@@ -49,9 +51,12 @@
                         <ngx-mat-color-picker #picker></ngx-mat-color-picker>
                     </mat-form-field>
 
-                    <div class="center">
+                    <!-- Button -->
+                    <div class="flex-center">
                         <button mat-raised-button color="primary" type="submit"
-                            [disabled]="categoryForm.invalid">Submit</button>
+                            [disabled]="categoryForm.invalid">
+                            {{isNewCategory ? "Create" : "Save"}}
+                        </button>
                     </div>
 
                 </form>

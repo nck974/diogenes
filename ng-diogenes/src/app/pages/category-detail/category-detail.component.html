@@ -12,8 +12,8 @@
 
 <ng-template #notLoading>
 
-    <div class="center-card" *ngIf="category; else notFound">
-        <mat-card align="center" class="card">
+    <div class="flex-center card-wrapper" *ngIf="category; else notFound">
+        <mat-card class="material-card-element-no-padding">
             <!-- Header -->
             <mat-card-header>
                 <mat-card-title>
@@ -26,8 +26,10 @@
 
             <!-- Content -->
             <mat-card-content>
-                <p class="no-overflow">{{ category.description }}</p>
-                <div class="category-metadata">
+                <p class="no-overflow" *ngIf="category.description">
+                    {{ category.description }}
+                </p>
+                <div class="item-image-container thin-border">
                     <p>Last Updated: {{ category.updatedOn | date:'medium' }}</p>
                     <p>Created On: {{ category.createdOn | date:'medium' }}</p>
                 </div>
@@ -36,12 +38,13 @@
             <!-- Action buttons -->
             <mat-card-actions align="end">
 
-                <button mat-icon-button aria-label="Edit category"
+                <button mat-icon-button aria-label="Edit category" title="Edit"
                     (click)="onEditCategory()">
                     <mat-icon>edit</mat-icon>
                 </button>
 
                 <button mat-icon-button aria-label="Delete category"
+                    title="Delete"
                     (click)="onDeleteCategory()">
                     <mat-icon>delete</mat-icon>
                 </button>

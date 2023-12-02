@@ -58,11 +58,14 @@
                             class="textarea-height"
                             maxlength="2000"></textarea>
                     </mat-form-field>
-
+                    
+                    <!-- Action -->
                     <div class="flex-center">
                         <button mat-raised-button color="primary" type="submit"
-                            [disabled]="itemForm.invalid">{{isNewItem ? "Submit"
-                            : "Save"}}</button>
+                            [disabled]="itemForm.invalid">
+                            {{isNewItem ? "Create"
+                            : "Save"}}
+                        </button>
                     </div>
 
                 </form>

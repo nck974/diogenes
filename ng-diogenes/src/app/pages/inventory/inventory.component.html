@@ -38,9 +38,12 @@
     <app-loading-spinner></app-loading-spinner>
 </div>
 <ng-template #notLoading>
+
+    <!-- Infinite scroll -->
     <div infiniteScroll (scrolled)="onScroll()"
         [infiniteScrollDistance]="0.5"
-        [infiniteScrollDisabled]="lastPage" id="item-list">
+        [infiniteScrollDisabled]="lastPage" id="item-list"
+        *ngIf="items; else noItems">
         <div *ngFor="let item of items">
             <app-item-in-list [item]="item"></app-item-in-list>
         </div>
@@ -48,4 +51,11 @@
             <app-loading-spinner></app-loading-spinner>
         </div>
     </div>
+
+    <!-- Empty list -->
+    <ng-template #noItems>
+        <app-error-card [title]="'No items found'" [icon]="'error'"
+            [content]="'There are no items in the inventory yet.'"></app-error-card>
+    </ng-template>
+
 </ng-template>

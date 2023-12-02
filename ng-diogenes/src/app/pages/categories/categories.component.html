@@ -14,10 +14,11 @@
 <!-- Show a add category as float action button -->
 <div class="fab-container">
     <button mat-fab color="primary"
-        (click)="onCreateNewCategory()"><mat-icon>add</mat-icon></button>
+        (click)="onCreateNewCategory()"><mat-icon>add</mat-icon>
+    </button>
 </div>
 
-<!-- Show inventory -->
+<!-- Show categories -->
 <div *ngIf="isLoading; else notLoading">
     <app-loading-spinner></app-loading-spinner>
 </div>
