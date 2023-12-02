@@ -106,11 +106,12 @@ export class InventoryComponent implements OnInit, OnDestroy {
     }
 
     // Reset filter (different from closing the popup with undefined)
-    if (filter === null) {
-      filter = undefined;
+    if (filter != null) {
+      this.itemFilter = filter;
+    } else {
+      this.itemFilter = undefined;
     }
 
-    this.itemFilter = filter;
     this.resetLoadedItems()
   }
 

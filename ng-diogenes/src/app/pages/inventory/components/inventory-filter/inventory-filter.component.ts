@@ -1,20 +1,13 @@
 import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
-import { AbstractControl, FormBuilder, FormControl, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
 import { Category } from 'src/app/models/Category';
 import { ItemFilter } from 'src/app/models/ItemFilter';
 import { CategoryService } from 'src/app/shared/services/category.service';
+import { isNumberValidator } from 'src/app/utils/form-validator/number';
 
-export function isNumberValidator(): ValidatorFn {
 
-  console.log("Calling isNumberValidator")
-  return (control: AbstractControl): ValidationErrors | null => {
-    const isNumber = !isNaN(control.value as number);
-    console.log("Is number is " + isNumber + " from " + control.value)
-    return isNumber ? null : { isNotANumber: { value: control.value } };
-  };
-}
 
 @Component({
   selector: 'app-inventory-filter',
@@ -34,7 +27,7 @@ export class InventoryFilterComponent implements OnInit, OnDestroy {
   // Dropbox options
   categorySubscription?: Subscription;
   categories: Category[] = [];
-  
+
   // Status to clear filters
   filterIsActive = false;
 
@@ -42,7 +35,7 @@ export class InventoryFilterComponent implements OnInit, OnDestroy {
     private fb: FormBuilder,
     private categoryService: CategoryService,
     public dialogRef: MatDialogRef<InventoryFilterComponent>,
-    @Inject(MAT_DIALOG_DATA) public previousFilter: ItemFilter) {
+    @Inject(MAT_DIALOG_DATA) public previousFilter?: ItemFilter) {
     this.form = this.fb.group({
       name: new FormControl("", [Validators.maxLength(50)]),
       number: new FormControl("", [isNumberValidator()]),
@@ -62,8 +55,15 @@ export class InventoryFilterComponent implements OnInit, OnDestroy {
     });
   }
 
-  private prefillPreviousFilter() {
+  private prefillPreviousFilter(): void {
     if (this.previousFilter) {
+      
+      // If there no keys different to null then skip this
+      const hasNonNullValue = Object.values(this.previousFilter).some(value => value !== null);
+      if (!hasNonNullValue) {
+        return;
+      }
+
       this.form.patchValue(
         {
           "name": this.previousFilter.name,
