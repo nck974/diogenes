@@ -1,3 +1,19 @@
-.thin-border{
+.thin-border {
     border: 1px solid #ccc;
+}
+
+.dashed-border {
+    border: 2px dashed #ccc;
+}
+
+.hover-dashed-border {
+    transition: border-color 0.3s ease;
+}
+
+.hover-dashed-border:hover {
+    border-color: #7b1fa21a;
+}
+
+.drag-over-border {
+    border-color: #7b1fa2d5 !important;
 }

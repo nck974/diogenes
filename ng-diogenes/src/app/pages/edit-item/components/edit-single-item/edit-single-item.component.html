@@ -15,7 +15,7 @@
         <div class="flex-center card-wrapper">
             <mat-card class="material-card-element">
 
-                <mat-card-title class="flex-center material-card-title">
+                <mat-card-title class="flex-center material-card-title" *ngIf="!hideTitle">
                     {{isNewItem ? "Create new item" : "Edit item"}}
                 </mat-card-title>
 

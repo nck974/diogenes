@@ -17,6 +17,7 @@ import { MessageService } from 'src/app/shared/services/message.service';
 })
 export class EditSingleItemComponent implements OnDestroy, OnInit {
   @Input() createFromImage?: ImageTransfer;
+  @Input() hideTitle?: boolean = false;
   @Output() onItemCreate = new EventEmitter<boolean>();
   initializationSubscription?: Subscription;
 
@@ -72,7 +73,7 @@ export class EditSingleItemComponent implements OnDestroy, OnInit {
       });
   }
 
-  /// If there is ca category saved in the browser and it is a new item auto-select the category
+  /// If there is category saved in the browser and it is a new item auto-select the category
   /// as it is likely to be creating items from a similar category
   private preselectPreviousCategory(): void {
 

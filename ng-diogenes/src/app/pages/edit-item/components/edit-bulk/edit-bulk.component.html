@@ -1,43 +1,54 @@
  <!-- Display multiple forms as a stepper -->
-<div
-    *ngIf="selectedImages && selectedImages.length > 0; else selectMultipleImages"
-    class="stepper-container">
-    <mat-vertical-stepper [linear]="true" #stepper>
-        <mat-step *ngFor="let image of selectedImages; let index = index"
-            [editable]="!isStepCompleted(index)">
+<div class="card-wrapper flex-center">
+    <div
+        *ngIf="selectedImages && selectedImages.length > 0; else selectMultipleImages"
+        class="material-card-element">
+        <mat-vertical-stepper [linear]="true" #stepper>
+            <mat-step *ngFor="let image of selectedImages; let index = index"
+                [editable]="!isStepCompleted(index)">
 
-            <ng-template matStepLabel>Item {{index + 1}}</ng-template>
-            <app-edit-single-item [createFromImage]="image"
-                (onItemCreate)="onFinishStep($event, index)"></app-edit-single-item>
-        </mat-step>
-    </mat-vertical-stepper>
+                <ng-template matStepLabel>Item {{index + 1}}</ng-template>
+                <app-edit-single-item [createFromImage]="image"
+                    [hideTitle]="true"
+                    (onItemCreate)="onFinishStep($event, index)"></app-edit-single-item>
+            </mat-step>
+        </mat-vertical-stepper>
+    </div>
 </div>
 
 <!-- Select images button -->
 <ng-template #selectMultipleImages>
+
     <!-- Hidden form to select files -->
-    <input #fileInput type="file"
+    <input
+        id="bulk-file-import-input"
+        #fileInput type="file"
         accept="image/gif, image/jpeg, image/png"
         (change)="onFilesSelected($event)"
         style="display: none" multiple>
-    <div class="bulk-wrapper"
+
+    <!-- Box to drag items or click -->
+    <div class="flex-center card-wrapper"
         (dragover)="onDragOver($event)"
         (drop)="onDrop($event)"
         (click)="fileInput.click()"
         (dragleave)="onDragLeave($event)">
-        <div class="bulk-container" [ngClass]="{ 'drag-over': isDragging }">
+        <div
+            class="dashed-container-height material-card-element centered-text flex-center show-pointer dashed-border hover-dashed-border"
+            [ngClass]="{ 'drag-over-border': isDragging }">
             <div>
                 <label for="file-input">
-                    <div class="item-add-new-image-container">
-                        <button mat-icon-button class="add-image-button"
+                    <div>
+                        <button mat-icon-button
                             (click)="fileInput.click()">
                             <mat-icon>add_a_photo</mat-icon>
                         </button>
                     </div>
                 </label>
-                <div> Click to select the images of the items or drag inside
-                    the
-                    box</div>
+                <div>
+                    Click to select the images of the items or drag inside the
+                    box
+                </div>
             </div>
         </div>
     </div>
