@@ -1,15 +1,16 @@
 <div class="card-wrapper flex-center">
 
     <!-- Card -->
-    <mat-card class="material-card-element-no-padding card-with-hover-effect" *ngIf="item">
+    <mat-card class="material-card-element-no-padding card-with-hover-effect"
+        *ngIf="item">
 
         <!-- header -->
         <mat-card-header>
-            
+
             <!-- Title -->
             <mat-card-title class="show-pointer" (click)="onOpenDetails()"
                 title="{{item.description}}">
-                {{ item.name }}
+                <span class="no-overflow-everywhere">{{ item.name }}</span>
             </mat-card-title>
 
             <!-- Details -->
@@ -28,7 +29,7 @@
                 </span>
 
             </mat-card-subtitle>
-            
+
             <!-- Category -->
             <div mat-card-avatar [style.background-color]="getAvatarColor()"></div>
 

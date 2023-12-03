@@ -17,7 +17,9 @@
             <!-- Header -->
             <mat-card-header>
                 <mat-card-title>
-                    {{ category.name }}
+                    <span class="no-overflow-everywhere">
+                        {{ category.name }}
+                    </span>
                 </mat-card-title>
 
                 <div mat-card-avatar [style.background-color]="getAvatarColor()"></div>

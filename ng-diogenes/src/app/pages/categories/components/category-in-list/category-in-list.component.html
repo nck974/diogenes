@@ -6,7 +6,9 @@
 
             <mat-card-title class="show-pointer" (click)="onOpenDetails()"
                 title="{{category.description}}">
-                {{ category.name }}
+                <span class="no-overflow-everywhere">
+                    {{ category.name }}
+                </span>
             </mat-card-title>
 
             <div mat-card-avatar [style.background-color]="getAvatarColor()"></div>

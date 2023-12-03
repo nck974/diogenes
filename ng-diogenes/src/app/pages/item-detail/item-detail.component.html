@@ -17,7 +17,9 @@
             <!-- Header -->
             <mat-card-header>
                 <mat-card-title>
-                    {{ item.name }}
+                    <span class="no-overflow-everywhere">
+                        {{ item.name }}
+                    </span>
                 </mat-card-title>
 
                 <mat-card-subtitle>
@@ -38,7 +40,7 @@
                         class="item-image"
                         alt="item-image">
                 </div>
-                
+
                 <!-- Description -->
                 <p class="item-description no-overflow" *ngIf="item.description">
                     {{ item.description }}
