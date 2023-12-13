@@ -1,8 +1,8 @@
  <!-- Display multiple forms as a stepper -->
-<div class="card-wrapper flex-center">
+<div class="card-container flex-center">
     <div
         *ngIf="selectedImages && selectedImages.length > 0; else selectMultipleImages"
-        class="material-card-element">
+        class="card-details">
         <mat-vertical-stepper [linear]="true" #stepper>
             <mat-step *ngFor="let image of selectedImages; let index = index"
                 [editable]="!isStepCompleted(index)">
@@ -28,13 +28,13 @@
         style="display: none" multiple>
 
     <!-- Box to drag items or click -->
-    <div class="flex-center card-wrapper"
+    <div class="flex-center card-container"
         (dragover)="onDragOver($event)"
         (drop)="onDrop($event)"
         (click)="fileInput.click()"
         (dragleave)="onDragLeave($event)">
         <div
-            class="dashed-container-height material-card-element centered-text flex-center show-pointer dashed-border hover-dashed-border"
+            class="dashed-container-height card-details centered-text flex-center show-pointer dashed-border hover-dashed-border"
             [ngClass]="{ 'drag-over-border': isDragging }">
             <div>
                 <label for="file-input">
