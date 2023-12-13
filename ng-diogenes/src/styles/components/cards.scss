@@ -4,9 +4,10 @@
 }
 
 .material-card-element {
-    max-width: 600px;
     padding: 1rem;
     width: 100%;
+    margin-bottom: 0.5rem;
+    margin-right: 0.5rem;
 }
 
 .material-card-element-no-padding {
@@ -21,10 +22,4 @@
 
 .material-card-element mat-form-field {
     width: 100%;
-}
-
-
-.card-with-hover-effect:hover {
-    border: 1px solid white;
-    box-shadow: 8px 8px 2px 1px #7b1fa21a;
 }

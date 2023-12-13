@@ -48,7 +48,7 @@ export class LoginComponent {
         )
         .subscribe(
           (_) => {
-            this.router.navigateByUrl('/items');
+            this.router.navigateByUrl('/summary-categories');
           }
         );
     }

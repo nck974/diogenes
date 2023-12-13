@@ -4,7 +4,7 @@
 
         <mat-label>{{filterName | capitalizeFirstLetter}}</mat-label>
         <mat-select matNativeControl id="filter-{{filterName}}"
-            [formControl]="control">
+            [formControl]="control" [compareWith]="compareFn">
             <mat-option *ngFor="let option of options"
                 [value]="option[1]">
                 {{ option[0] }}

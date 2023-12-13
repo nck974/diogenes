@@ -1,6 +1,7 @@
+import { Location } from '@angular/common';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription, catchError } from 'rxjs';
 import { Item } from 'src/app/models/Item';
 import { ItemFilter } from 'src/app/models/ItemFilter';
@@ -27,14 +28,43 @@ export class InventoryComponent implements OnInit, OnDestroy {
   isLoading = false;
   fetchingInProgress = false;
 
-  constructor(private itemService: ItemService, private router: Router, private dialog: MatDialog,) { }
+  constructor(
+    private itemService: ItemService,
+    private router: Router,
+    private dialog: MatDialog,
+    private route: ActivatedRoute,
+    private location: Location
+  ) { }
 
   ngOnInit(): void {
-    this.fetchNextPage()
+    this.setUrlParameters();
+    this.fetchNextPage();
   }
 
   ngOnDestroy(): void {
     this.itemServiceSubscription?.unsubscribe();
+  }
+
+  setUrlParameters(): void {
+    this.route.queryParams.subscribe(params => {
+      this.itemFilter = {
+        categoryId: params['categoryId'] || undefined,
+        name: params['name'] || undefined,
+        description: params['description'] || undefined,
+        number: params['number'] || undefined
+      };
+
+      // Set to undefined if everything is not defined
+      if (Object.values(this.itemFilter).every(value => value === undefined)) {
+        this.itemFilter = undefined;
+      }
+
+      this.itemSorter = {
+        direction: params["direction"] || this.itemSorter.direction,
+        field: params["field"] || this.itemSorter.field,
+      }
+
+    });
   }
 
   onScroll() {
@@ -100,6 +130,22 @@ export class InventoryComponent implements OnInit, OnDestroy {
     });
   }
 
+  private updateUrlParameters(): void {
+    let url = "/items?";
+
+    for (let urlParameters of [this.itemFilter, this.itemSorter]) {
+      if (urlParameters) {
+        const filterQueryString = Object.entries(urlParameters)
+          .filter(([_key, value]) => value !== undefined && value != null)
+          .map(([key, value]) => `${encodeURIComponent(key)}=${encodeURIComponent(value)}`)
+          .join('&');
+        url = `${url}&${filterQueryString}`;
+      }
+    }
+
+    this.location.replaceState(url);
+  }
+
   private onFilterItems(filter?: ItemFilter | null): void {
     if (JSON.stringify(filter) === JSON.stringify(this.itemFilter)) {
       return;
@@ -112,6 +158,7 @@ export class InventoryComponent implements OnInit, OnDestroy {
       this.itemFilter = undefined;
     }
 
+    this.updateUrlParameters();
     this.resetLoadedItems()
   }
 
@@ -121,6 +168,8 @@ export class InventoryComponent implements OnInit, OnDestroy {
     }
 
     this.itemSorter = sorter;
+
+    this.updateUrlParameters();
     this.resetLoadedItems()
   }
 

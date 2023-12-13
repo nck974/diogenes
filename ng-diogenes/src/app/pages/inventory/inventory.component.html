@@ -26,7 +26,7 @@
 
 </mat-toolbar>
 
-<!-- Show a add item as float action button -->
+<!-- Show an add item as float action button -->
 <div class="fab-container">
     <button mat-fab color="primary"
         (click)="onCreateNewItem()"><mat-icon>add</mat-icon>
@@ -47,9 +47,11 @@
         <div *ngFor="let item of items">
             <app-item-in-list [item]="item"></app-item-in-list>
         </div>
+
         <div *ngIf="fetchingInProgress">
             <app-loading-spinner></app-loading-spinner>
         </div>
+
     </div>
 
     <!-- Empty list -->
