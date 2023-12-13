@@ -21,8 +21,11 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 
 import dev.nichoko.diogenes.common.CategoryManager;
+import dev.nichoko.diogenes.common.ItemManager;
 import dev.nichoko.diogenes.mock.CategoryMock;
+import dev.nichoko.diogenes.mock.ItemMock;
 import dev.nichoko.diogenes.model.domain.Category;
+import dev.nichoko.diogenes.model.domain.Item;
 import dev.nichoko.diogenes.utils.JsonProcessor;
 
 @SpringBootTest
@@ -157,7 +160,7 @@ class CategoryControllerTest {
     }
 
     /**
-     * Can filter categories
+     * Can get all categories
      *
      * @throws Exception
      */
@@ -174,6 +177,35 @@ class CategoryControllerTest {
                 .andExpect(jsonPath("$[0].name").value(categories.get(0).getName()))
                 .andExpect(jsonPath("$[1].name").value(categories.get(1).getName()))
                 .andExpect(jsonPath("$[2].name").value(categories.get(2).getName()));
+    }
+
+    /**
+     * Can get the categories summary
+     *
+     * @throws Exception
+     */
+    @Test
+    void canGetCategoriesSummary() throws Exception {
+        List<Category> categories = List.of(CategoryMock.getMockCategory(1), CategoryMock.getMockCategory(2));
+        for (Category category : categories) {
+            CategoryManager.createCategory(this.mockMvc, category);
+        }
+
+        // Add two items
+        List<Item> items = List.of(ItemMock.getMockItem(1), ItemMock.getMockItem(2));
+        for (Item item : items) {
+            item.setCategory(categories.get(0));
+            ItemManager.createItem(this.mockMvc, item);
+        }
+
+        this.mockMvc.perform(get("/api/v1/categories/summary"))
+                .andDo(res -> System.out.println(res))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.length()").value(categories.size()))
+                .andExpect(jsonPath("$[0].category.name").value(categories.get(0).getName()))
+                .andExpect(jsonPath("$[0].itemsNumber").value(2))
+                .andExpect(jsonPath("$[1].category.name").value(categories.get(1).getName()))
+                .andExpect(jsonPath("$[1].itemsNumber").value(0));
     }
 
     /**

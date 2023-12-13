@@ -3,6 +3,10 @@ package dev.nichoko.diogenes.service;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
+
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -119,10 +123,10 @@ public class ItemServiceImpl implements ItemService {
     }
 
     /*
-     * Return all items
+     * Return all items in pages
      */
     @Override
-    public Page<Item> getAllItems(int pageSize, int offset, String sort, String sortDirection,
+    public Page<Item> getAllItemsPaged(int pageSize, int offset, String sort, String sortDirection,
             ItemFilter filter) {
 
         // Sort
@@ -143,6 +147,18 @@ public class ItemServiceImpl implements ItemService {
             setTransientFields(existingItem);
             return existingItem;
         });
+    }
+
+    /*
+     * Return all items in pages
+     */
+    @Override
+    public List<Item> getAllItems() {
+
+        return itemRepository.findAll().stream().map(existingItem -> {
+            setTransientFields(existingItem);
+            return existingItem;
+        }).collect(Collectors.toList());
     }
 
     /**
@@ -218,7 +234,7 @@ public class ItemServiceImpl implements ItemService {
                     if (imageFile != null) {
                         String imagePath = fileStorageService.saveItemImage(imageFile);
                         item.setImagePath(imagePath);
-                    }else{
+                    } else {
                         // Prevent any update of the images through the json
                         item.setImagePath(null);
                     }
