@@ -1,8 +1,7 @@
 <mat-toolbar>
     <mat-toolbar-row>
-        <button mat-button (click)="onNavigateBack()">
-            <mat-icon>arrow_back</mat-icon>
-        </button>
+        <app-go-back></app-go-back>
+        Edit category
     </mat-toolbar-row>
 </mat-toolbar>
 
@@ -19,8 +18,8 @@
 
     <ng-template #categoryFormTemplate>
 
-        <div class="flex-center card-wrapper">
-            <mat-card class="material-card-element">
+        <div class="flex-center card-container">
+            <mat-card class="card-details">
 
                 <!-- Title -->
                 <mat-card-title class="flex-center material-card-title">

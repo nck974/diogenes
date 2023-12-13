@@ -1,19 +1,20 @@
-<div class="card-wrapper flex-center">
-    <mat-card class="material-card-element-no-padding card-with-hover-effect"
-        *ngIf="category">
+<mat-card class="card-in-list">
 
-        <mat-card-header>
+    <mat-card-header>
+        
+        <!-- Avatar -->
+        <div mat-card-avatar [style.background-color]="getAvatarColor()"></div>
 
-            <mat-card-title class="show-pointer" (click)="onOpenDetails()"
-                title="{{category.description}}">
-                <span class="no-overflow-everywhere">
-                    {{ category.name }}
-                </span>
-            </mat-card-title>
+        <!-- Name -->
+        <mat-card-title class="show-pointer" (click)="onOpenDetails()"
+            title="{{category.description}}">
 
-            <div mat-card-avatar [style.background-color]="getAvatarColor()"></div>
+            <span class="no-overflow-everywhere">
+                {{ category.name }}
+            </span>
 
-        </mat-card-header>
+        </mat-card-title>
 
-    </mat-card>
-</div>
+    </mat-card-header>
+
+</mat-card>

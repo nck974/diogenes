@@ -30,4 +30,11 @@ export class SelectFilterComponent {
   registerOnChange: (fn: any) => void = () => { };
   registerOnTouched: (fn: any) => void = () => { };
 
+
+  // This function is used to tell the material select box that when an id is patched it has to
+  // compare exactly the ids and not other objects
+  compareFn(object1: any, object2: any) {
+    return object1 && object2 && object1 == object2;
+  }
+
 }

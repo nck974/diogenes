@@ -7,3 +7,24 @@
     width: 100%;
     height: auto;
 }
+
+.thumbnail-image {
+    max-width: 5rem;
+    max-height: 5rem;
+    object-fit: cover;
+    margin-left: auto
+}
+
+.hide-image-small-screen {
+    display: none;
+}
+
+// Full screen
+@media screen and (min-width: 768px) {
+
+    // Hide the image when in small screen
+    .hide-image-small-screen {
+        display: inline-block;
+    }
+
+}

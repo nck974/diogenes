@@ -16,6 +16,7 @@ import { InventoryModule } from './pages/inventory/inventory.module';
 import { LoginModule } from './pages/login/login.module';
 import { SharedComponentsModule } from './shared/components/shared.components.module';
 import { AuthenticationInterceptor } from './shared/interceptors/authentication.interceptor';
+import { CategoriesSummaryModule } from './pages/categories-summary/categories-summary.module';
 
 @NgModule({
   declarations: [
@@ -35,6 +36,7 @@ import { AuthenticationInterceptor } from './shared/interceptors/authentication.
     InventoryModule,
     ItemDetailModule,
     LoginModule,
+    CategoriesSummaryModule,
 
     SharedComponentsModule,
 

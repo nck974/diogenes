@@ -1,0 +1,79 @@
+<!-- Toolbar -->
+<mat-toolbar>
+    <!-- Logo and menu -->
+    <mat-toolbar-row class="flex-row-spaced-apart">
+
+        <!-- Logo -->
+        <div class="flex-center">
+            <app-logo></app-logo>
+            Categories
+        </div>
+
+        <!-- Menus -->
+        <div class="flex-end">
+            <app-categories-summary-menu></app-categories-summary-menu>
+        </div>
+
+    </mat-toolbar-row>
+
+</mat-toolbar>
+
+<!-- Show an add item as float action button -->
+<div class="fab-container">
+    <button mat-fab color="primary"
+        (click)="onCreateNewItem()"><mat-icon>add</mat-icon>
+    </button>
+</div>
+
+<!-- Show inventory -->
+<div *ngIf="isLoading; else notLoading">
+    <app-loading-spinner></app-loading-spinner>
+</div>
+<ng-template #notLoading>
+
+    <div class="card-list-container"
+        *ngIf="categoriesSummary; else noItems">
+        <mat-card
+            class="card-in-list"
+            *ngFor="let summary of categoriesSummary">
+            <mat-card-header>
+
+                <!-- Category color -->
+                <div mat-card-avatar
+                    [style.background-color]="getAvatarColor(summary.category)">
+                </div>
+
+                <!-- Title -->
+                <mat-card-title class="show-pointer"
+                    title="{{summary.category.description}}"
+                    (click)="onOpenCategory(summary.category)">
+                    <span class="no-overflow-everywhere">{{
+                        summary.category.name }}</span>
+                </mat-card-title>
+
+                <!-- Details -->
+                <mat-card-subtitle>
+
+                    <span>
+                        Nr. of items:
+                    </span>
+
+                    <span class="small-number">
+                        <span class="small-label">x</span>
+                        {{ summary.itemsNumber}}
+                    </span>
+
+                </mat-card-subtitle>
+            </mat-card-header>
+
+        </mat-card>
+    </div>
+
+    <!-- Empty list -->
+    <ng-template #noItems>
+        <app-error-card [title]="'No categories found'" [icon]="'error'"
+            [content]="'There are no categories in the inventory yet.'">
+        </app-error-card>
+    </ng-template>
+
+</ng-template>

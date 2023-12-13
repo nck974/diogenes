@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import dev.nichoko.diogenes.model.CategorySummary;
 import dev.nichoko.diogenes.model.domain.Category;
 import dev.nichoko.diogenes.service.CategoryService;
 import jakarta.validation.Valid;
@@ -58,4 +59,9 @@ public class CategoryController {
         return ResponseEntity.noContent().build();
     }
 
+    @GetMapping("/summary")
+    public ResponseEntity<List<CategorySummary>> getCategoriesSummary() {
+        return ResponseEntity
+                .ok(categoryService.getCategoriesSummary());
+    }
 }

@@ -1,16 +1,10 @@
 // This file contains the styling of the card components, e.g. showing the content of an item
-.card-wrapper {
+.card-container {
     margin: 0.5rem;
 }
 
-.material-card-element {
-    max-width: 600px;
+.card-details {
     padding: 1rem;
-    width: 100%;
-}
-
-.material-card-element-no-padding {
-    max-width: 600px;
     width: 100%;
 }
 
@@ -19,12 +13,22 @@
     font-weight: bolder;
 }
 
-.material-card-element mat-form-field {
+.card-details mat-form-field {
     width: 100%;
 }
 
+// Full screen
+@media screen and (min-width: 768px) {
 
-.card-with-hover-effect:hover {
-    border: 1px solid white;
-    box-shadow: 8px 8px 2px 1px #7b1fa21a;
+    // Limit the size of the cards to not be too wide
+    .card-details {
+        max-width: 60rem;
+    }
+
+    // Make bigger borders to not look so compact
+    .card-container {
+        margin: 1rem;
+    }
+    
+
 }

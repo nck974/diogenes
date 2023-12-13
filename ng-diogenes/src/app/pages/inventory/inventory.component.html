@@ -3,11 +3,10 @@
     <!-- Logo and menu -->
     <mat-toolbar-row class="flex-row-spaced-apart">
 
-        <!-- Logo -->
+        <!-- Title -->
         <div class="flex-center">
-            <img class="logo" src="assets/logo/logo_transparent.png"
-                alt="Logo">
-            Diogenes
+            <app-go-back></app-go-back>
+            Items
         </div>
 
         <!-- Menus -->
@@ -26,7 +25,7 @@
 
 </mat-toolbar>
 
-<!-- Show a add item as float action button -->
+<!-- Show an add item as float action button -->
 <div class="fab-container">
     <button mat-fab color="primary"
         (click)="onCreateNewItem()"><mat-icon>add</mat-icon>
@@ -37,25 +36,30 @@
 <div *ngIf="isLoading; else notLoading">
     <app-loading-spinner></app-loading-spinner>
 </div>
+
 <ng-template #notLoading>
 
     <!-- Infinite scroll -->
     <div infiniteScroll (scrolled)="onScroll()"
         [infiniteScrollDistance]="0.5"
         [infiniteScrollDisabled]="lastPage" id="item-list"
-        *ngIf="items; else noItems">
+        *ngIf="isItemsListNotEmpty(); else noItems"
+        class="card-list-container"
+        >
         <div *ngFor="let item of items">
             <app-item-in-list [item]="item"></app-item-in-list>
         </div>
+
         <div *ngIf="fetchingInProgress">
             <app-loading-spinner></app-loading-spinner>
         </div>
+
     </div>
 
     <!-- Empty list -->
     <ng-template #noItems>
         <app-error-card [title]="'No items found'" [icon]="'error'"
-            [content]="'There are no items in the inventory yet.'"></app-error-card>
+            [content]="'There are no items in the inventory yet for the given filters.'"></app-error-card>
     </ng-template>
 
 </ng-template>

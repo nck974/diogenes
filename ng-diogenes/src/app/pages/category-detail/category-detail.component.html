@@ -3,6 +3,7 @@
         <button mat-button (click)="onNavigateBack()">
             <mat-icon>arrow_back</mat-icon>
         </button>
+        Category detail
     </mat-toolbar-row>
 </mat-toolbar>
 
@@ -12,8 +13,8 @@
 
 <ng-template #notLoading>
 
-    <div class="flex-center card-wrapper" *ngIf="category; else notFound">
-        <mat-card class="material-card-element-no-padding">
+    <div class="flex-center card-container" *ngIf="category; else notFound">
+        <mat-card class="card-details">
             <!-- Header -->
             <mat-card-header>
                 <mat-card-title>

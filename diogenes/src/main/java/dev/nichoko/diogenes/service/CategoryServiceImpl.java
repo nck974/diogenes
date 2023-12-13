@@ -1,23 +1,30 @@
 package dev.nichoko.diogenes.service;
 
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import dev.nichoko.diogenes.exception.NameAlreadyExistsException;
 import dev.nichoko.diogenes.exception.ResourceNotFoundException;
+import dev.nichoko.diogenes.model.CategorySummary;
 import dev.nichoko.diogenes.model.domain.Category;
+import dev.nichoko.diogenes.model.domain.Item;
 import dev.nichoko.diogenes.repository.CategoryRepository;
 
 @Service
 public class CategoryServiceImpl implements CategoryService {
 
     private CategoryRepository categoryRepository;
+    private ItemService itemService;
 
     @Autowired
-    public CategoryServiceImpl(CategoryRepository categoryRepository) {
+    public CategoryServiceImpl(CategoryRepository categoryRepository, ItemService itemService) {
         this.categoryRepository = categoryRepository;
+        this.itemService = itemService;
     }
 
     public Category getCategoryById(int id) {
@@ -45,7 +52,7 @@ public class CategoryServiceImpl implements CategoryService {
      */
     @Override
     public List<Category> getAllCategories() {
-        return categoryRepository.findAll();
+        return categoryRepository.findAll(Sort.by("name"));
     }
 
     /*
@@ -84,6 +91,27 @@ public class CategoryServiceImpl implements CategoryService {
                 .orElseThrow(
                         () -> new ResourceNotFoundException(id));
         categoryRepository.delete(category);
+    }
+
+    /*
+     * Get all categories and items and count the number of items in each category
+     */
+    @Override
+    public List<CategorySummary> getCategoriesSummary() {
+
+        // Count the categories from hte items
+        List<Item> items = itemService.getAllItems();
+        Map<Integer, Integer> categoryItemCountMap = items.stream()
+                .collect(
+                        Collectors.groupingBy(
+                                Item::getCategoryId,
+                                Collectors.reducing(0, e -> 1, (a, b) -> a + b)));
+
+        // Return the categories with the value
+        List<Category> categories = getAllCategories();
+        return categories.stream()
+                .map(category -> new CategorySummary(category, categoryItemCountMap.getOrDefault(category.getId(), 0)))
+                .collect(Collectors.toList());
     }
 
 }

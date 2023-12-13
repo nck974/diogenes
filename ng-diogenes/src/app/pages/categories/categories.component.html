@@ -1,17 +1,13 @@
 <mat-toolbar>
     <mat-toolbar-row>
-        <div>
-            <button mat-button (click)="onNavigateBack()">
-                <mat-icon>arrow_back</mat-icon>
-            </button>
-        </div>
+        <app-go-back></app-go-back>
         <div>
             Categories
         </div>
     </mat-toolbar-row>
 </mat-toolbar>
 
-<!-- Show a add category as float action button -->
+<!-- Show add category as float action button -->
 <div class="fab-container">
     <button mat-fab color="primary"
         (click)="onCreateNewCategory()"><mat-icon>add</mat-icon>
@@ -19,11 +15,16 @@
 </div>
 
 <!-- Show categories -->
-<div *ngIf="isLoading; else notLoading">
-    <app-loading-spinner></app-loading-spinner>
-</div>
-<ng-template #notLoading>
+<div class="card-list-container" *ngIf="!isLoading; else loadingSpinner">
     <div *ngFor="let category of categories">
         <app-category-in-list [category]="category"></app-category-in-list>
     </div>
+</div>
+
+<!-- Loading spinner -->
+<ng-template #loadingSpinner>
+    <app-loading-spinner></app-loading-spinner>
 </ng-template>
+
+<div>
+</div>

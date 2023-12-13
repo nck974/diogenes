@@ -7,7 +7,6 @@ import { Category } from '../../models/Category';
 export class GenerateSelectBoxOptionsPipe implements PipeTransform {
 
   transform(values: Category[], ...args: unknown[]): [string, string | number][] {
-    console.log(`Mapping categories ${values.length}`)
     return values.map(category => [category.name, category.id]);
   }
 

@@ -1,0 +1,38 @@
+// This file contains the styling of a list of cards
+
+// Container
+.card-list-container {
+    margin: 0.5rem;
+}
+
+
+// Card
+.card-in-list {
+    padding: 1rem;
+    width: 100%;
+    height: 100%;
+    margin-bottom: 0.5rem;
+}
+
+.card-in-list:hover {
+    border: 1px solid white;
+    box-shadow: 8px 8px 2px 1px #7b1fa21a;
+}
+
+
+// Full screen
+@media screen and (min-width: 768px) {
+
+    // Show in columns
+    .card-list-container {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(20rem, 1fr));
+        gap: 0.5rem;
+        margin: 1rem;
+    }
+
+    // The separation is already done by the grid:
+    .card-in-list {
+        margin-bottom: 0;
+    }
+}

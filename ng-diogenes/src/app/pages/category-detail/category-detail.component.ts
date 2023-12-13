@@ -1,12 +1,13 @@
-import { Component, OnDestroy, OnInit, } from '@angular/core';
 import { Location, } from '@angular/common';
+import { Component, OnDestroy, OnInit, } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable, Subscription, catchError, finalize, of } from 'rxjs';
 import { Category } from 'src/app/models/Category';
+import { ConfirmationDialogComponent } from 'src/app/shared/components/confirmation-dialog/confirmation-dialog.component';
 import { CategoryService } from 'src/app/shared/services/category.service';
 import { MessageService } from 'src/app/shared/services/message.service';
-import { ConfirmationDialogComponent } from 'src/app/shared/components/confirmation-dialog/confirmation-dialog.component';
+import { getColorOrDefault } from 'src/app/utils/color';
 
 @Component({
   selector: 'app-category-detail',
@@ -91,9 +92,9 @@ export class CategoryDetailComponent implements OnInit, OnDestroy {
         })
       )
       .subscribe((result) => {
-        if (result != 1){
+        if (result != 1) {
           this.messageService.add(`Category ${this.category!.name} was deleted`);
-  
+
           this.onNavigateBack();
         }
       });
@@ -114,13 +115,12 @@ export class CategoryDetailComponent implements OnInit, OnDestroy {
   }
 
   getAvatarColor(): string {
-    if (this.category != null) {
-      let color = this.category.color;
-      const hexColorRegex = /^(?:[0-9a-fA-F]{3}){1,2}$/;
-      if (hexColorRegex.test(color)) {
-        return `#${color}`;
-      }
+    let color = "";
+    if (this.category) {
+      color = getColorOrDefault(this.category.color);
+    } else {
+      color = getColorOrDefault();
     }
-    return "#ddd";
+    return color;
   }
 }

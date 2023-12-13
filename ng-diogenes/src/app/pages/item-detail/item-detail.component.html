@@ -1,8 +1,7 @@
 <mat-toolbar>
     <mat-toolbar-row>
-        <button mat-button (click)="onNavigateBack()">
-            <mat-icon>arrow_back</mat-icon>
-        </button>
+        <app-go-back></app-go-back>
+        Item detail
     </mat-toolbar-row>
 </mat-toolbar>
 
@@ -12,8 +11,8 @@
 
 <ng-template #notLoading>
 
-    <div class="flex-center card-wrapper" *ngIf="item; else notFound">
-        <mat-card class="material-card-element-no-padding">
+    <div class="flex-center card-container" *ngIf="item; else notFound">
+        <mat-card class="card-details">
             <!-- Header -->
             <mat-card-header>
                 <mat-card-title>
@@ -42,9 +41,13 @@
                 </div>
 
                 <!-- Description -->
-                <p class="item-description no-overflow" *ngIf="item.description">
+                <p class="item-description no-overflow" *ngIf="item.description; else newLine">
                     {{ item.description }}
                 </p>
+                <ng-template #newLine>
+                    <br>
+                </ng-template>
+                
 
                 <!-- Metadata -->
                 <div class="item-image-container thin-border">

@@ -70,7 +70,7 @@ public class ItemController {
             @RequestParam(defaultValue = "ASC") SortDirection sortDirection,
             @ParameterObject @ModelAttribute ItemFilter filterOption) {
         return ResponseEntity
-                .ok(itemService.getAllItems(pageSize, offset, sort.toString().toLowerCase(), sortDirection.toString(),
+                .ok(itemService.getAllItemsPaged(pageSize, offset, sort.toString().toLowerCase(), sortDirection.toString(),
                         filterOption));
     }
 
