@@ -1,3 +1,4 @@
+import { BreakpointObserver } from '@angular/cdk/layout';
 import { Location } from '@angular/common';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
@@ -27,13 +28,15 @@ export class InventoryComponent implements OnInit, OnDestroy {
   items: Item[] = [];
   isLoading = true;
   fetchingInProgress = false;
+  isLargeScreen = this.breakpointObserver.isMatched('(min-width: 768px)');
 
   constructor(
     private itemService: ItemService,
     private router: Router,
     private dialog: MatDialog,
     private route: ActivatedRoute,
-    private location: Location
+    private location: Location,
+    private breakpointObserver: BreakpointObserver
   ) { }
 
   ngOnInit(): void {
@@ -80,7 +83,11 @@ export class InventoryComponent implements OnInit, OnDestroy {
     }
 
     const nextPage = this.currentPage;
-    this.itemServiceSubscription = this.itemService.getItems(nextPage, this.itemFilter, this.itemSorter)
+    this.itemServiceSubscription = this.itemService.getItems(
+      nextPage,
+      this.itemFilter,
+      this.itemSorter,
+      this.isLargeScreen ? 50 : 20)
       .pipe(
         catchError((error) => {
           console.error('Error fetching next page:', error);
@@ -102,7 +109,7 @@ export class InventoryComponent implements OnInit, OnDestroy {
     this.lastPage = false;
     this.items.splice(0, this.items.length);
     this.fetchNextPage();
-    this.isLoading = false;
+    // Note: Is loading is set to false after the subscription of fetching the next page
   }
 
   onOpenFilter(): void {
@@ -159,8 +166,8 @@ export class InventoryComponent implements OnInit, OnDestroy {
       this.itemFilter = undefined;
     }
 
-    this.updateUrlParameters();
     this.resetLoadedItems()
+    this.updateUrlParameters();
   }
 
   private onSortItems(sorter: ItemSorter) {
@@ -170,8 +177,8 @@ export class InventoryComponent implements OnInit, OnDestroy {
 
     this.itemSorter = sorter;
 
-    this.updateUrlParameters();
     this.resetLoadedItems()
+    this.updateUrlParameters();
   }
 
   onCreateNewItem() {

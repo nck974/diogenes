@@ -19,6 +19,7 @@ import { InventoryMenuComponent } from './components/inventory-menu/inventory-me
 import { InventorySorterComponent } from './components/inventory-sorter/inventory-sorter.component';
 import { ItemInListComponent } from './components/item-in-list/item-in-list.component';
 import { InventoryComponent } from './inventory.component';
+import { LayoutModule } from '@angular/cdk/layout';
 
 
 
@@ -53,6 +54,7 @@ import { InventoryComponent } from './inventory.component';
     MatCardModule,
     MatMenuModule,
     MatDialogModule,
+    LayoutModule
 
   ],
   exports: [

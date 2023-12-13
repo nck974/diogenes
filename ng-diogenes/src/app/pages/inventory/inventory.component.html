@@ -43,7 +43,9 @@
     <div infiniteScroll (scrolled)="onScroll()"
         [infiniteScrollDistance]="0.5"
         [infiniteScrollDisabled]="lastPage" id="item-list"
-        *ngIf="isItemsListNotEmpty(); else noItems">
+        *ngIf="isItemsListNotEmpty(); else noItems"
+        class="card-list-container"
+        >
         <div *ngFor="let item of items">
             <app-item-in-list [item]="item"></app-item-in-list>
         </div>

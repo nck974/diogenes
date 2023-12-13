@@ -62,8 +62,12 @@ export class ItemService {
     return url;
   }
 
-  getItems(page: number = 0, itemFilter?: ItemFilter, itemSorter?: ItemSorter): Observable<Page<Item>> {
-    const pageSize = 20;
+  getItems(page: number = 0, itemFilter?: ItemFilter, itemSorter?: ItemSorter, pageSize?: number): Observable<Page<Item>> {
+    
+    if (!pageSize) {
+      pageSize = 20;
+    }
+
     let url = `${this.url}/?offset=${page}&pageSize=${pageSize}`;
 
     url = this.applyFilters(url, itemFilter)

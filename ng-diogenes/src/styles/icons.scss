@@ -1,0 +1,14 @@
+.small-screen-icon{
+    display: inline-block !important;
+}
+
+// Full screen
+@media screen and (min-width: 768px) {
+
+    // Show in columns
+    .small-screen-icon {
+        display: none !important;
+        grid-template-columns: repeat(auto-fill, minmax(20rem, 1fr));
+        gap: 0.5rem;
+    }
+}

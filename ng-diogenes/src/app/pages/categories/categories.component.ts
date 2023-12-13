@@ -26,10 +26,6 @@ export class CategoriesComponent implements OnInit {
       .subscribe((categories) => this.categories = categories);
   }
 
-  onNavigateBack(): void {
-    this.router.navigateByUrl("/items");
-  }
-
   onCreateNewCategory(): void {
     this.router.navigateByUrl("/categories/new");
   }

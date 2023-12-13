@@ -1,39 +1,40 @@
-<div class="card-wrapper flex-center">
+<mat-card class="card-in-list" *ngIf="item">
 
-    <!-- Card -->
-    <mat-card class="material-card-element-no-padding card-with-hover-effect"
-        *ngIf="item">
+    <!-- header -->
+    <mat-card-header>
 
-        <!-- header -->
-        <mat-card-header>
+        <!-- Category -->
+        <div mat-card-avatar [style.background-color]="getAvatarColor()"></div>
 
-            <!-- Title -->
-            <mat-card-title class="show-pointer" (click)="onOpenDetails()"
-                title="{{item.description}}">
-                <span class="no-overflow-everywhere">{{ item.name }}</span>
-            </mat-card-title>
+        <!-- Title -->
+        <mat-card-title class="show-pointer" (click)="onOpenDetails()"
+            title="{{item.description}}">
+            <span class="no-overflow-everywhere">{{ item.name }}</span>
+        </mat-card-title>
 
-            <!-- Details -->
-            <mat-card-subtitle>
+        <!-- Details -->
+        <mat-card-subtitle>
 
-                <span>
-                    {{item.category.name}}
-                </span>
+            <span>
+                {{item.category.name}}
+            </span>
 
-                <span class="small-number">
-                    <span class="small-label">x</span>{{ item.number }}
-                </span>
+            <span class="small-number">
+                <span class="small-label">x</span>{{ item.number }}
+            </span>
 
-                <span *ngIf="item.imagePath">
-                    <mat-icon class="vertical-align-image">image</mat-icon>
-                </span>
+            <!-- Icon -->
+            <span *ngIf="item.imagePath">
+                <mat-icon class="vertical-align-image small-screen-icon">image</mat-icon>
+            </span>
 
-            </mat-card-subtitle>
+        </mat-card-subtitle>
+        
+        <!-- Image only in large screens -->
+        <img mat-card-image
+            [src]="item.imagePath | secureImage | async"
+            alt="Item Image" class="thumbnail-image hide-image-small-screen"
+            *ngIf="isLargeScreen && item.imagePath">
+    </mat-card-header>
 
-            <!-- Category -->
-            <div mat-card-avatar [style.background-color]="getAvatarColor()"></div>
-
-        </mat-card-header>
-
-    </mat-card>
-</div>
+</mat-card>
