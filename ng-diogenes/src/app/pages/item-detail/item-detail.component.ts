@@ -1,12 +1,12 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Location } from '@angular/common';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router, } from '@angular/router';
 import { Observable, Subscription, finalize } from 'rxjs';
 import { Item } from 'src/app/models/Item';
+import { ConfirmationDialogComponent } from 'src/app/shared/components/confirmation-dialog/confirmation-dialog.component';
 import { ItemService } from 'src/app/shared/services/item.service';
 import { MessageService } from 'src/app/shared/services/message.service';
-import { MatDialog } from '@angular/material/dialog';
-import { ConfirmationDialogComponent } from 'src/app/shared/components/confirmation-dialog/confirmation-dialog.component';
 
 @Component({
   selector: 'app-item-detail',
@@ -71,10 +71,6 @@ export class ItemDetailComponent implements OnInit, OnDestroy {
     return dialogRef.afterClosed();
   }
 
-  onNavigateBack(): void {
-    this.location.back();
-  }
-
   onEditItem(): void {
     this.router.navigateByUrl(`/items/edit/${this.item?.id}`);
   }
@@ -84,7 +80,7 @@ export class ItemDetailComponent implements OnInit, OnDestroy {
       .subscribe(() => {
         this.messageService.add(`Item ${this.item!.name} was deleted`);
 
-        this.onNavigateBack();
+        this.location.back();
       });
   }
 

@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { CategoryService } from 'src/app/shared/services/category.service';
 import { Subscription, finalize } from 'rxjs';
 import { Category } from 'src/app/models/Category';
+import { CategorySummary } from 'src/app/models/CategorySummary';
 
 @Component({
   selector: 'app-categories-summary',
@@ -15,7 +15,7 @@ export class CategoriesSummaryComponent implements OnInit {
 
   isLoading = true;
   categorySubscription?: Subscription;
-  categories?: Category[];
+  categoriesSummary?: CategorySummary[];
 
   constructor(private router: Router, private categoryService: CategoryService) { };
 
@@ -24,14 +24,14 @@ export class CategoriesSummaryComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.categorySubscription = this.categoryService.getCategories()
+    this.categorySubscription = this.categoryService.getCategoriesSummary()
       .pipe(
         finalize(() => {
           this.isLoading = false;
         })
       )
-      .subscribe(categories => {
-        this.categories = categories;
+      .subscribe(categoriesSummary => {
+        this.categoriesSummary = categoriesSummary;
       });
   }
 

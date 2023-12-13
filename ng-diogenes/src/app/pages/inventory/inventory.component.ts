@@ -2,7 +2,7 @@ import { Location } from '@angular/common';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Subscription, catchError } from 'rxjs';
+import { Subscription, catchError, finalize } from 'rxjs';
 import { Item } from 'src/app/models/Item';
 import { ItemFilter } from 'src/app/models/ItemFilter';
 import { ItemSorter } from 'src/app/models/ItemSorter';
@@ -25,7 +25,7 @@ export class InventoryComponent implements OnInit, OnDestroy {
   private itemSorter: ItemSorter = { field: "ID", direction: "DESC" };
 
   items: Item[] = [];
-  isLoading = false;
+  isLoading = true;
   fetchingInProgress = false;
 
   constructor(
@@ -86,6 +86,7 @@ export class InventoryComponent implements OnInit, OnDestroy {
           console.error('Error fetching next page:', error);
           return [];
         }),
+        finalize(() => this.isLoading = false)
       )
       .subscribe((page) => {
         this.currentPage = page.number + 1;
@@ -175,6 +176,13 @@ export class InventoryComponent implements OnInit, OnDestroy {
 
   onCreateNewItem() {
     this.router.navigateByUrl("/items/edit/new")
+  }
+
+  isItemsListNotEmpty(): boolean {
+    if (this.items && this.items.length > 0) {
+      return true;
+    }
+    return false;
   }
 
 }

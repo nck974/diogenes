@@ -10,9 +10,10 @@
         </div>
 
         <!-- Menus -->
-        <!-- <div class="flex-end">
-            <app-inventory-menu></app-inventory-menu>
-        </div> -->
+        <div class="flex-end">
+            <app-categories-summary-menu></app-categories-summary-menu>
+        </div>
+
     </mat-toolbar-row>
 
 </mat-toolbar>
@@ -31,20 +32,23 @@
 <ng-template #notLoading>
 
     <div class="card-list-container"
-        *ngIf="categories; else noItems">
+        *ngIf="categoriesSummary; else noItems">
         <mat-card
             class="card-in-list"
-            *ngFor="let category of categories">
+            *ngFor="let summary of categoriesSummary">
             <mat-card-header>
+
                 <!-- Category color -->
                 <div mat-card-avatar
-                    [style.background-color]="getAvatarColor(category)">
+                    [style.background-color]="getAvatarColor(summary.category)">
                 </div>
 
                 <!-- Title -->
                 <mat-card-title class="show-pointer"
-                    title="{{category.description}}" (click)="onOpenCategory(category)">
-                    <span class="no-overflow-everywhere">{{ category.name }}</span>
+                    title="{{summary.category.description}}"
+                    (click)="onOpenCategory(summary.category)">
+                    <span class="no-overflow-everywhere">{{
+                        summary.category.name }}</span>
                 </mat-card-title>
 
                 <!-- Details -->
@@ -55,7 +59,8 @@
                     </span>
 
                     <span class="small-number">
-                        <span class="small-label">x</span>{{ 1 }} <!--TODO*-->
+                        <span class="small-label">x</span>
+                        {{ summary.itemsNumber}}
                     </span>
 
                 </mat-card-subtitle>

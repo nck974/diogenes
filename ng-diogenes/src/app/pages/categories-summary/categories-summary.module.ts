@@ -13,12 +13,14 @@ import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { SharedComponentsModule } from 'src/app/shared/components/shared.components.module';
 import { SharedPipesModule } from 'src/app/shared/pipes/shared.pipes.module';
 import { CategoriesSummaryComponent } from './categories-summary.component';
+import { CategoriesSummaryMenuComponent } from './categories-summary-menu/categories-summary-menu.component';
 
 
 
 @NgModule({
   declarations: [
     CategoriesSummaryComponent,
+    CategoriesSummaryMenuComponent
   ],
   imports: [
     CommonModule,

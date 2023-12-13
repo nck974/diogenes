@@ -5,6 +5,7 @@ import { Observable, catchError, map, tap } from 'rxjs';
 import { Category } from '../../models/Category';
 import { ErrorHandlerService } from './error-handler.service';
 import { environment } from 'src/environments/environment';
+import { CategorySummary } from 'src/app/models/CategorySummary';
 
 
 @Injectable({
@@ -30,6 +31,21 @@ export class CategoryService {
         }),
         tap((categories) => console.log(categories)),
         catchError(this.errorHandler.handleError<Category[]>("getCategories", []))
+      );
+  }
+
+  getCategoriesSummary(): Observable<CategorySummary[]> {
+    let url = `${this.url}/summary`;
+
+    console.log(url);
+    return this.httpClient.get<CategorySummary[]>(url)
+      .pipe(
+        map((rawSummary) => {
+          const categories: CategorySummary[] = rawSummary.map((summary) => ({ ...summary }));
+          return categories;
+        }),
+        tap((categories) => console.log(categories)),
+        catchError(this.errorHandler.handleError<CategorySummary[]>("getCategoriesSummary", []))
       );
   }
 
