@@ -27,6 +27,7 @@ const routes: Routes = [
   { path: 'items/:id', component: ItemDetailComponent },
   { path: 'items', component: InventoryComponent },
   { path: 'summary-categories', component: CategoriesSummaryComponent },
+  { path: 'home', redirectTo: "summary-categories" },
   { path: '', component: LoginComponent },
 ];
 

@@ -10,6 +10,7 @@ import { ConfirmationDialogComponent } from './confirmation-dialog/confirmation-
 import { MessageComponent } from './messages/message.component';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
+import { LogoComponent } from './logo/logo.component';
 
 
 
@@ -19,6 +20,7 @@ import { MatIconModule } from '@angular/material/icon';
     ErrorCardComponent,
     ConfirmationDialogComponent,
     MessageComponent,
+    LogoComponent
   ],
   imports: [
     CommonModule,
@@ -35,7 +37,8 @@ import { MatIconModule } from '@angular/material/icon';
     LoadingSpinnerComponent,
     ErrorCardComponent,
     ConfirmationDialogComponent,
-    MessageComponent
+    MessageComponent,
+    LogoComponent
   ]
 })
 export class SharedComponentsModule { }

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthenticationService } from '../../shared/services/authentication.service';
@@ -11,7 +11,7 @@ import { HttpErrorResponse } from '@angular/common/http';
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss']
 })
-export class LoginComponent {
+export class LoginComponent implements OnInit {
   username?: string;
   password?: string;
 
@@ -28,6 +28,13 @@ export class LoginComponent {
       username: ['', Validators.required],
       password: ['', Validators.required]
     });
+  }
+
+
+  ngOnInit(): void {
+    if (this.authenticationService.getToken()){
+      this.router.navigateByUrl("/home");
+    }
   }
 
   login() {
@@ -48,7 +55,7 @@ export class LoginComponent {
         )
         .subscribe(
           (_) => {
-            this.router.navigateByUrl('/summary-categories');
+            this.router.navigateByUrl('/home');
           }
         );
     }
