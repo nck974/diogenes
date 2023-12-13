@@ -1,6 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { Router } from '@angular/router';
 import { Category } from 'src/app/models/Category';
+import { getColorOrDefault } from 'src/app/utils/color';
 
 @Component({
   selector: 'app-category-in-list',
@@ -20,13 +21,12 @@ export class CategoryInListComponent {
   }
 
   getAvatarColor(): string {
-    if (this.category != null) {
-      let color = this.category.color;
-      const hexColorRegex = /^(?:[0-9a-fA-F]{3}){1,2}$/;
-      if (hexColorRegex.test(color)) {
-        return `#${color}`;
-      }
+    let color = "";
+    if (this.category) {
+      color = getColorOrDefault(this.category.color);
+    } else {
+      color = getColorOrDefault();
     }
-    return "#ddd";
+    return color;
   }
 }

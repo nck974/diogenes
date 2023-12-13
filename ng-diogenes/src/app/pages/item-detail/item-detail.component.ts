@@ -7,6 +7,7 @@ import { Item } from 'src/app/models/Item';
 import { ConfirmationDialogComponent } from 'src/app/shared/components/confirmation-dialog/confirmation-dialog.component';
 import { ItemService } from 'src/app/shared/services/item.service';
 import { MessageService } from 'src/app/shared/services/message.service';
+import { getColorOrDefault } from 'src/app/utils/color';
 
 @Component({
   selector: 'app-item-detail',
@@ -99,14 +100,15 @@ export class ItemDetailComponent implements OnInit, OnDestroy {
   }
 
   getAvatarColor(): string {
+    let color = "";
     if (this.item?.category != null) {
-      let color = this.item.category.color;
-      const hexColorRegex = /^(?:[0-9a-fA-F]{3}){1,2}$/;
-      if (hexColorRegex.test(color)) {
-        return `#${color}`;
-      }
+      color = getColorOrDefault(this.item?.category.color);
+    } else {
+      color = getColorOrDefault();
     }
-    return "#ddd";
+    return color;
   }
+
+
 
 }

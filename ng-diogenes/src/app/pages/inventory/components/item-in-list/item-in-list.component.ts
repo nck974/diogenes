@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { Item } from 'src/app/models/Item';
 import { BreakpointObserver } from '@angular/cdk/layout';
 import { Subscription } from 'rxjs';
+import { getColorOrDefault } from 'src/app/utils/color';
 
 @Component({
   selector: 'app-item-in-list',
@@ -34,13 +35,12 @@ export class ItemInListComponent implements OnInit, OnDestroy {
   }
 
   getAvatarColor(): string {
-    if (this.item.category != null) {
-      let color = this.item.category.color;
-      const hexColorRegex = /^(?:[0-9a-fA-F]{3}){1,2}$/;
-      if (hexColorRegex.test(color)) {
-        return `#${color}`;
-      }
+    let color = "";
+    if (this.item.category) {
+      color = getColorOrDefault(this.item.category.color);
+    } else {
+      color = getColorOrDefault();
     }
-    return "#ddd";
+    return color;
   }
 }
