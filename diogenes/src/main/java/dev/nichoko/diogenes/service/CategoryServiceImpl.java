@@ -5,6 +5,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import dev.nichoko.diogenes.exception.NameAlreadyExistsException;
@@ -51,7 +52,7 @@ public class CategoryServiceImpl implements CategoryService {
      */
     @Override
     public List<Category> getAllCategories() {
-        return categoryRepository.findAll();
+        return categoryRepository.findAll(Sort.by("name"));
     }
 
     /*
