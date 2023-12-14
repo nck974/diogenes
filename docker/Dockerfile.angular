@@ -8,7 +8,7 @@ WORKDIR /app
 RUN npm install -g @angular/cli
 
 COPY ng-diogenes/package.json ng-diogenes/package-lock.json ./
-RUN npm install
+RUN npm install --fetch-timeout=600000 
 COPY ng-diogenes/. .
 
 RUN ng build --configuration production --output-path=/dist
