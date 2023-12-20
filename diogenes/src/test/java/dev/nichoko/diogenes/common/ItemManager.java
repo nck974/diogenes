@@ -45,12 +45,39 @@ public class ItemManager {
         }
     }
 
+    /**
+     * Create first the location and assign the id to the item
+     * 
+     * @param item
+     * @throws UnsupportedEncodingException
+     * @throws Exception
+     * @throws JsonProcessingException
+     */
+    private static void tryCreateLocationIfNotExists(MockMvc mockMvc, Item item)
+            throws UnsupportedEncodingException, Exception, JsonProcessingException {
+        try {
+            String locationString = LocationManager.createLocation(mockMvc, item.getLocation()).andReturn()
+                    .getResponse()
+                    .getContentAsString();
+            if (locationString != null) {
+                int locationId = JsonProcessor
+                        .readJsonString(locationString)
+                        .get("id")
+                        .asInt(0);
+                item.setLocationId(locationId);
+            }
+        } catch (java.lang.NullPointerException e) {
+
+        }
+    }
+
     /*
      * Sends the provided item to the API
      */
     public static ResultActions createItem(MockMvc mockMvc, Item item) throws Exception {
 
         tryCreateCategoryIfNotExists(mockMvc, item);
+        tryCreateLocationIfNotExists(mockMvc, item);
 
         return mockMvc.perform(
                 post("/api/v1/item/")
@@ -65,6 +92,7 @@ public class ItemManager {
     public static ResultActions updateItem(MockMvc mockMvc, Item item) throws Exception {
 
         tryCreateCategoryIfNotExists(mockMvc, item);
+        tryCreateLocationIfNotExists(mockMvc, item);
 
         return mockMvc.perform(
                 put("/api/v1/item/" + Integer.toString(item.getId()))
@@ -80,6 +108,7 @@ public class ItemManager {
             throws Exception {
 
         tryCreateCategoryIfNotExists(mockMvc, item);
+        tryCreateLocationIfNotExists(mockMvc, item);
 
         // Create a MockMultipartFile for the JSON content
         MockMultipartFile itemPart = new MockMultipartFile(
@@ -106,7 +135,8 @@ public class ItemManager {
     /*
      * Updates the provided item to the API with the given image
      */
-    public static ResultActions updateItemWithImage(MockMvc mockMvc, String id, Item item, MockMultipartFile imagePart)
+    public static ResultActions updateItemWithImage(MockMvc mockMvc, String id, Item item,
+            MockMultipartFile imagePart)
             throws Exception {
 
         // Create a MockMultipartFile for the JSON content

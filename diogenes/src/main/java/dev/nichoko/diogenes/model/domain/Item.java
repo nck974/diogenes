@@ -70,6 +70,14 @@ public class Item {
     @Transient
     private int categoryId;
 
+    @OneToOne()
+    @JoinColumn(name = "location_id")
+    @JsonProperty(access = Access.READ_ONLY)
+    private Location location;
+
+    @Transient
+    private int locationId;
+
     public Item() {
     }
 
@@ -142,12 +150,31 @@ public class Item {
         }
     }
 
+    public Location getLocation() {
+        return location;
+    }
+
+    public void setLocation(Location location) {
+        this.location = location;
+        if (location != null) {
+            this.locationId = location.getId();
+        }
+    }
+
     public int getCategoryId() {
         return categoryId;
     }
 
     public void setCategoryId(int categoryId) {
         this.categoryId = categoryId;
+    }
+
+    public int getLocationId() {
+        return locationId;
+    }
+
+    public void setLocationId(int locationId) {
+        this.locationId = locationId;
     }
 
     public LocalDateTime getUpdatedOn() {
@@ -170,7 +197,8 @@ public class Item {
     public String toString() {
         return "Item [id=" + id + ", name=" + name + ", description=" + description + ", number=" + number
                 + ", updatedOn=" + updatedOn + ", createdOn=" + createdOn + ", imagePath=" + imagePath + ", category="
-                + category + ", categoryId=" + categoryId + "]";
+                + category + ", categoryId=" + categoryId + ", location=" + location + ", locationId=" + locationId
+                + "]";
     }
 
 }

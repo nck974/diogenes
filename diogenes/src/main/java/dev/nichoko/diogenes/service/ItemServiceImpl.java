@@ -14,29 +14,36 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import dev.nichoko.diogenes.exception.MissingCategoryException;
+import dev.nichoko.diogenes.exception.MissingLocationException;
 import dev.nichoko.diogenes.exception.ResourceNotFoundException;
 import dev.nichoko.diogenes.config.FileStorageConfig;
 import dev.nichoko.diogenes.exception.InvalidCategoryException;
+import dev.nichoko.diogenes.exception.InvalidLocationException;
 import dev.nichoko.diogenes.model.ItemFilter;
 import dev.nichoko.diogenes.model.domain.Category;
 import dev.nichoko.diogenes.model.domain.Item;
+import dev.nichoko.diogenes.model.domain.Location;
 import dev.nichoko.diogenes.model.enums.SortDirection;
 import dev.nichoko.diogenes.repository.CategoryRepository;
 import dev.nichoko.diogenes.repository.ItemRepository;
+import dev.nichoko.diogenes.repository.LocationRepository;
 
 @Service
 public class ItemServiceImpl implements ItemService {
 
     private final ItemRepository itemRepository;
     private final CategoryRepository categoryRepository;
+    private final LocationRepository locationRepository;
     private final FileStorageConfig fileStorageConfig;
     private final FileStorageService fileStorageService;
 
     @Autowired
     public ItemServiceImpl(ItemRepository itemRepository, CategoryRepository categoryRepository,
-            FileStorageConfig fileStorageConfig, FileStorageService fileStorageService) {
+            FileStorageConfig fileStorageConfig, FileStorageService fileStorageService,
+            LocationRepository locationRepository) {
         this.itemRepository = itemRepository;
         this.categoryRepository = categoryRepository;
+        this.locationRepository = locationRepository;
         this.fileStorageConfig = fileStorageConfig;
         this.fileStorageService = fileStorageService;
     }
@@ -65,6 +72,18 @@ public class ItemServiceImpl implements ItemService {
     }
 
     /**
+     * For some reason the locationId does not seem to be automatically filled by
+     * JPA
+     * 
+     * @param item
+     */
+    private void setLocationId(Item item) {
+        if (item.getLocation() != null) {
+            item.setLocationId(item.getLocation().getId());
+        }
+    }
+
+    /**
      * Set fields that will be returned to the user and are not stored in the
      * database as such
      * 
@@ -73,6 +92,7 @@ public class ItemServiceImpl implements ItemService {
     private void setTransientFields(Item createdItem) {
         setImageBasePath(createdItem);
         setCategoryId(createdItem);
+        setLocationId(createdItem);
     }
 
     /*
@@ -117,6 +137,11 @@ public class ItemServiceImpl implements ItemService {
         // Filter by category
         if (filter.getCategoryId() != null) {
             spec = spec.and((root, query, cb) -> cb.equal(root.get("category").get("id"), filter.getCategoryId()));
+        }
+
+        // Filter by location
+        if (filter.getLocationId() != null) {
+            spec = spec.and((root, query, cb) -> cb.equal(root.get("location").get("id"), filter.getLocationId()));
         }
 
         return spec;
@@ -180,6 +205,25 @@ public class ItemServiceImpl implements ItemService {
                 .orElseThrow(() -> new InvalidCategoryException(categoryId));
     }
 
+    /**
+     * Checks that the provided location exists and returns it
+     * 
+     * @param item
+     * @return
+     * @throws MissingLocationException
+     * @throws InvalidLocationException
+     */
+    private Location findLocation(Item item) throws MissingLocationException, InvalidLocationException {
+        final int locationId = item.getLocationId();
+
+        if (locationId == 0) {
+            throw new MissingLocationException();
+        }
+
+        return locationRepository.findById(locationId)
+                .orElseThrow(() -> new InvalidLocationException(locationId));
+    }
+
     /*
      * Create a new item
      */
@@ -187,6 +231,7 @@ public class ItemServiceImpl implements ItemService {
     public Item createItem(Item item, MultipartFile imageFile) {
 
         item.setCategory(this.findCategory(item));
+        item.setLocation(this.findLocation(item));
 
         if (imageFile != null) {
             String imagePath = fileStorageService.saveItemImage(imageFile);
