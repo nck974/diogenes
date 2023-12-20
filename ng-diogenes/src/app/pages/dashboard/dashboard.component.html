@@ -1,0 +1,46 @@
+<!-- Toolbar -->
+<mat-toolbar>
+    <!-- Logo and menu -->
+    <mat-toolbar-row class="flex-row-spaced-apart">
+
+        <!-- Logo -->
+        <div class="flex-center">
+            <app-logo></app-logo>
+            Dashboard
+        </div>
+
+        <app-dashboard-menu></app-dashboard-menu>
+
+    </mat-toolbar-row>
+
+</mat-toolbar>
+
+<!-- Show inventory -->
+<div *ngIf="isLoading; else notLoading">
+    <app-loading-spinner></app-loading-spinner>
+</div>
+<ng-template #notLoading>
+
+    <div class="card-list-container"
+        *ngIf="dashboardItems">
+        <mat-card
+            class="card-in-list"
+            *ngFor="let dashboardItem of dashboardItems">
+            <mat-card-header>
+
+                <!-- Section icon -->
+                <mat-icon mat-card-avatar [fontIcon]="dashboardItem.icon"></mat-icon>
+
+                <!-- Title -->
+                <mat-card-title class="show-pointer"
+                    (click)="onOpenRoute(dashboardItem.route)">
+                    <span class="no-overflow-everywhere">{{
+                        dashboardItem.name }}</span>
+                </mat-card-title>
+
+            </mat-card-header>
+
+        </mat-card>
+    </div>
+
+</ng-template>

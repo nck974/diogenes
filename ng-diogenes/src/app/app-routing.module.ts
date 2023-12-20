@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { CategoriesSummaryComponent } from './pages/categories-summary/categories-summary.component';
 import { CategoriesComponent } from './pages/categories/categories.component';
 import { CategoryDetailComponent } from './pages/category-detail/category-detail.component';
+import { DashboardComponent } from './pages/dashboard/dashboard.component';
 import { EditCategoryComponent } from './pages/edit-category/edit-category.component';
 import { EditSingleItemComponent } from './pages/edit-item/components/edit-single-item/edit-single-item.component';
 import { EditItemComponent } from './pages/edit-item/edit-item.component';
@@ -27,7 +28,8 @@ const routes: Routes = [
   { path: 'items/:id', component: ItemDetailComponent },
   { path: 'items', component: InventoryComponent },
   { path: 'summary-categories', component: CategoriesSummaryComponent },
-  { path: 'home', redirectTo: "summary-categories" },
+  { path: 'dashboard', component: DashboardComponent },
+  { path: 'home', redirectTo: "dashboard" },
   { path: '', component: LoginComponent },
 ];
 

@@ -17,6 +17,7 @@ import { LoginModule } from './pages/login/login.module';
 import { SharedComponentsModule } from './shared/components/shared.components.module';
 import { AuthenticationInterceptor } from './shared/interceptors/authentication.interceptor';
 import { CategoriesSummaryModule } from './pages/categories-summary/categories-summary.module';
+import { DashboardModule } from './pages/dashboard/dashboard.module';
 
 @NgModule({
   declarations: [
@@ -37,6 +38,7 @@ import { CategoriesSummaryModule } from './pages/categories-summary/categories-s
     ItemDetailModule,
     LoginModule,
     CategoriesSummaryModule,
+    DashboardModule,
 
     SharedComponentsModule,
 
