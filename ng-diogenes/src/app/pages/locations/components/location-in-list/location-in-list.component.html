@@ -1,0 +1,23 @@
+<mat-card class="card-in-list">
+
+    <mat-card-header>
+
+        <!-- Avatar -->
+        <div mat-card-avatar class="icon-in-avatar-container">
+            <mat-icon mat-card-avatar class="icon-in-avatar"
+                [fontIcon]="location.icon"></mat-icon>
+        </div>
+
+        <!-- Name -->
+        <mat-card-title class="show-pointer" (click)="onOpenDetails()"
+            title="{{location.description}}">
+
+            <span class="no-overflow-everywhere">
+                {{ location.name }}
+            </span>
+
+        </mat-card-title>
+
+    </mat-card-header>
+
+</mat-card>

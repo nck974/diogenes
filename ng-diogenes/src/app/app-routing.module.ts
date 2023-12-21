@@ -9,6 +9,7 @@ import { EditSingleItemComponent } from './pages/edit-item/components/edit-singl
 import { EditItemComponent } from './pages/edit-item/edit-item.component';
 import { InventoryComponent } from './pages/inventory/inventory.component';
 import { ItemDetailComponent } from './pages/item-detail/item-detail.component';
+import { LocationsComponent } from './pages/locations/locations.component';
 import { LoginComponent } from './pages/login/login.component';
 
 const routes: Routes = [
@@ -16,6 +17,7 @@ const routes: Routes = [
   { path: 'categories/:id/edit', component: EditCategoryComponent },
   { path: 'categories/:id', component: CategoryDetailComponent },
   { path: 'categories', component: CategoriesComponent },
+  { path: 'locations', component: LocationsComponent },
   {
     path: 'items/edit', component: EditItemComponent,
     children: [

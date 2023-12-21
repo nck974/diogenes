@@ -18,6 +18,7 @@ import { SharedComponentsModule } from './shared/components/shared.components.mo
 import { AuthenticationInterceptor } from './shared/interceptors/authentication.interceptor';
 import { CategoriesSummaryModule } from './pages/categories-summary/categories-summary.module';
 import { DashboardModule } from './pages/dashboard/dashboard.module';
+import { LocationsModule } from './pages/locations/locations.module';
 
 @NgModule({
   declarations: [
@@ -39,6 +40,7 @@ import { DashboardModule } from './pages/dashboard/dashboard.module';
     LoginModule,
     CategoriesSummaryModule,
     DashboardModule,
+    LocationsModule,
 
     SharedComponentsModule,
 
