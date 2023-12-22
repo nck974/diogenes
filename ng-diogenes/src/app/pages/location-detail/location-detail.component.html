@@ -1,0 +1,66 @@
+<mat-toolbar>
+    <mat-toolbar-row>
+        <app-go-back></app-go-back>
+        Location detail
+    </mat-toolbar-row>
+</mat-toolbar>
+
+<div *ngIf="isLoading; else notLoading">
+    <app-loading-spinner></app-loading-spinner>
+</div>
+
+<ng-template #notLoading>
+
+    <div class="flex-center card-container" *ngIf="location; else notFound">
+        <mat-card class="card-details">
+            <!-- Header -->
+            <mat-card-header>
+                <mat-card-title>
+                    <span class="no-overflow-everywhere">
+                        {{ location.name }}
+                    </span>
+                </mat-card-title>
+
+                <div mat-card-avatar class="icon-in-avatar-container">
+                    <mat-icon mat-card-avatar class="icon-in-avatar"
+                        [fontIcon]="location.icon"></mat-icon>
+                </div>
+
+            </mat-card-header>
+
+            <!-- Content -->
+            <mat-card-content>
+                <p class="no-overflow" *ngIf="location.description">
+                    {{ location.description }}
+                </p>
+                <div class="item-image-container thin-border">
+                    <p>Last Updated: {{ location.updatedOn | date:'medium'
+                        }}</p>
+                    <p>Created On: {{ location.createdOn | date:'medium' }}</p>
+                </div>
+            </mat-card-content>
+
+            <!-- Action buttons -->
+            <mat-card-actions align="end">
+
+                <button mat-icon-button aria-label="Edit location" title="Edit"
+                    (click)="onEditLocation()">
+                    <mat-icon>edit</mat-icon>
+                </button>
+
+                <button mat-icon-button aria-label="Delete location"
+                    title="Delete"
+                    (click)="onDeleteLocation()">
+                    <mat-icon>delete</mat-icon>
+                </button>
+
+            </mat-card-actions>
+        </mat-card>
+    </div>
+
+    <ng-template #notFound>
+        <app-error-card [title]="'Location not found'" [icon]="'error'"
+            [content]="'The requested location could not be found'"></app-error-card>
+    </ng-template>
+
+</ng-template>

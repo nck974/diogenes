@@ -19,6 +19,8 @@ import { AuthenticationInterceptor } from './shared/interceptors/authentication.
 import { CategoriesSummaryModule } from './pages/categories-summary/categories-summary.module';
 import { DashboardModule } from './pages/dashboard/dashboard.module';
 import { LocationsModule } from './pages/locations/locations.module';
+import { LocationDetailModule } from './pages/location-detail/location-detail.module';
+import { LocationsSummaryModule } from './pages/locations-summary/locations-summary.module';
 
 @NgModule({
   declarations: [
@@ -41,6 +43,8 @@ import { LocationsModule } from './pages/locations/locations.module';
     CategoriesSummaryModule,
     DashboardModule,
     LocationsModule,
+    LocationDetailModule,
+    LocationsSummaryModule,
 
     SharedComponentsModule,
 

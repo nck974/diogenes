@@ -11,11 +11,14 @@ import { InventoryComponent } from './pages/inventory/inventory.component';
 import { ItemDetailComponent } from './pages/item-detail/item-detail.component';
 import { LocationsComponent } from './pages/locations/locations.component';
 import { LoginComponent } from './pages/login/login.component';
+import { LocationDetailComponent } from './pages/location-detail/location-detail.component';
+import { LocationsSummaryComponent } from './pages/locations-summary/locations-summary.component';
 
 const routes: Routes = [
   { path: 'categories/new', component: EditCategoryComponent },
   { path: 'categories/:id/edit', component: EditCategoryComponent },
   { path: 'categories/:id', component: CategoryDetailComponent },
+  { path: 'locations/:id', component: LocationDetailComponent },
   { path: 'categories', component: CategoriesComponent },
   { path: 'locations', component: LocationsComponent },
   {
@@ -30,6 +33,7 @@ const routes: Routes = [
   { path: 'items/:id', component: ItemDetailComponent },
   { path: 'items', component: InventoryComponent },
   { path: 'summary-categories', component: CategoriesSummaryComponent },
+  { path: 'summary-locations', component: LocationsSummaryComponent },
   { path: 'dashboard', component: DashboardComponent },
   { path: 'home', redirectTo: "dashboard" },
   { path: '', component: LoginComponent },
