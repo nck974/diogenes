@@ -7,16 +7,19 @@ import { DashboardComponent } from './pages/dashboard/dashboard.component';
 import { EditCategoryComponent } from './pages/edit-category/edit-category.component';
 import { EditSingleItemComponent } from './pages/edit-item/components/edit-single-item/edit-single-item.component';
 import { EditItemComponent } from './pages/edit-item/edit-item.component';
+import { EditLocationComponent } from './pages/edit-location/edit-location.component';
 import { InventoryComponent } from './pages/inventory/inventory.component';
 import { ItemDetailComponent } from './pages/item-detail/item-detail.component';
-import { LocationsComponent } from './pages/locations/locations.component';
-import { LoginComponent } from './pages/login/login.component';
 import { LocationDetailComponent } from './pages/location-detail/location-detail.component';
 import { LocationsSummaryComponent } from './pages/locations-summary/locations-summary.component';
+import { LocationsComponent } from './pages/locations/locations.component';
+import { LoginComponent } from './pages/login/login.component';
 
 const routes: Routes = [
   { path: 'categories/new', component: EditCategoryComponent },
   { path: 'categories/:id/edit', component: EditCategoryComponent },
+  { path: 'locations/new', component: EditLocationComponent },
+  { path: 'locations/:id/edit', component: EditLocationComponent },
   { path: 'categories/:id', component: CategoryDetailComponent },
   { path: 'locations/:id', component: LocationDetailComponent },
   { path: 'categories', component: CategoriesComponent },

@@ -21,6 +21,7 @@ import { DashboardModule } from './pages/dashboard/dashboard.module';
 import { LocationsModule } from './pages/locations/locations.module';
 import { LocationDetailModule } from './pages/location-detail/location-detail.module';
 import { LocationsSummaryModule } from './pages/locations-summary/locations-summary.module';
+import { EditLocationModule } from './pages/edit-location/edit-location.module';
 
 @NgModule({
   declarations: [
@@ -45,6 +46,7 @@ import { LocationsSummaryModule } from './pages/locations-summary/locations-summ
     LocationsModule,
     LocationDetailModule,
     LocationsSummaryModule,
+    EditLocationModule,
 
     SharedComponentsModule,
 
