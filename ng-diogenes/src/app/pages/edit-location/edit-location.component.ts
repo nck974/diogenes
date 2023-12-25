@@ -6,6 +6,7 @@ import { Location } from 'src/app/models/Location';
 import { LocationService } from 'src/app/shared/services/location.service';
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 import { MessageService } from 'src/app/shared/services/message.service';
+import { getMaterialIcons } from 'src/app/utils/material-icons';
 
 @Component({
   selector: 'app-edit-location',
@@ -15,10 +16,7 @@ import { MessageService } from 'src/app/shared/services/message.service';
 export class EditLocationComponent {
   initializationSubscription?: Subscription;
 
-  iconList: string[] = [
-    'account_circle',
-    'alarm',
-  ];
+  iconList: string[] = getMaterialIcons();
 
   locationForm: FormGroup;
   locations?: Location[];

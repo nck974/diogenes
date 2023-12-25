@@ -3,8 +3,13 @@
     <!-- header -->
     <mat-card-header>
 
-        <!-- Category -->
-        <div mat-card-avatar [style.background-color]="getAvatarColor()"></div>
+        <!-- Category & location -->
+        <div mat-card-avatar [style.background-color]="getAvatarColor()"
+            class="icon-in-avatar-container">
+            <mat-icon mat-card-avatar class="icon-in-avatar"
+                [fontIcon]="item.location.icon"
+                *ngIf="item.location"></mat-icon>
+        </div>
 
         <!-- Title -->
         <mat-card-title class="show-pointer" (click)="onOpenDetails()"
@@ -25,11 +30,12 @@
 
             <!-- Icon -->
             <span *ngIf="item.imagePath">
-                <mat-icon class="vertical-align-image small-screen-icon">image</mat-icon>
+                <mat-icon
+                    class="vertical-align-image small-screen-icon">image</mat-icon>
             </span>
 
         </mat-card-subtitle>
-        
+
         <!-- Image only in large screens -->
         <img mat-card-image
             [src]="item.imagePath | secureImage | async"

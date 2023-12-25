@@ -273,6 +273,7 @@ public class ItemServiceImpl implements ItemService {
                     // Set fields that shall not be changed
                     item.setId(existingItem.getId());
                     item.setCategory(this.findCategory(item));
+                    item.setLocation(this.findLocation(item));
                     item.setCreatedOn(existingItem.getCreatedOn());
 
                     // Store the image and update the database

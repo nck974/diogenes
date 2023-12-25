@@ -24,8 +24,14 @@
                 <mat-card-subtitle>
                     {{item.category.name}}
                 </mat-card-subtitle>
-
-                <div mat-card-avatar [style.background-color]="getAvatarColor()"></div>
+                
+                <!-- Avatar -->
+                <div mat-card-avatar [style.background-color]="getAvatarColor()"
+                    class="icon-in-avatar-container">
+                    <mat-icon mat-card-avatar class="icon-in-avatar"
+                        [fontIcon]="item.location.icon"
+                        *ngIf="item.location"></mat-icon>
+                </div>
 
             </mat-card-header>
 
@@ -41,13 +47,13 @@
                 </div>
 
                 <!-- Description -->
-                <p class="item-description no-overflow" *ngIf="item.description; else newLine">
+                <p class="item-description no-overflow"
+                    *ngIf="item.description; else newLine">
                     {{ item.description }}
                 </p>
                 <ng-template #newLine>
                     <br>
                 </ng-template>
-                
 
                 <!-- Metadata -->
                 <div class="item-image-container thin-border">

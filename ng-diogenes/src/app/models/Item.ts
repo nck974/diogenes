@@ -1,4 +1,5 @@
 import { Category } from "./Category";
+import { Location } from "./Location";
 
 export interface Item {
     id: number;
@@ -6,6 +7,7 @@ export interface Item {
     description: string;
     number: number;
     category: Category;
+    location: Location;
     createdOn: Date;
     updatedOn: Date;
     imagePath: string | undefined;
