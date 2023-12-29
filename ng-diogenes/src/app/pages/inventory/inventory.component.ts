@@ -52,6 +52,7 @@ export class InventoryComponent implements OnInit, OnDestroy {
     this.route.queryParams.subscribe(params => {
       this.itemFilter = {
         categoryId: params['categoryId'] || undefined,
+        locationId: params['locationId'] || undefined,
         name: params['name'] || undefined,
         description: params['description'] || undefined,
         number: params['number'] || undefined
@@ -144,7 +145,7 @@ export class InventoryComponent implements OnInit, OnDestroy {
     for (let urlParameters of [this.itemFilter, this.itemSorter]) {
       if (urlParameters) {
         const filterQueryString = Object.entries(urlParameters)
-          .filter(([_key, value]) => value !== undefined && value != null)
+          .filter(([_key, value]) => value != undefined && value != null && value != "")
           .map(([key, value]) => `${encodeURIComponent(key)}=${encodeURIComponent(value)}`)
           .join('&');
         url = `${url}&${filterQueryString}`;

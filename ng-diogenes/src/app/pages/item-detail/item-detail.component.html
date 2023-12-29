@@ -13,6 +13,7 @@
 
     <div class="flex-center card-container" *ngIf="item; else notFound">
         <mat-card class="card-details">
+
             <!-- Header -->
             <mat-card-header>
                 <mat-card-title>
@@ -22,9 +23,9 @@
                 </mat-card-title>
 
                 <mat-card-subtitle>
-                    {{item.category.name}}
+                    {{item.category.name}} ({{item.location.name}})
                 </mat-card-subtitle>
-                
+
                 <!-- Avatar -->
                 <div mat-card-avatar [style.background-color]="getAvatarColor()"
                     class="icon-in-avatar-container">

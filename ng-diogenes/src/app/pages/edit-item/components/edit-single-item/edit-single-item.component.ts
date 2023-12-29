@@ -67,9 +67,6 @@ export class EditSingleItemComponent implements OnDestroy, OnInit {
         }
       ))
       .subscribe(({ categories, locations, item }) => {
-        console.log(categories);
-        console.log(locations);
-        console.log(item);
         this.categories = categories;
         this.locations = locations;
         if (item) {

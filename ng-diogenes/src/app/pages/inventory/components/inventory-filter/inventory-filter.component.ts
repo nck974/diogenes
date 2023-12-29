@@ -1,10 +1,12 @@
 import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { Subscription } from 'rxjs';
+import { Subscription, combineLatest } from 'rxjs';
 import { Category } from 'src/app/models/Category';
+import { Location } from 'src/app/models/Location';
 import { ItemFilter } from 'src/app/models/ItemFilter';
 import { CategoryService } from 'src/app/shared/services/category.service';
+import { LocationService } from 'src/app/shared/services/location.service';
 import { isNumberValidator } from 'src/app/utils/form-validator/number';
 
 
@@ -23,10 +25,12 @@ export class InventoryFilterComponent implements OnInit, OnDestroy {
   descriptionFilterName: string = 'description';
   numberFilterName: string = 'number';
   categoryIdFilterName: string = 'categoryId';
+  locationIdFilterName: string = 'locationId';
 
   // Dropbox options
   categorySubscription?: Subscription;
   categories: Category[] = [];
+  locations: Location[] = [];
 
   // Status to clear filters
   filterIsActive = false;
@@ -34,13 +38,15 @@ export class InventoryFilterComponent implements OnInit, OnDestroy {
   constructor(
     private fb: FormBuilder,
     private categoryService: CategoryService,
+    private locationService: LocationService,
     public dialogRef: MatDialogRef<InventoryFilterComponent>,
     @Inject(MAT_DIALOG_DATA) public previousFilter?: ItemFilter) {
     this.form = this.fb.group({
       name: new FormControl("", [Validators.maxLength(50)]),
       number: new FormControl("", [isNumberValidator()]),
       description: new FormControl("", [Validators.maxLength(200)]),
-      categoryId: new FormControl("")
+      categoryId: new FormControl(""),
+      locationId: new FormControl(""),
     });
   }
 
@@ -49,8 +55,12 @@ export class InventoryFilterComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.categorySubscription = this.categoryService.getCategories().subscribe(categories => {
+    combineLatest({
+      categories: this.categoryService.getCategories(),
+      locations: this.locationService.getLocations(),
+    }).subscribe(({categories, locations}) => {
       this.categories = categories;
+      this.locations = locations;
       this.prefillPreviousFilter();
     });
   }
@@ -70,6 +80,7 @@ export class InventoryFilterComponent implements OnInit, OnDestroy {
           "number": this.previousFilter.number,
           "description": this.previousFilter.description,
           "categoryId": this.previousFilter.categoryId,
+          "locationId": this.previousFilter.locationId,
         }
       );
       this.filterIsActive = true;
