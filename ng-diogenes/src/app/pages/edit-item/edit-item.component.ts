@@ -1,3 +1,4 @@
+import { Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 
@@ -10,7 +11,7 @@ export class EditItemComponent implements OnInit {
 
   singleItemEdit = true;
 
-  constructor(private router: Router) { }
+  constructor(private router: Router, private location: Location) { }
 
   ngOnInit(): void {
     this.checkBulkUrl();
@@ -25,7 +26,7 @@ export class EditItemComponent implements OnInit {
 
   returnToInventory(itemCreated: boolean): void {
     if (itemCreated) {
-      this.router.navigateByUrl("/items");
+      this.location.back();
     }
   }
 
