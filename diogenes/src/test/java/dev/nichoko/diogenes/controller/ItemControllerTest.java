@@ -347,6 +347,20 @@ class ItemControllerTest {
     }
 
     /**
+     * Verify create item validation: Invalid location
+     *
+     * @throws Exception
+     */
+    @Test
+    void canNotCreateNewWithoutValidLocationId() throws Exception {
+        Item item = ItemMock.getMockItem(1);
+        item.setLocation(null);
+
+        ItemManager.createItem(this.mockMvc, item)
+                .andExpect(status().isBadRequest());
+    }
+
+    /**
      * Verify create item validation: Category 0
      *
      * @throws Exception
@@ -355,6 +369,24 @@ class ItemControllerTest {
     void canNotCreateNewWithoutCategoryId() throws Exception {
         Item item = ItemMock.getMockItem(1);
         item.setCategoryId(0);
+
+        this.mockMvc.perform(
+                post("/api/v1/item/")
+                        .content(JsonProcessor.stringifyClass(item))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest());
+    }
+
+    /**
+     * Verify create item validation: Location 0
+     *
+     * @throws Exception
+     */
+    @Test
+    void canNotCreateNewWithoutLocationId() throws Exception {
+        Item item = ItemMock.getMockItem(1);
+        item.setLocationId(0);
 
         this.mockMvc.perform(
                 post("/api/v1/item/")
@@ -497,7 +529,8 @@ class ItemControllerTest {
             "name",
             "number",
             "description",
-            "categoryId"
+            "categoryId",
+            "locationId",
     })
     void canFilterByTheAvailableParameters(String filterName) throws Exception {
         IntStream.range(0, 10).forEachOrdered(n -> {

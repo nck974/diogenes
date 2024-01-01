@@ -1,0 +1,70 @@
+<mat-toolbar>
+    <mat-toolbar-row>
+        <app-go-back></app-go-back>
+        Edit location
+    </mat-toolbar-row>
+</mat-toolbar>
+
+<div *ngIf="isLoading; else notLoading">
+    <app-loading-spinner></app-loading-spinner>
+</div>
+
+<ng-template #notLoading>
+
+    <div *ngIf="initializationError; else locationFormTemplate">
+        <app-error-card [title]="'Location not found'" [icon]="'error'"
+            [content]="initializationError"></app-error-card>
+    </div>
+
+    <ng-template #locationFormTemplate>
+
+        <div class="flex-center card-container">
+            <mat-card class="card-details">
+
+                <!-- Title -->
+                <mat-card-title class="flex-center material-card-title">
+                    {{isNewLocation ? "Create location" : "Edit location"}}
+                </mat-card-title>
+
+                <form [formGroup]="locationForm"
+                    (ngSubmit)="onSubmit()">
+
+                    <!-- Fields -->
+                    <mat-form-field>
+                        <mat-label>Name</mat-label>
+                        <input matInput required maxlength="50"
+                            formControlName="name">
+                    </mat-form-field>
+
+                    <mat-form-field>
+                        <mat-label>Description</mat-label>
+                        <textarea matInput formControlName="description"
+                            class="textarea-height"
+                            maxlength="2000"></textarea>
+                    </mat-form-field>
+
+                    <mat-form-field>
+                        <mat-label>Select Icon</mat-label>
+                        <mat-select formControlName="icon">
+                            <mat-option *ngFor="let icon of iconList"
+                                [value]="icon">
+                                <mat-icon>{{ icon }}</mat-icon> {{ icon }}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+
+                    <!-- Button -->
+                    <div class="flex-center">
+                        <button mat-raised-button color="primary" type="submit"
+                            [disabled]="locationForm.invalid">
+                            {{isNewLocation ? "Create" : "Save"}}
+                        </button>
+                    </div>
+
+                </form>
+            </mat-card>
+        </div>
+
+    </ng-template>
+
+</ng-template>

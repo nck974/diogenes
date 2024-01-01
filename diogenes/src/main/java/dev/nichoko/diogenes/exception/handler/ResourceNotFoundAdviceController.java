@@ -7,7 +7,9 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import dev.nichoko.diogenes.exception.ImageCouldNotBeSavedException;
 import dev.nichoko.diogenes.exception.InvalidCategoryException;
+import dev.nichoko.diogenes.exception.InvalidLocationException;
 import dev.nichoko.diogenes.exception.MissingCategoryException;
+import dev.nichoko.diogenes.exception.MissingLocationException;
 import dev.nichoko.diogenes.exception.NameAlreadyExistsException;
 import dev.nichoko.diogenes.exception.ResourceNotFoundException;
 import dev.nichoko.diogenes.exception.UnsupportedImageFormatException;
@@ -33,9 +35,21 @@ public class ResourceNotFoundAdviceController {
         return new ErrorResponse(ex.getMessage());
     }
 
+    @ExceptionHandler(MissingLocationException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ErrorResponse handleMissingLocation(MissingLocationException ex) {
+        return new ErrorResponse(ex.getMessage());
+    }
+
     @ExceptionHandler(InvalidCategoryException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ErrorResponse handleInvalidCategory(InvalidCategoryException ex) {
+        return new ErrorResponse(ex.getMessage());
+    }
+
+    @ExceptionHandler(InvalidLocationException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ErrorResponse handleInvalidLocation(InvalidLocationException ex) {
         return new ErrorResponse(ex.getMessage());
     }
 

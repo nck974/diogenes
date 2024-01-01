@@ -1,0 +1,27 @@
+<mat-toolbar>
+    <mat-toolbar-row>
+        <app-go-back></app-go-back>
+        <div>
+            Locations
+        </div>
+    </mat-toolbar-row>
+</mat-toolbar>
+
+<!-- Show add location as float action button -->
+<div class="fab-container">
+    <button mat-fab color="primary"
+        (click)="onCreateNewLocation()"><mat-icon>add</mat-icon>
+    </button>
+</div>
+
+<!-- Show locations -->
+<div class="card-list-container" *ngIf="!isLoading; else loadingSpinner">
+    <div *ngFor="let location of locations">
+        <app-location-in-list [location]="location"></app-location-in-list>
+    </div>
+</div>
+
+<!-- Loading spinner -->
+<ng-template #loadingSpinner>
+    <app-loading-spinner></app-loading-spinner>
+</ng-template>

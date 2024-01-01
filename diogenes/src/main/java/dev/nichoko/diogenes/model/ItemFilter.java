@@ -5,12 +5,14 @@ public class ItemFilter {
     private String description;
     private Integer number;
     private Integer categoryId;
+    private Integer locationId;
 
-    public ItemFilter(String name, String description, Integer number, Integer categoryId) {
+    public ItemFilter(String name, String description, Integer number, Integer categoryId, Integer locationId) {
         this.name = name;
         this.description = description;
         this.number = number;
         this.categoryId = categoryId;
+        this.locationId = locationId;
     }
 
     public String getName() {
@@ -29,10 +31,14 @@ public class ItemFilter {
         return categoryId;
     }
 
+    public Integer getLocationId() {
+        return locationId;
+    }
+
     @Override
     public String toString() {
         return "ItemFilter [name=" + name + ", description=" + description + ", number=" + number + ", categoryId="
-                + categoryId + "]";
+                + categoryId + ", locationId=" + locationId + "]";
     }
 
 }

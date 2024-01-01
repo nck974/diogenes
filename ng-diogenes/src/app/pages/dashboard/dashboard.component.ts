@@ -20,6 +20,11 @@ export class DashboardComponent {
       name: "Categories overview",
       route: "/summary-categories",
       icon: "category"
+    },
+    {
+      name: "Locations overview",
+      route: "/summary-locations",
+      icon: "location_on"
     }
   ]
 

@@ -2,6 +2,7 @@ package dev.nichoko.diogenes.mock;
 
 import dev.nichoko.diogenes.model.domain.Category;
 import dev.nichoko.diogenes.model.domain.Item;
+import dev.nichoko.diogenes.model.domain.Location;
 
 public class ItemMock {
     
@@ -18,7 +19,12 @@ public class ItemMock {
                 number,
                 "name" + number,
                 "description" + number,
-                "col" + number));
+                "col" + number));        
+        item.setLocation(new Location(
+                number,
+                "name" + number,
+                "description" + number,
+                "icon" + number));
         return item;
     }
 }

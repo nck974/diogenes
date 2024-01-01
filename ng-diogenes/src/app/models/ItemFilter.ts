@@ -3,4 +3,5 @@ export interface ItemFilter {
     description?: string;
     number?: number;
     categoryId?: number;
+    locationId?: number;
 }

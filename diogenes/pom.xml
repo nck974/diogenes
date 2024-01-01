@@ -6,12 +6,12 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>3.1.5</version>
+		<version>3.2.0</version>
 		<relativePath />
 	</parent>
 	<groupId>dev.nichoko</groupId>
 	<artifactId>diogenes</artifactId>
-	<version>0.0.5</version>
+	<version>0.0.7</version>
 	<name>diogenes</name>
 	<description>Software to manage the personal inventary of items that you own.</description>
 
@@ -65,7 +65,7 @@
 		<dependency>
 			<groupId>org.postgresql</groupId>
 			<artifactId>postgresql</artifactId>
-			<version>42.6.0</version>
+			<version>42.7.0</version>
 		</dependency>
 
 		<!-- In memory database for unit test -->

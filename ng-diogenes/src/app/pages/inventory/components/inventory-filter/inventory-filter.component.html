@@ -16,6 +16,9 @@
             <app-select-filter [filterName]="'category'"
                 [control]="getFilterControl(categoryIdFilterName)"
                 [options]="categories | generateSelectBoxOptions"></app-select-filter>
+            <app-select-filter [filterName]="'location'"
+                [control]="getFilterControl(locationIdFilterName)"
+                [options]="locations | generateSelectBoxOptions"></app-select-filter>
 
             <!-- Actions -->
             <div mat-dialog-actions>
