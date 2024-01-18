@@ -11,7 +11,7 @@
 	</parent>
 	<groupId>dev.nichoko</groupId>
 	<artifactId>diogenes</artifactId>
-	<version>0.0.7</version>
+	<version>0.0.8</version>
 	<name>diogenes</name>
 	<description>Software to manage the personal inventary of items that you own.</description>
 

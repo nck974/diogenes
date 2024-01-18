@@ -95,13 +95,13 @@ https://start.spring.io/#!type=maven-project&language=java&platformVersion=3.0.4
 #### Create backend docker container
 
 1. First build the image with `cd diogenes && ./mvnw install`.
-1. Build the container with `cd .. && docker build -f docker/Dockerfile -t nck974/diogenes:0.0.7 .`
+1. Build the container with `cd .. && docker build -f docker/Dockerfile -t nck974/diogenes:0.0.8 .`
 1. Generate a token in `https://hub.docker.com` and login with `docker login -u <user>`. Paste the generated token as password.
-1. Push the generated container with `docker push nck974/diogenes:0.0.7`.
+1. Push the generated container with `docker push nck974/diogenes:0.0.8`.
 1. Create the `latest` tag and push it:
 
   ```bash
-  docker tag nck974/diogenes:0.0.7 nck974/diogenes:latest
+  docker tag nck974/diogenes:0.0.8 nck974/diogenes:latest
   docker push nck974/diogenes:latest
   ```
 
