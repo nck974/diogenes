@@ -143,13 +143,13 @@ ncu -u
 
 1. Backend and frontend can be served using a custom reverse proxy or just use the one provided in the image. To do so build it with:
 
-1. Build the container with `docker build -f docker/Dockerfile.nginx -t nck974/diogenes-reverse-proxy:0.0.1 .`
+1. Build the container with `docker build -f docker/Dockerfile.nginx -t nck974/diogenes-reverse-proxy:0.0.2 .`
 1. Generate a token in `https://hub.docker.com` and login with `docker login -u <user>`. Paste the generated token as password.
-1. Push the generated container with `docker push nck974/diogenes-reverse-proxy:0.0.1`.
+1. Push the generated container with `docker push nck974/diogenes-reverse-proxy:0.0.2`.
 1. Create the `latest` tag and push it:
 
   ```bash
-  docker tag nck974/diogenes-reverse-proxy:0.0.1 nck974/diogenes-reverse-proxy:latest
+  docker tag nck974/diogenes-reverse-proxy:0.0.2 nck974/diogenes-reverse-proxy:latest
   docker push nck974/diogenes-reverse-proxy:latest
   ```
 
