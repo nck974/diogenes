@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
-import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -24,40 +24,37 @@ import { LocationsSummaryModule } from './pages/locations-summary/locations-summ
 import { EditLocationModule } from './pages/edit-location/edit-location.module';
 
 @NgModule({
-  declarations: [
-    AppComponent,
-  ],
-  imports: [
-    BrowserModule,
-    AppRoutingModule,
-    HttpClientModule,
-    BrowserAnimationsModule,
-
-    // Local modules
-    CategoriesModule,
-    CategoryDetailModule,
-    EditItemModule,
-    EditCategoryModule,
-    InventoryModule,
-    ItemDetailModule,
-    LoginModule,
-    CategoriesSummaryModule,
-    DashboardModule,
-    LocationsModule,
-    LocationDetailModule,
-    LocationsSummaryModule,
-    EditLocationModule,
-
-    SharedComponentsModule,
-
-  ],
-  bootstrap: [AppComponent],
-  providers: [
-    {
-      provide: HTTP_INTERCEPTORS,
-      useClass: AuthenticationInterceptor,
-      multi: true
-    }
-  ]
+    declarations: [
+        AppComponent,
+    ],
+    bootstrap: [AppComponent],
+    imports: [
+        BrowserModule,
+        AppRoutingModule,
+        BrowserAnimationsModule,
+        // Local modules
+        CategoriesModule,
+        CategoryDetailModule,
+        EditItemModule,
+        EditCategoryModule,
+        InventoryModule,
+        ItemDetailModule,
+        LoginModule,
+        CategoriesSummaryModule,
+        DashboardModule,
+        LocationsModule,
+        LocationDetailModule,
+        LocationsSummaryModule,
+        EditLocationModule,
+        SharedComponentsModule
+    ],
+    providers: [
+        {
+            provide: HTTP_INTERCEPTORS,
+            useClass: AuthenticationInterceptor,
+            multi: true
+        },
+        provideHttpClient(withInterceptorsFromDi())
+    ]
 })
 export class AppModule { }

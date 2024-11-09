@@ -10,13 +10,13 @@ import { JwtHelperService } from '@auth0/angular-jwt';
 })
 export class AuthenticationService {
 
-  private static tokenName = "access_token";
-  private static backendUrl = environment.diogenesBackendURL;
-  private static urlPath = "authenticate";
-  private url = `${AuthenticationService.backendUrl}/${AuthenticationService.urlPath}`;
-  private jwtHelper = new JwtHelperService();
+  private static readonly tokenName = "access_token";
+  private static readonly backendUrl = environment.diogenesBackendURL;
+  private static readonly urlPath = "authenticate";
+  private readonly url = `${AuthenticationService.backendUrl}/${AuthenticationService.urlPath}`;
+  private readonly jwtHelper = new JwtHelperService();
 
-  constructor(private http: HttpClient) { }
+  constructor(private readonly http: HttpClient) { }
 
 
   login(user: User): Observable<string> {

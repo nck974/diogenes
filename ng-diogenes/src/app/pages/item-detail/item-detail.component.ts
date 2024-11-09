@@ -21,12 +21,13 @@ export class ItemDetailComponent implements OnInit, OnDestroy {
   item?: Item;
   isLoading = false;
   constructor(
-    private itemService: ItemService,
-    private messageService: MessageService,
-    private route: ActivatedRoute,
-    private location: Location,
+    private readonly itemService: ItemService,
+    private readonly messageService: MessageService,
+    private readonly route: ActivatedRoute,
+    private readonly location: Location,
+    private readonly router: Router,
     public dialogService: MatDialog,
-    private router: Router) {
+  ) {
 
   }
 

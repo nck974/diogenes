@@ -1,3 +1,16 @@
 .textarea-height {
     min-height: 150px;
 }
+
+.single-row{
+    display: flex;
+    flex-direction: row;
+    gap: 0.5rem
+}
+
+.color-picker-wrapper{
+    display: flex;
+    align-items: center;
+    // Compensate the padding on the bottom of the form field
+    padding-bottom: 0.5rem;
+}
