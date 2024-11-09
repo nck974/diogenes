@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { Location as LocationCommon } from '@angular/common';
-import { Observable, Subscription, catchError, finalize, map, of, switchMap, take, throwError } from 'rxjs';
+import { Observable, Subscription, catchError, finalize, map, of, startWith, switchMap, take, throwError } from 'rxjs';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Location } from 'src/app/models/Location';
 import { LocationService } from 'src/app/shared/services/location.service';
@@ -17,6 +17,7 @@ export class EditLocationComponent {
   initializationSubscription?: Subscription;
 
   iconList: string[] = getMaterialIcons();
+  filteredIcons!: Observable<string[]>;
 
   locationForm: FormGroup;
   locations?: Location[];
@@ -43,6 +44,10 @@ export class EditLocationComponent {
   }
 
   ngOnInit(): void {
+    this.filteredIcons = this.locationForm.get('icon')!.valueChanges.pipe(
+      startWith(''),
+      map(value => this.filterIcons(value || ''))
+    );
     this.initializationSubscription = this.getLocationToEdit()
       .pipe(finalize(
         () => {
@@ -57,6 +62,13 @@ export class EditLocationComponent {
           this.initializeEditFormWithLocationData(location);
         }
       });
+  }
+
+  private filterIcons(value: string): string[] {
+    const filterValue = value.toLowerCase();
+    return this.iconList.filter(icon =>
+      icon.toLowerCase().includes(filterValue)
+    );
   }
 
   private getLocationToEdit(): Observable<Location | undefined> {

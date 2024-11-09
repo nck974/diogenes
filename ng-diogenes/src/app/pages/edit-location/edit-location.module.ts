@@ -6,7 +6,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
-import { MatSelectModule } from '@angular/material/select';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { SharedComponentsModule } from 'src/app/shared/components/shared.components.module';
 import { EditLocationComponent } from './edit-location.component';
@@ -30,7 +30,7 @@ import { EditLocationComponent } from './edit-location.component';
     MatIconModule,
     MatButtonModule,
     MatInputModule,
-    MatSelectModule,
+    MatAutocompleteModule,
 
   ],
   exports: [
