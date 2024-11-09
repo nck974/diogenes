@@ -45,12 +45,17 @@
 
                     <mat-form-field>
                         <mat-label>Select Icon</mat-label>
-                        <mat-select formControlName="icon">
-                            <mat-option *ngFor="let icon of iconList"
+                        <input type="text"
+                            matInput
+                            formControlName="icon"
+                            [matAutocomplete]="auto">
+                        <mat-autocomplete #auto="matAutocomplete">
+                            <mat-option
+                                *ngFor="let icon of filteredIcons | async"
                                 [value]="icon">
-                                <mat-icon>{{ icon }}</mat-icon> {{ icon }}
+                                <mat-icon>{{icon}}</mat-icon> {{icon}}
                             </mat-option>
-                        </mat-select>
+                        </mat-autocomplete>
                     </mat-form-field>
 
                     <!-- Button -->
