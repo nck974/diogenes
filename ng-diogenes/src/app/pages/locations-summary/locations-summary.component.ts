@@ -17,7 +17,7 @@ export class LocationsSummaryComponent implements OnInit {
   locationSubscription?: Subscription;
   locationsSummary?: LocationSummary[];
 
-  constructor(private router: Router, private locationService: LocationService) { };
+  constructor(private readonly router: Router, private readonly locationService: LocationService) { };
 
   ngOnDestroy(): void {
     this.locationSubscription?.unsubscribe();
@@ -35,9 +35,6 @@ export class LocationsSummaryComponent implements OnInit {
       });
   }
 
-  onCreateNewItem(): void {
-    this.router.navigateByUrl("/items/edit/new");
-  }
 
   onOpenLocation(location: Location): void {
     this.router.navigateByUrl(`/items?locationId=${location.id}`,);

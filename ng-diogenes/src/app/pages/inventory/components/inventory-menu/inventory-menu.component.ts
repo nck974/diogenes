@@ -9,7 +9,9 @@ import { AuthenticationService } from 'src/app/shared/services/authentication.se
 })
 export class InventoryMenuComponent {
 
-  constructor(private router: Router, private authenticationService: AuthenticationService) { }
+  constructor(
+    private readonly router: Router,
+    private readonly authenticationService: AuthenticationService) { }
 
   onNavigateToCategories(): void {
     this.router.navigateByUrl("/categories");

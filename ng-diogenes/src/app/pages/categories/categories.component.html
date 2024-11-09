@@ -10,7 +10,10 @@
 <!-- Show add category as float action button -->
 <div class="fab-container">
     <button mat-fab color="primary"
-        (click)="onCreateNewCategory()"><mat-icon>add</mat-icon>
+        aria-label="Create category"
+        matTooltip="Create category"
+        (click)="onCreateNewCategory()">
+        <mat-icon>add</mat-icon>
     </button>
 </div>
 

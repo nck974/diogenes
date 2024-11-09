@@ -10,7 +10,10 @@
 <!-- Show add location as float action button -->
 <div class="fab-container">
     <button mat-fab color="primary"
-        (click)="onCreateNewLocation()"><mat-icon>add</mat-icon>
+        aria-label="Create location"
+        matTooltip="Create location"
+        (click)="onCreateNewLocation()">
+        <mat-icon>add</mat-icon>
     </button>
 </div>
 

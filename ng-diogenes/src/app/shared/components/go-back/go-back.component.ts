@@ -8,7 +8,7 @@ import { Location } from '@angular/common';
   styleUrl: './go-back.component.scss'
 })
 export class GoBackComponent {
-  constructor(private location: Location) { }
+  constructor(private readonly location: Location) { }
 
   onNavigateBack(): void {
     this.location.back();

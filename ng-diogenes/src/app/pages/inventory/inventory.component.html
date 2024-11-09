@@ -11,11 +11,17 @@
 
         <!-- Menus -->
         <div class="flex-end">
-            <button mat-icon-button aria-label="Filter" (click)="onOpenFilter()"
+            <button mat-icon-button 
+                aria-label="Filter"
+                matTooltip="Filter items"
+                (click)="onOpenFilter()"
                 title=Filter>
                 <mat-icon>filter_list</mat-icon>
             </button>
-            <button mat-icon-button aria-label="Sorter" (click)="onOpenSorter()"
+            <button mat-icon-button 
+                aria-label="Sort" 
+                matTooltip="Sort items"
+                (click)="onOpenSorter()"
                 title=Sort>
                 <mat-icon>swap_vert</mat-icon>
             </button>
@@ -28,6 +34,7 @@
 <!-- Show an add item as float action button -->
 <div class="fab-container">
     <button mat-fab color="primary"
+        matTooltip="Add new item"
         (click)="onCreateNewItem()"><mat-icon>add</mat-icon>
     </button>
 </div>

@@ -44,7 +44,7 @@
                     *ngIf="item.imagePath">
                     <img [attr.src]="item.imagePath | secureImage | async"
                         class="item-image"
-                        alt="item-image">
+                        alt="Item">
                 </div>
 
                 <!-- Description -->
@@ -67,12 +67,16 @@
             <!-- Action buttons -->
             <mat-card-actions align="end">
 
-                <button mat-icon-button aria-label="Edit item"
+                <button mat-icon-button
+                    matTooltip="Edit item"
+                    aria-label="Edit item"
                     (click)="onEditItem()">
                     <mat-icon>edit</mat-icon>
                 </button>
 
-                <button mat-icon-button aria-label="Delete item"
+                <button mat-icon-button 
+                    aria-label="Delete item"
+                    matTooltip="Delete item"
                     (click)="onDeleteItem()">
                     <mat-icon>delete</mat-icon>
                 </button>
