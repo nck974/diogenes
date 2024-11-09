@@ -1,6 +1,7 @@
 package dev.nichoko.diogenes;
 
-import static org.junit.Assert.assertTrue;
+
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -14,7 +15,7 @@ class DiogenesApplicationTests {
 	 * Verify that the application can be started
 	 */
 	@Test
-	public void mainLoads() {
+	void mainLoads() {
 		DiogenesApplication.main(new String[] {});
 		assertTrue(true);
 	}
