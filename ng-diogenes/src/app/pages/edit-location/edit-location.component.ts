@@ -4,7 +4,7 @@ import { Observable, Subscription, catchError, finalize, map, of, switchMap, tak
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Location } from 'src/app/models/Location';
 import { LocationService } from 'src/app/shared/services/location.service';
-import { ActivatedRoute, ParamMap, Router } from '@angular/router';
+import { ActivatedRoute, ParamMap } from '@angular/router';
 import { MessageService } from 'src/app/shared/services/message.service';
 import { getMaterialIcons } from 'src/app/utils/material-icons';
 
@@ -26,12 +26,11 @@ export class EditLocationComponent {
   isLoading: boolean = true;
 
   constructor(
-    private fb: FormBuilder,
-    private locationService: LocationService,
-    private route: ActivatedRoute,
-    private router: Router,
-    private messageService: MessageService,
-    private locationCommon: LocationCommon) {
+    private readonly fb: FormBuilder,
+    private readonly locationService: LocationService,
+    private readonly route: ActivatedRoute,
+    private readonly messageService: MessageService,
+    private readonly locationCommon: LocationCommon) {
     this.locationForm = this.fb.group({
       name: ['', [Validators.required, Validators.maxLength(50)]],
       description: ['', [Validators.maxLength(2000)]],
@@ -131,7 +130,7 @@ export class EditLocationComponent {
         .subscribe(
           location => {
             this.messageService.add(`Location ${location.name} was ${locationTypeMessage}`);
-            this.router.navigateByUrl("/locations");
+            this.locationCommon.back();
           }
         );
     }

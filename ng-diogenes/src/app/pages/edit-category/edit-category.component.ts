@@ -4,7 +4,7 @@ import { Observable, Subscription, catchError, finalize, map, of, switchMap, tak
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Category } from 'src/app/models/Category';
 import { CategoryService } from 'src/app/shared/services/category.service';
-import { ActivatedRoute, ParamMap, Router } from '@angular/router';
+import { ActivatedRoute, ParamMap } from '@angular/router';
 import { MessageService } from 'src/app/shared/services/message.service';
 
 @Component({
@@ -27,7 +27,6 @@ export class EditCategoryComponent {
     private readonly fb: FormBuilder,
     private readonly categoryService: CategoryService,
     private readonly route: ActivatedRoute,
-    private readonly router: Router,
     private readonly messageService: MessageService,
     private readonly location: Location) {
     this.categoryForm = this.fb.group({
@@ -140,7 +139,7 @@ export class EditCategoryComponent {
         .subscribe(
           category => {
             this.messageService.add(`Category ${category.name} was ${categoryTypeMessage}`);
-            this.router.navigateByUrl("/categories");
+            this.location.back();
           }
         );
     }
