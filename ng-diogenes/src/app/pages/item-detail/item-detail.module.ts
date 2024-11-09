@@ -1,12 +1,13 @@
-import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ItemDetailComponent } from './item-detail.component';
-import { SharedComponentsModule } from 'src/app/shared/components/shared.components.module';
-import { MatIconModule } from '@angular/material/icon';
-import { MatCardModule } from '@angular/material/card';
-import { MatToolbarModule } from '@angular/material/toolbar';
+import { NgModule } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
+import { MatIconModule } from '@angular/material/icon';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { SharedComponentsModule } from 'src/app/shared/components/shared.components.module';
 import { SharedPipesModule } from 'src/app/shared/pipes/shared.pipes.module';
+import { ItemDetailComponent } from './item-detail.component';
 
 
 
@@ -24,6 +25,7 @@ import { SharedPipesModule } from 'src/app/shared/pipes/shared.pipes.module';
     MatCardModule,
     MatToolbarModule,
     MatButtonModule,
+    MatTooltipModule,
   ],
   exports: [
     ItemDetailComponent

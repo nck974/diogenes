@@ -8,7 +8,9 @@ import { Observable, map, of } from 'rxjs';
 })
 export class SecureImagePipe implements PipeTransform {
 
-  constructor(private http: HttpClient, private sanitizer: DomSanitizer) { }
+  constructor(
+    private readonly http: HttpClient,
+    private readonly sanitizer: DomSanitizer) { }
 
   /// This was extracted from_
   /// https://stackoverflow.com/questions/47811784/passing-authorization-header-for-images-src-to-remote-server-in-ionic-page/50463201#50463201

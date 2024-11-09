@@ -36,9 +36,9 @@ export class InventoryFilterComponent implements OnInit, OnDestroy {
   filterIsActive = false;
 
   constructor(
-    private fb: FormBuilder,
-    private categoryService: CategoryService,
-    private locationService: LocationService,
+    private readonly fb: FormBuilder,
+    private readonly categoryService: CategoryService,
+    private readonly locationService: LocationService,
     public dialogRef: MatDialogRef<InventoryFilterComponent>,
     @Inject(MAT_DIALOG_DATA) public previousFilter?: ItemFilter) {
     this.form = this.fb.group({

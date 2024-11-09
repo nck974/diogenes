@@ -9,13 +9,15 @@
     *ngIf="imagePath && !selectedImage; else addNewImageTemplate">
     <img [attr.src]="imagePath | secureImage | async"
         class="item-image"
-        alt="item-image">
+        alt="Item">
     <div class="flex-end">
         <button mat-icon-button
             (click)="fileInput.click()">
             <mat-icon>edit</mat-icon>
         </button>
         <button mat-icon-button
+            matTooltip="Delete image"
+            aria-label="Delete image"
             (click)="onDeleteImage()">
             <mat-icon>delete</mat-icon>
         </button>
@@ -30,10 +32,12 @@
         *ngIf="selectedImage; else addImageForm">
         <img [src]="selectedImage"
             class="item-image"
-            alt="selected-image">
+            alt="Selected item">
         <div class="flex-end">
             <button mat-icon-button
-                (click)="onFileDeselected()">
+                (click)="onFileDeselected()"
+                matTooltip="Delete image"
+                aria-label="Delete image">
                 <mat-icon>delete</mat-icon>
             </button>
         </div>
@@ -44,6 +48,8 @@
         <label for="file-input">
             <div class="flex-center">
                 <button mat-icon-button class="add-image-button"
+                    matTooltip="Add image"
+                    aria-label="Add image"
                     (click)="fileInput.click()">
                     <mat-icon>add_a_photo</mat-icon>
                 </button>

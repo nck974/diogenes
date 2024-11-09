@@ -6,7 +6,7 @@
         <!-- Logo -->
         <div class="flex-center">
             <app-go-back></app-go-back>
-            Categories
+            Items by category
         </div>
 
         <!-- Menus -->
@@ -17,13 +17,6 @@
     </mat-toolbar-row>
 
 </mat-toolbar>
-
-<!-- Show an add item as float action button -->
-<div class="fab-container">
-    <button mat-fab color="primary"
-        (click)="onCreateNewItem()"><mat-icon>add</mat-icon>
-    </button>
-</div>
 
 <!-- Show inventory -->
 <div *ngIf="isLoading; else notLoading">

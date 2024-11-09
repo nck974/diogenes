@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
@@ -34,6 +35,7 @@ import { MessageComponent } from './messages/message.component';
     MatProgressSpinnerModule,
     MatSnackBarModule,
     MatIconModule,
+    MatTooltipModule,
   ],
   exports: [
     LoadingSpinnerComponent,

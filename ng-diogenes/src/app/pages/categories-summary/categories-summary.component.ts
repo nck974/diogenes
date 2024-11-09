@@ -17,7 +17,7 @@ export class CategoriesSummaryComponent implements OnInit {
   categorySubscription?: Subscription;
   categoriesSummary?: CategorySummary[];
 
-  constructor(private router: Router, private categoryService: CategoryService) { };
+  constructor(private readonly router: Router, private readonly categoryService: CategoryService) { };
 
   ngOnDestroy(): void {
     this.categorySubscription?.unsubscribe();
@@ -35,9 +35,6 @@ export class CategoriesSummaryComponent implements OnInit {
       });
   }
 
-  onCreateNewItem(): void {
-    this.router.navigateByUrl("/items/edit/new");
-  }
 
   getAvatarColor(category: Category): string {
     let color = category.color;
@@ -49,7 +46,7 @@ export class CategoriesSummaryComponent implements OnInit {
     return "#ddd";
   }
 
-  onOpenCategory(category: Category): void{
+  onOpenCategory(category: Category): void {
     this.router.navigateByUrl(`/items?categoryId=${category.id}`,);
   }
 

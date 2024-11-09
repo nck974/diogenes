@@ -16,6 +16,7 @@ import { EditItemImageComponent } from './components/edit-item-image/edit-item-i
 import { EditSingleItemComponent } from './components/edit-single-item/edit-single-item.component';
 import { EditBulkComponent } from './components/edit-bulk/edit-bulk.component';
 import { SharedPipesModule } from 'src/app/shared/pipes/shared.pipes.module';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 
 @NgModule({
@@ -45,6 +46,7 @@ import { SharedPipesModule } from 'src/app/shared/pipes/shared.pipes.module';
     MatCardModule,
     MatProgressSpinnerModule,
     MatStepperModule,
+    MatTooltipModule,
   ]
 })
 export class EditItemModule { }

@@ -4,6 +4,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatDialogModule } from '@angular/material/dialog';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatMenuModule } from '@angular/material/menu';
@@ -37,7 +38,7 @@ import { LayoutModule } from '@angular/cdk/layout';
     CommonModule,
     ReactiveFormsModule,
     FormsModule,
-    
+
     // Local
     SharedComponentsModule,
     SharedPipesModule,
@@ -54,8 +55,8 @@ import { LayoutModule } from '@angular/cdk/layout';
     MatCardModule,
     MatMenuModule,
     MatDialogModule,
-    LayoutModule
-
+    LayoutModule,
+    MatTooltipModule
   ],
   exports: [
     InventoryComponent,
