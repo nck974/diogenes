@@ -1,5 +1,5 @@
-name: diogenes-actions
-run-name: Actions for the diogenes project
+name: diogenes-actions (maven)
+run-name: Check backend coverage
 on:
   push:
     branches:
@@ -9,11 +9,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Checkout
-      uses: actions/checkout@v2
+      uses: actions/checkout@v4
     - name: Set up JDK 17
-      uses: actions/setup-java@v1
+      uses: actions/setup-java@v2
       with:
         java-version: 17
+        distribution: 'temurin'
     - name: Change directory to spring project 'diogenes'
       run: cd diogenes
     - name: Install dependencies
