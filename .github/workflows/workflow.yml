@@ -23,3 +23,6 @@ jobs:
       run: mvn -B test jacoco:report -f diogenes/pom.xml
     - name: Upload coverage to Codecov
       uses: codecov/codecov-action@v4
+      with:
+        fail_ci_if_error: true
+        token: ${{ secrets.CODECOV_TOKEN }}
