@@ -99,7 +99,7 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public List<CategorySummary> getCategoriesSummary() {
 
-        // Count the categories from hte items
+        // Count the categories from the items
         List<Item> items = itemService.getAllItems();
         Map<Integer, Integer> categoryItemCountMap = items.stream()
                 .collect(

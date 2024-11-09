@@ -22,9 +22,17 @@ import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
 @Entity
 @Table(name = "item")
+@Getter
+@Setter
+@ToString
+@NoArgsConstructor
 public class Item {
 
     @Id
@@ -78,9 +86,6 @@ public class Item {
     @Transient
     private int locationId;
 
-    public Item() {
-    }
-
     public Item(int id, String name, String description, int number) {
         this.id = id;
         this.name = name;
@@ -99,50 +104,6 @@ public class Item {
         updatedOn = LocalDateTime.now();
     }
 
-    public String getImagePath() {
-        return imagePath;
-    }
-
-    public void setImagePath(String imagePath) {
-        this.imagePath = imagePath;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public int getNumber() {
-        return number;
-    }
-
-    public void setNumber(int number) {
-        this.number = number;
-    }
-
-    public Category getCategory() {
-        return category;
-    }
-
     public void setCategory(Category category) {
         this.category = category;
         if (category != null) {
@@ -150,55 +111,11 @@ public class Item {
         }
     }
 
-    public Location getLocation() {
-        return location;
-    }
-
     public void setLocation(Location location) {
         this.location = location;
         if (location != null) {
             this.locationId = location.getId();
         }
-    }
-
-    public int getCategoryId() {
-        return categoryId;
-    }
-
-    public void setCategoryId(int categoryId) {
-        this.categoryId = categoryId;
-    }
-
-    public int getLocationId() {
-        return locationId;
-    }
-
-    public void setLocationId(int locationId) {
-        this.locationId = locationId;
-    }
-
-    public LocalDateTime getUpdatedOn() {
-        return updatedOn;
-    }
-
-    public void setUpdatedOn(LocalDateTime updatedOn) {
-        this.updatedOn = updatedOn;
-    }
-
-    public LocalDateTime getCreatedOn() {
-        return createdOn;
-    }
-
-    public void setCreatedOn(LocalDateTime createdOn) {
-        this.createdOn = createdOn;
-    }
-
-    @Override
-    public String toString() {
-        return "Item [id=" + id + ", name=" + name + ", description=" + description + ", number=" + number
-                + ", updatedOn=" + updatedOn + ", createdOn=" + createdOn + ", imagePath=" + imagePath + ", category="
-                + category + ", categoryId=" + categoryId + ", location=" + location + ", locationId=" + locationId
-                + "]";
     }
 
 }
