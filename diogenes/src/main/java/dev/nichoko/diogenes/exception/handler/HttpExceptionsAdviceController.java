@@ -15,7 +15,7 @@ import dev.nichoko.diogenes.exception.ResourceNotFoundException;
 import dev.nichoko.diogenes.exception.UnsupportedImageFormatException;
 
 @RestControllerAdvice
-public class ResourceNotFoundAdviceController {
+public class HttpExceptionsAdviceController {
 
     @ExceptionHandler(ResourceNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
