@@ -22,4 +22,4 @@ jobs:
     - name: Run tests and collect coverage
       run: mvn -B test jacoco:report -f diogenes/pom.xml
     - name: Upload coverage to Codecov
-      uses: codecov/codecov-action@v3
+      uses: codecov/codecov-action@v4
