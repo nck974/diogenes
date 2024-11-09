@@ -30,24 +30,27 @@
                     (ngSubmit)="onSubmit()">
 
                     <!-- Fields -->
-                    <mat-form-field>
-                        <mat-label>Name</mat-label>
-                        <input matInput required maxlength="50"
-                            formControlName="name">
-                    </mat-form-field>
+                    <div class="single-row">
+                        <div class="color-picker-wrapper">
+                            <ngx-colors
+                                [formControl]="colorControl"
+                                ngx-colors-trigger
+                                class="row-item">
+                            </ngx-colors>
+                        </div>
+
+                        <mat-form-field>
+                            <mat-label>Name</mat-label>
+                            <input matInput required maxlength="50"
+                                formControlName="name">
+                        </mat-form-field>
+                    </div>
 
                     <mat-form-field>
                         <mat-label>Description</mat-label>
                         <textarea matInput formControlName="description"
                             class="textarea-height"
                             maxlength="2000"></textarea>
-                    </mat-form-field>
-
-                    <mat-form-field>
-                        <input matInput [ngxMatColorPicker]="picker"
-                            [formControl]="colorControl">
-                        <ngx-mat-color-toggle matSuffix [for]="picker"></ngx-mat-color-toggle>
-                        <ngx-mat-color-picker #picker></ngx-mat-color-picker>
                     </mat-form-field>
 
                     <!-- Button -->

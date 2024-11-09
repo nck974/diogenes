@@ -5,6 +5,7 @@ import java.util.Collection;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
+import org.springframework.lang.NonNull;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.Authentication;
@@ -26,18 +27,17 @@ public class JwtConfig {
     @Autowired
     private JwtUtils jwtUtils;
 
-
     @Bean
     public OncePerRequestFilter jwtRequestFilter() {
         return new OncePerRequestFilter() {
             @Override
-            protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
-                    FilterChain filterChain) throws IOException, ServletException {
+            protected void doFilterInternal(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response,
+                    @NonNull FilterChain filterChain) throws IOException, ServletException {
                 String token = extractToken(request);
                 if (token != null) {
                     Authentication auth = getAuthentication(token);
                     SecurityContextHolder.getContext().setAuthentication(auth);
-                    if (auth != null && !jwtUtils.validateToken(token)){
+                    if (auth != null && !jwtUtils.validateToken(token)) {
                         throw new BadCredentialsException("Invalid token");
                     }
                 }

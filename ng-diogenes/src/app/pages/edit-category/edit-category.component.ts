@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component } from '@angular/core';
 import { Location } from '@angular/common';
 import { Observable, Subscription, catchError, finalize, map, of, switchMap, take, throwError } from 'rxjs';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
@@ -6,8 +6,6 @@ import { Category } from 'src/app/models/Category';
 import { CategoryService } from 'src/app/shared/services/category.service';
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 import { MessageService } from 'src/app/shared/services/message.service';
-import { Color, NgxMatColorPickerInput } from '@angular-material-components/color-picker';
-import { hexToRgb } from 'src/app/utils/color';
 
 @Component({
   selector: 'app-edit-category',
@@ -15,7 +13,6 @@ import { hexToRgb } from 'src/app/utils/color';
   styleUrls: ['./edit-category.component.scss']
 })
 export class EditCategoryComponent {
-  @ViewChild(NgxMatColorPickerInput) pickerInput?: NgxMatColorPickerInput;
 
   initializationSubscription?: Subscription;
 
@@ -27,16 +24,16 @@ export class EditCategoryComponent {
   isLoading: boolean = true;
 
   constructor(
-    private fb: FormBuilder,
-    private categoryService: CategoryService,
-    private route: ActivatedRoute,
-    private router: Router,
-    private messageService: MessageService,
-    private location: Location) {
+    private readonly fb: FormBuilder,
+    private readonly categoryService: CategoryService,
+    private readonly route: ActivatedRoute,
+    private readonly router: Router,
+    private readonly messageService: MessageService,
+    private readonly location: Location) {
     this.categoryForm = this.fb.group({
       name: ['', [Validators.required, Validators.maxLength(50)]],
       description: ['', [Validators.maxLength(2000)]],
-      color: ['', [Validators.required]], // TODO: Get correct regex
+      color: ['', [Validators.required]],
     });
 
   }
@@ -107,11 +104,10 @@ export class EditCategoryComponent {
       name: category.name,
       description: category.description,
     });
-    const rgb = hexToRgb(category.color);
-    if (rgb){
-      this.categoryForm.patchValue({
-        color: new Color(rgb.r, rgb.g, rgb.b)
-      })
+
+    const hexColor = category.color;
+    if (hexColor) {
+      this.colorControl.patchValue(`#${hexColor}`);
     }
   }
 
@@ -119,10 +115,11 @@ export class EditCategoryComponent {
     if (this.categoryForm.valid) {
 
       this.isLoading = true;
-      const colorHex = (this.categoryForm.value["color"] as Color).hex
+      const colorHex = (this.categoryForm.value["color"] as string).replace("#", "");
       const newCategory: Category = this.categoryForm.value as Category;
       newCategory.color = colorHex;
       console.log(newCategory);
+
       // Select service
       let manageCategoryObservable = this.categoryService.postCategory(newCategory);
       let categoryTypeMessage = "created";
