@@ -28,7 +28,7 @@ public class ItemManager {
      * @throws JsonProcessingException
      */
     private static void tryCreateCategoryIfNotExists(MockMvc mockMvc, Item item)
-            throws UnsupportedEncodingException, Exception, JsonProcessingException {
+            throws Exception {
         try {
             String categoryString = CategoryManager.createCategory(mockMvc, item.getCategory()).andReturn()
                     .getResponse()
@@ -41,7 +41,7 @@ public class ItemManager {
                 item.setCategoryId(categoryId);
             }
         } catch (java.lang.NullPointerException e) {
-
+            // Category is already created
         }
     }
 
@@ -54,7 +54,7 @@ public class ItemManager {
      * @throws JsonProcessingException
      */
     private static void tryCreateLocationIfNotExists(MockMvc mockMvc, Item item)
-            throws UnsupportedEncodingException, Exception, JsonProcessingException {
+            throws Exception {
         try {
             String locationString = LocationManager.createLocation(mockMvc, item.getLocation()).andReturn()
                     .getResponse()
@@ -67,7 +67,7 @@ public class ItemManager {
                 item.setLocationId(locationId);
             }
         } catch (java.lang.NullPointerException e) {
-
+            // pass
         }
     }
 

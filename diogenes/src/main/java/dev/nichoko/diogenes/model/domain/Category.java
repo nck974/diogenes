@@ -72,15 +72,6 @@ public class Category {
         this.color = color;
     }
 
-    public Category(
-            String name,
-            String description,
-            String color) {
-        this.name = name;
-        this.description = description;
-        this.color = color;
-    }
-
     @PrePersist
     protected void onCreate() {
         createdOn = LocalDateTime.now();

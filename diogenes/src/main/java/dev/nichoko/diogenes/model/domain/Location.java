@@ -70,15 +70,6 @@ public class Location {
         this.icon = icon;
     }
 
-    public Location(
-            String name,
-            String description,
-            String icon) {
-        this.name = name;
-        this.description = description;
-        this.icon = icon;
-    }
-
     @PrePersist
     protected void onCreate() {
         createdOn = LocalDateTime.now();

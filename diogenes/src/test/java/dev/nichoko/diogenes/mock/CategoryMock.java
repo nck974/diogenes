@@ -3,8 +3,8 @@ package dev.nichoko.diogenes.mock;
 import dev.nichoko.diogenes.model.domain.Category;
 
 public class CategoryMock {
-        /*
-     * Return a mock of an category
+    /*
+     * Return a mock of a category
      */
     public static Category getMockCategory(Integer number) {
         return new Category(
