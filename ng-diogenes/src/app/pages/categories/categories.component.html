@@ -18,16 +18,19 @@
 </div>
 
 <!-- Show categories -->
-<div class="card-list-container" *ngIf="!isLoading; else loadingSpinner">
-    <div *ngFor="let category of categories">
-        <app-category-in-list [category]="category"></app-category-in-list>
-    </div>
-</div>
-
-<!-- Loading spinner -->
-<ng-template #loadingSpinner>
-    <app-loading-spinner></app-loading-spinner>
-</ng-template>
-
-<div>
-</div>
+@if(categories && categories.length > 0){
+    @if(!isLoading){
+        <div class="card-list-container">
+            <div *ngFor="let category of categories">
+                <app-category-in-list [category]="category"></app-category-in-list>
+            </div>
+        </div>
+    }@else {
+        <app-loading-spinner></app-loading-spinner>
+    }
+}
+@else {
+<app-error-card title="No categories found" icon="error"
+    content="You can create a new category to classify the items.">
+</app-error-card>
+}

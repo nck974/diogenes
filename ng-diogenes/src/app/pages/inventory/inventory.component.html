@@ -11,15 +11,15 @@
 
         <!-- Menus -->
         <div class="flex-end">
-            <button mat-icon-button 
+            <button mat-icon-button
                 aria-label="Filter"
                 matTooltip="Filter items"
                 (click)="onOpenFilter()"
                 title=Filter>
                 <mat-icon>filter_list</mat-icon>
             </button>
-            <button mat-icon-button 
-                aria-label="Sort" 
+            <button mat-icon-button
+                aria-label="Sort"
                 matTooltip="Sort items"
                 (click)="onOpenSorter()"
                 title=Sort>
@@ -40,33 +40,31 @@
 </div>
 
 <!-- Show inventory -->
-<div *ngIf="isLoading; else notLoading">
+@if(isLoading){
     <app-loading-spinner></app-loading-spinner>
-</div>
-
-<ng-template #notLoading>
-
+}
+@else {
+    
     <!-- Infinite scroll -->
+    @if(isItemsListNotEmpty()){
     <div infiniteScroll (scrolled)="onScroll()"
         [infiniteScrollDistance]="0.5"
         [infiniteScrollDisabled]="lastPage" id="item-list"
-        *ngIf="isItemsListNotEmpty(); else noItems"
-        class="card-list-container"
-        >
-        <div *ngFor="let item of items">
+        class="card-list-container">
+        @for(item of items; track item){
             <app-item-in-list [item]="item"></app-item-in-list>
-        </div>
+        }
 
-        <div *ngIf="fetchingInProgress">
+        @if(fetchingInProgress){
             <app-loading-spinner></app-loading-spinner>
-        </div>
+        }
 
     </div>
-
+    }
     <!-- Empty list -->
-    <ng-template #noItems>
-        <app-error-card [title]="'No items found'" [icon]="'error'"
-            [content]="'There are no items in the inventory yet for the given filters.'"></app-error-card>
-    </ng-template>
-
-</ng-template>
+    @else{
+    <app-error-card title="No items found" icon="error"
+        content="There are no items in the inventory yet for the given filters.">
+    </app-error-card>
+    }
+}

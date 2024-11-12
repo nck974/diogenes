@@ -25,7 +25,7 @@
 <ng-template #notLoading>
 
     <div class="card-list-container"
-        *ngIf="categoriesSummary; else noItems">
+        *ngIf="categoriesSummary && categoriesSummary.length > 0; else noItems">
         <mat-card
             class="card-in-list"
             *ngFor="let summary of categoriesSummary">

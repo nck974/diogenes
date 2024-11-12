@@ -18,13 +18,19 @@
 </div>
 
 <!-- Show locations -->
-<div class="card-list-container" *ngIf="!isLoading; else loadingSpinner">
-    <div *ngFor="let location of locations">
-        <app-location-in-list [location]="location"></app-location-in-list>
+@if(locations && locations.length > 0){
+    @if(!isLoading){
+    <div class="card-list-container">
+        <div *ngFor="let location of locations">
+            <app-location-in-list [location]="location"></app-location-in-list>
+        </div>
     </div>
-</div>
-
-<!-- Loading spinner -->
-<ng-template #loadingSpinner>
+    }@else {
     <app-loading-spinner></app-loading-spinner>
-</ng-template>
+    }
+}
+@else {
+<app-error-card title="No locations found" icon="error"
+    content="You can create a new location for the items.">
+</app-error-card>
+}
