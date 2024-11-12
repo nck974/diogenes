@@ -41,8 +41,9 @@ file:
   # Location in file system:
   uploads-dir: ./uploads
   images-dir: files/items/images
+  images-host: http://localhost:8080
   # API Endpoint path
-  images-base-path: ${server.servlet.context-path}/api/v1/files/images/
+  images-base-path: ${file.images-host}${server.servlet.context-path}/api/v1/files/images/
 
 diogenes:
   # Enable authentication
