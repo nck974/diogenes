@@ -10,7 +10,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatSelectModule } from '@angular/material/select';
 import { MatToolbarModule } from '@angular/material/toolbar';
-import { InfiniteScrollModule } from 'ngx-infinite-scroll';
+import { InfiniteScrollDirective } from 'ngx-infinite-scroll';
 import { SharedComponentsModule } from 'src/app/shared/components/shared.components.module';
 import { SharedPipesModule } from 'src/app/shared/pipes/shared.pipes.module';
 import { InventoryFilterComponent } from './components/inventory-filter/inventory-filter.component';
@@ -44,7 +44,7 @@ import { LayoutModule } from '@angular/cdk/layout';
     SharedPipesModule,
 
     // External
-    InfiniteScrollModule,
+    InfiniteScrollDirective,
 
     // Material
     MatIconModule,
