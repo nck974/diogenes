@@ -82,6 +82,20 @@ https://start.spring.io/#!type=maven-project&language=java&platformVersion=3.0.4
 1. Configure the `JAVA_HOME` pointing to the folder of the JDK17.
     1. In windows with a ENVIRONMENT_VARIABLE (Can be added from path menu).
     1. In UNIX exporting with `export JAVA_HOME`.
+1. Add you gemini api key to your `diogenes/.vscode/launch.json`:
+
+    ```json
+    {
+    "configurations": [
+        {
+            ...
+            "env": {
+                "GEMINI_API_KEY": "<your_key>"
+            }
+        }
+    ]
+    }
+    ```
 
 #### Run tests
 

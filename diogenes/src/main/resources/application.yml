@@ -53,3 +53,8 @@ diogenes:
 jwt:
   # Secret password used in combination with other parameters to generate JWT
   secret: random-password-todo-reconfigure
+
+# AI Configuration
+ai:
+  gemini:
+    api-key: ${GEMINI_API_KEY}

@@ -55,7 +55,7 @@ class LocationControllerTest {
      * Test the app can load
      */
     @Test
-    void contextLoads() throws Exception {
+    void contextLoads() {
         assertThat(controller).isNotNull();
     }
 
