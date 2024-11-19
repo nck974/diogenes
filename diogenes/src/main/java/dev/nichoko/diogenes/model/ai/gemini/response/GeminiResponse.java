@@ -4,6 +4,8 @@ import java.util.List;
 
 import javax.management.RuntimeErrorException;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import dev.nichoko.diogenes.model.ai.gemini.Part;
 import dev.nichoko.diogenes.model.ai.gemini.TextPart;
 import lombok.AllArgsConstructor;
@@ -36,5 +38,11 @@ public class GeminiResponse {
             throw new RuntimeErrorException(null);
         }
         return "";
+    }
+
+    // Helper method to parse JSON string
+    public static GeminiResponse fromJson(String json) throws Exception {
+        ObjectMapper mapper = new ObjectMapper();
+        return mapper.readValue(json, GeminiResponse.class);
     }
 }

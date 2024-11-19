@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatusCode;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.reactive.function.client.ClientResponse;
 import org.springframework.web.reactive.function.client.WebClient;
 
 import dev.nichoko.diogenes.exception.ErrorReadingImageException;
@@ -87,6 +88,13 @@ public class GeminiService implements AiService {
                 generationConfig);
     }
 
+    private Mono<? extends Throwable> validateResponseError(ClientResponse clientResponse) {
+        return clientResponse.bodyToMono(String.class)
+                .doOnNext(errorMessage -> log.error("Gemini Response: " + errorMessage))
+                .then(Mono.error(new GeminiErrorException(
+                        "Gemini error: " + clientResponse.statusCode())));
+    }
+
     private String sendGeminiRequest(GeminiRequest request) {
         return webClient.post()
                 .uri("generateContent?key=" + apiKey)
@@ -94,10 +102,7 @@ public class GeminiService implements AiService {
                 .retrieve()
                 .onStatus(
                         HttpStatusCode::isError,
-                        clientResponse -> clientResponse.bodyToMono(String.class)
-                                .doOnNext(errorMessage -> log.error("Gemini Response: " + errorMessage))
-                                .then(Mono.error(new GeminiErrorException(
-                                        "Gemini error: " + clientResponse.statusCode()))))
+                        this::validateResponseError)
                 .bodyToMono(GeminiResponse.class)
                 .block()
                 .getGeneratedContent();

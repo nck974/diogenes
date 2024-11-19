@@ -17,3 +17,7 @@ file:
   # The requests to the servlet context does not seem to work
   images-base-path: /api/v1/files/images/
 
+# AI Configuration
+ai:
+  gemini:
+    api-key: some_key
