@@ -4,7 +4,8 @@ import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import { Observable, map, of } from 'rxjs';
 
 @Pipe({
-  name: 'secureImage'
+    name: 'secureImage',
+    standalone: false
 })
 export class SecureImagePipe implements PipeTransform {
 

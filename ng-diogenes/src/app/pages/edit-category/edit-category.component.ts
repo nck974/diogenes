@@ -8,9 +8,10 @@ import { ActivatedRoute, ParamMap } from '@angular/router';
 import { MessageService } from 'src/app/shared/services/message.service';
 
 @Component({
-  selector: 'app-edit-category',
-  templateUrl: './edit-category.component.html',
-  styleUrls: ['./edit-category.component.scss']
+    selector: 'app-edit-category',
+    templateUrl: './edit-category.component.html',
+    styleUrls: ['./edit-category.component.scss'],
+    standalone: false
 })
 export class EditCategoryComponent {
 

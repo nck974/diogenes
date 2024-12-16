@@ -3,9 +3,10 @@ import { Router } from '@angular/router';
 import { Location } from 'src/app/models/Location';
 
 @Component({
-  selector: 'app-location-in-list',
-  templateUrl: './location-in-list.component.html',
-  styleUrls: ['./location-in-list.component.scss']
+    selector: 'app-location-in-list',
+    templateUrl: './location-in-list.component.html',
+    styleUrls: ['./location-in-list.component.scss'],
+    standalone: false
 })
 export class LocationInListComponent {
 

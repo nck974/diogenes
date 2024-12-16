@@ -6,9 +6,10 @@ import { Subscription } from 'rxjs';
 import { getColorOrDefault } from 'src/app/utils/color';
 
 @Component({
-  selector: 'app-item-in-list',
-  templateUrl: './item-in-list.component.html',
-  styleUrls: ['./item-in-list.component.scss']
+    selector: 'app-item-in-list',
+    templateUrl: './item-in-list.component.html',
+    styleUrls: ['./item-in-list.component.scss'],
+    standalone: false
 })
 export class ItemInListComponent implements OnInit, OnDestroy {
 

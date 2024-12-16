@@ -12,9 +12,10 @@ import { InventoryFilterComponent } from './components/inventory-filter/inventor
 import { InventorySorterComponent } from './components/inventory-sorter/inventory-sorter.component';
 
 @Component({
-  selector: 'app-inventory',
-  templateUrl: './inventory.component.html',
-  styleUrls: ['./inventory.component.scss']
+    selector: 'app-inventory',
+    templateUrl: './inventory.component.html',
+    styleUrls: ['./inventory.component.scss'],
+    standalone: false
 })
 export class InventoryComponent implements OnInit, OnDestroy {
 

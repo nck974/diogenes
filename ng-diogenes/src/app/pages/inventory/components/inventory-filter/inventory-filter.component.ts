@@ -12,9 +12,10 @@ import { isNumberValidator } from 'src/app/utils/form-validator/number';
 
 
 @Component({
-  selector: 'app-inventory-filter',
-  templateUrl: './inventory-filter.component.html',
-  styleUrls: ['./inventory-filter.component.scss']
+    selector: 'app-inventory-filter',
+    templateUrl: './inventory-filter.component.html',
+    styleUrls: ['./inventory-filter.component.scss'],
+    standalone: false
 })
 export class InventoryFilterComponent implements OnInit, OnDestroy {
 

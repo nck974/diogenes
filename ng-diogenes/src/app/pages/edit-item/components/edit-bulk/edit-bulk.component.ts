@@ -4,9 +4,10 @@ import { Router } from '@angular/router';
 import { ImageTransfer } from 'src/app/models/ImageTransfer';
 
 @Component({
-  selector: 'app-edit-bulk',
-  templateUrl: './edit-bulk.component.html',
-  styleUrls: ['./edit-bulk.component.scss']
+    selector: 'app-edit-bulk',
+    templateUrl: './edit-bulk.component.html',
+    styleUrls: ['./edit-bulk.component.scss'],
+    standalone: false
 })
 export class EditBulkComponent {
   @ViewChild('stepper') stepper?: MatStepper;

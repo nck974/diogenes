@@ -3,9 +3,10 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 
 @Component({
-  selector: 'app-edit-item',
-  templateUrl: './edit-item.component.html',
-  styleUrls: ['./edit-item.component.scss']
+    selector: 'app-edit-item',
+    templateUrl: './edit-item.component.html',
+    styleUrls: ['./edit-item.component.scss'],
+    standalone: false
 })
 export class EditItemComponent implements OnInit {
 

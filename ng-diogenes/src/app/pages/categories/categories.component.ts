@@ -5,9 +5,10 @@ import { Category } from 'src/app/models/Category';
 import { CategoryService } from 'src/app/shared/services/category.service';
 
 @Component({
-  selector: 'app-categories',
-  templateUrl: './categories.component.html',
-  styleUrls: ['./categories.component.scss']
+    selector: 'app-categories',
+    templateUrl: './categories.component.html',
+    styleUrls: ['./categories.component.scss'],
+    standalone: false
 })
 export class CategoriesComponent implements OnInit {
 

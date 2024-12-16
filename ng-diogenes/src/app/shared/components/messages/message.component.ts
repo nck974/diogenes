@@ -6,9 +6,10 @@ import { MessageService } from 'src/app/shared/services/message.service';
 const MESSAGE_TIMEOUT_MS = 5000;
 
 @Component({
-  selector: 'app-message',
-  templateUrl: './message.component.html',
-  styleUrls: ['./message.component.scss']
+    selector: 'app-message',
+    templateUrl: './message.component.html',
+    styleUrls: ['./message.component.scss'],
+    standalone: false
 })
 export class MessageComponent implements OnInit {
   private messageSubscription?: Subscription;

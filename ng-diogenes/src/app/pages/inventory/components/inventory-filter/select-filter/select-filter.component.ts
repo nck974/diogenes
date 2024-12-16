@@ -4,16 +4,17 @@ import { FormControl, NG_VALUE_ACCESSOR } from '@angular/forms';
 type SelectBoxOptions = [string, string | number];
 
 @Component({
-  selector: 'app-select-filter',
-  templateUrl: './select-filter.component.html',
-  styleUrls: ['./select-filter.component.scss'],
-  providers: [
-    {
-      provide: NG_VALUE_ACCESSOR,
-      useExisting: forwardRef(() => SelectFilterComponent),
-      multi: true,
-    }
-  ]
+    selector: 'app-select-filter',
+    templateUrl: './select-filter.component.html',
+    styleUrls: ['./select-filter.component.scss'],
+    providers: [
+        {
+            provide: NG_VALUE_ACCESSOR,
+            useExisting: forwardRef(() => SelectFilterComponent),
+            multi: true,
+        }
+    ],
+    standalone: false
 })
 export class SelectFilterComponent {
   @Input() filterName?: string;

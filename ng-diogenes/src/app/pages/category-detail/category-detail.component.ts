@@ -10,9 +10,10 @@ import { MessageService } from 'src/app/shared/services/message.service';
 import { getColorOrDefault } from 'src/app/utils/color';
 
 @Component({
-  selector: 'app-category-detail',
-  templateUrl: './category-detail.component.html',
-  styleUrls: ['./category-detail.component.scss']
+    selector: 'app-category-detail',
+    templateUrl: './category-detail.component.html',
+    styleUrls: ['./category-detail.component.scss'],
+    standalone: false
 })
 export class CategoryDetailComponent implements OnInit, OnDestroy {
 

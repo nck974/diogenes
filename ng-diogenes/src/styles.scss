@@ -1,4 +1,10 @@
 /* You can add global styles to this file, and also import other style files */
+@use 'src/styles/alignment.scss';
+@use 'src/styles/components.scss';
+@use 'src/styles/borders.scss';
+@use 'src/styles/interaction.scss';
+@use 'src/styles/texts.scss';
+@use 'src/styles/icons.scss';
 
 html,
 body {
@@ -9,10 +15,3 @@ body {
     margin: 0;
     font-family: Roboto, "Helvetica Neue", sans-serif;
 }
-
-@import './styles/alignment';
-@import './styles/components';
-@import './styles/borders';
-@import './styles/interaction';
-@import './styles/texts';
-@import './styles/icons';
