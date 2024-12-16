@@ -12,6 +12,7 @@ import dev.nichoko.diogenes.exception.MissingCategoryException;
 import dev.nichoko.diogenes.exception.MissingLocationException;
 import dev.nichoko.diogenes.exception.NameAlreadyExistsException;
 import dev.nichoko.diogenes.exception.ResourceNotFoundException;
+import dev.nichoko.diogenes.exception.UnexpectedAiResponseException;
 import dev.nichoko.diogenes.exception.UnsupportedImageFormatException;
 
 @RestControllerAdvice
@@ -56,6 +57,12 @@ public class HttpExceptionsAdviceController {
     @ExceptionHandler(ImageCouldNotBeSavedException.class)
     @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
     public ErrorResponse handleImageCouldNotBeSaved(ImageCouldNotBeSavedException ex) {
+        return new ErrorResponse(ex.getMessage());
+    }
+
+    @ExceptionHandler(UnexpectedAiResponseException.class)
+    @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
+    public ErrorResponse handleUnexpectedAiResponse(UnexpectedAiResponseException ex) {
         return new ErrorResponse(ex.getMessage());
     }
 

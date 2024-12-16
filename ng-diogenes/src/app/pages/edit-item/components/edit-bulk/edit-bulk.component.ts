@@ -14,8 +14,11 @@ export class EditBulkComponent {
   completedSteps: boolean[] = [];
   selectedImages: ImageTransfer[] = [];
   isDragging = false;
+  isAiActive = false;
 
   constructor(private readonly router: Router) { }
+
+
 
   onFilesSelected(event: any) {
     const files: FileList = event.target.files;

@@ -7,6 +7,8 @@ import { Category } from 'src/app/models/Category';
 import { ImageTransfer } from 'src/app/models/ImageTransfer';
 import { Item } from 'src/app/models/Item';
 import { Location } from 'src/app/models/Location';
+import { RecognizedItem } from 'src/app/models/RecognizedItem';
+import { AiService } from 'src/app/shared/services/ai.service';
 import { CategoryService } from 'src/app/shared/services/category.service';
 import { ItemService } from 'src/app/shared/services/item.service';
 import { LocationService } from 'src/app/shared/services/location.service';
@@ -20,6 +22,7 @@ import { MessageService } from 'src/app/shared/services/message.service';
 export class EditSingleItemComponent implements OnDestroy, OnInit {
   @Input() createFromImage?: ImageTransfer;
   @Input() hideTitle?: boolean = false;
+  @Input() useAi?: boolean = false;
   @Output() onItemCreate = new EventEmitter<boolean>();
   initializationSubscription?: Subscription;
 
@@ -30,17 +33,19 @@ export class EditSingleItemComponent implements OnDestroy, OnInit {
   initializationError?: string;
   isNewItem: boolean = true;
   isLoading: boolean = true;
+  aIisLoading: boolean = false;
 
   imagePath?: string;
   selectedImageBlob?: Blob;
 
   constructor(
-    private fb: FormBuilder,
-    private itemService: ItemService,
-    private categoryService: CategoryService,
-    private locationService: LocationService,
-    private route: ActivatedRoute,
-    private messageService: MessageService,
+    private readonly fb: FormBuilder,
+    private readonly itemService: ItemService,
+    private readonly categoryService: CategoryService,
+    private readonly locationService: LocationService,
+    private readonly aiService: AiService,
+    private readonly route: ActivatedRoute,
+    private readonly messageService: MessageService,
     public dialogService: MatDialog) {
     this.itemForm = this.fb.group({
       name: ['', [Validators.required, Validators.maxLength(50)]],
@@ -59,7 +64,7 @@ export class EditSingleItemComponent implements OnDestroy, OnInit {
     combineLatest({
       categories: this.categoryService.getCategories(),
       locations: this.locationService.getLocations(),
-      item: this.getItemToEdit(),
+      item: this.getItemToEdit()
     })
       .pipe(finalize(
         () => {
@@ -75,10 +80,40 @@ export class EditSingleItemComponent implements OnDestroy, OnInit {
           this.initializeEditFormWithItemData(item);
         } else if (this.createFromImage) {
           this.selectedImageBlob = this.createFromImage.file;
+
+          if (this.useAi && this.selectedImageBlob) {
+            this.aIisLoading = true;
+            this.recognizeImage(this.selectedImageBlob);
+          }
         }
         this.preselectPreviousCategory();
         this.preselectPreviousLocation();
       });
+  }
+
+  private recognizeImage(selectedImageBlob: Blob): void {
+    this.aiService.recognizeItemInImage(selectedImageBlob)
+      .pipe(finalize(
+        () => {
+          this.aIisLoading = false;
+        }
+      ))
+      .subscribe(
+        recognizedImage => this.patchRecognizedImage(recognizedImage)
+      );
+  }
+
+  /// Patch the form with the items that were found
+  private patchRecognizedImage(recognizedItem?: RecognizedItem): void {
+
+    if (!recognizedItem) {
+      return;
+    }
+
+    this.itemForm.patchValue({
+      name: recognizedItem.item,
+      description: recognizedItem.description,
+    });
   }
 
   /// If there is category saved in the browser and it is a new item auto-select the category

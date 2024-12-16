@@ -52,9 +52,6 @@ class AuthenticationControllerTest {
     @MockBean
     private AuthenticationManager authenticationManager;
 
-    // @MockBean
-    // private JwtUtils jwtUtils;
-
     /*
      * Clean up the database before each test
      */
@@ -128,7 +125,8 @@ class AuthenticationControllerTest {
         List<GrantedAuthority> authorities = Collections.singletonList(new SimpleGrantedAuthority("ROLE_USER"));
         UserDetails userDetails = new User("test", "test", authorities);
         when(authenticationManager.authenticate(any(UsernamePasswordAuthenticationToken.class)))
-                .thenReturn(new UsernamePasswordAuthenticationToken(userDetails, "test", userDetails.getAuthorities()));
+                .thenReturn(new UsernamePasswordAuthenticationToken(userDetails, "test",
+                        userDetails.getAuthorities()));
 
         // Send authentication
         UserAuthentication userAuthentication = UserAuthenticationMock.getMockUserAuthentication();
@@ -160,7 +158,8 @@ class AuthenticationControllerTest {
         List<GrantedAuthority> authorities = Collections.singletonList(new SimpleGrantedAuthority("ROLE_USER"));
         UserDetails userDetails = new User("test", "test", authorities);
         when(authenticationManager.authenticate(any(UsernamePasswordAuthenticationToken.class)))
-                .thenReturn(new UsernamePasswordAuthenticationToken(userDetails, "test", userDetails.getAuthorities()));
+                .thenReturn(new UsernamePasswordAuthenticationToken(userDetails, "test",
+                        userDetails.getAuthorities()));
 
         // Send authentication
         UserAuthentication userAuthentication = UserAuthenticationMock.getMockUserAuthentication();

@@ -8,7 +8,9 @@ Diogenes is an inventory web application designed to help you manage and keep tr
 
 This app is intended to assist you in cataloging everything you own, helping you avoid the clutter often associated with Diogenes Syndrome.
 
-The application goal is to provide a faster and more user-friendly alternative to managing your belongings compared to a plain Excel spreadsheet
+The application goal is to provide a faster and more user-friendly alternative to managing your belongings compared to a plain Excel spreadsheet.
+
+To minimize time consumed it is possible to make use of `Gemini AI` to automatically detect the items you add with an image.
 
 - [Usage](#usage)
   - [Docker](#docker)
@@ -82,6 +84,20 @@ https://start.spring.io/#!type=maven-project&language=java&platformVersion=3.0.4
 1. Configure the `JAVA_HOME` pointing to the folder of the JDK17.
     1. In windows with a ENVIRONMENT_VARIABLE (Can be added from path menu).
     1. In UNIX exporting with `export JAVA_HOME`.
+1. Add you gemini api key to your `diogenes/.vscode/launch.json`:
+
+    ```json
+    {
+    "configurations": [
+        {
+            ...
+            "env": {
+                "GEMINI_API_KEY": "<your_key>"
+            }
+        }
+    ]
+    }
+    ```
 
 #### Run tests
 

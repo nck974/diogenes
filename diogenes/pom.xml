@@ -55,6 +55,12 @@
 			<scope>test</scope>
 		</dependency>
 
+		<!-- Make queries to a an AI backend -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-webflux</artifactId>
+		</dependency>
+
 		<!-- Standard database interfaces -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
