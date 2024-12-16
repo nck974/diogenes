@@ -22,7 +22,7 @@ services:
       - SPRING_DATASOURCE_JDBC-URL=jdbc:postgresql://diogenes-db:5432/diogenes_db
       - SPRING_DATASOURCE_USERNAME=${DATABASE_USER}
       - SPRING_DATASOURCE_PASSWORD=${DATABASE_PASSWORD}
-      - SPRING_APPLICATION_JSON={"jwt.secret":"${TOKEN_SECRET}", "file.images-host":""}
+      - SPRING_APPLICATION_JSON={"jwt.secret":"${TOKEN_SECRET}", "file.images-host":"","ai.gemini.api-key":"${GEMINI_API}"}
     ports:
       - 8080:8080
     volumes:

@@ -1,7 +1,7 @@
 #################
 # Build the app #
 #################
-FROM node:20-alpine AS build
+FROM node:23-alpine AS build
 
 WORKDIR /app
 
@@ -18,7 +18,7 @@ RUN ng build --configuration production --output-path=/dist
 ################
 FROM nginx:alpine
 
-COPY --from=build /dist /usr/share/nginx/html
+COPY --from=build /dist/browser /usr/share/nginx/html
 
 # When the container starts, replace the env.js with values from environment variables
 CMD ["/bin/sh",  "-c",  "envsubst < /usr/share/nginx/html/assets/env.template.js > /usr/share/nginx/html/assets/env.js && exec nginx -g 'daemon off;'"]
