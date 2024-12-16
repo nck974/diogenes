@@ -1,7 +1,9 @@
  <!-- Display multiple forms as a stepper -->
 <div class="card-container flex-center">
+
+    <!-- Edit the images -->
+    @if(selectedImages && selectedImages.length > 0){
     <div
-        *ngIf="selectedImages && selectedImages.length > 0; else selectMultipleImages"
         class="card-details">
         <mat-vertical-stepper [linear]="true" #stepper>
             <mat-step *ngFor="let image of selectedImages; let index = index"
@@ -10,46 +12,61 @@
                 <ng-template matStepLabel>Item {{index + 1}}</ng-template>
                 <app-edit-single-item [createFromImage]="image"
                     [hideTitle]="true"
+                    [useAi]="isAiActive"
                     (onItemCreate)="onFinishStep($event, index)"></app-edit-single-item>
             </mat-step>
         </mat-vertical-stepper>
     </div>
-</div>
+    }
+    <!-- Form to add the images -->
+    @else {
 
-<!-- Select images button -->
-<ng-template #selectMultipleImages>
+    <div class="flex-center flex-column">
 
-    <!-- Hidden form to select files -->
-    <input
-        id="bulk-file-import-input"
-        #fileInput type="file"
-        accept="image/gif, image/jpeg, image/png"
-        (change)="onFilesSelected($event)"
-        style="display: none" multiple>
+        <!-- Hidden form to select files -->
+        <input
+            id="bulk-file-import-input"
+            #fileInput type="file"
+            accept="image/gif, image/jpeg, image/png"
+            (change)="onFilesSelected($event)"
+            style="display: none" multiple>
 
-    <!-- Box to drag items or click -->
-    <div class="flex-center card-container"
-        (dragover)="onDragOver($event)"
-        (drop)="onDrop($event)"
-        (click)="fileInput.click()"
-        (dragleave)="onDragLeave($event)">
-        <div
-            class="dashed-container-height card-details centered-text flex-center show-pointer dashed-border hover-dashed-border"
-            [ngClass]="{ 'drag-over-border': isDragging }">
-            <div>
-                <label for="file-input">
-                    <div>
-                        <button mat-icon-button
-                            (click)="fileInput.click()">
-                            <mat-icon>add_a_photo</mat-icon>
-                        </button>
-                    </div>
-                </label>
+        <!-- Box to drag items or click -->
+        <div class="flex-center card-container"
+            (dragover)="onDragOver($event)"
+            (drop)="onDrop($event)"
+            (click)="fileInput.click()"
+            (dragleave)="onDragLeave($event)">
+            <div
+                class="dashed-container-height card-details centered-text flex-center show-pointer dashed-border hover-dashed-border"
+                [ngClass]="{ 'drag-over-border': isDragging }">
                 <div>
-                    Click to select the images of the items or drag them inside the
-                    box
+                    <label for="file-input">
+                        <div>
+                            <button mat-icon-button
+                                (click)="fileInput.click()">
+                                <mat-icon>add_a_photo</mat-icon>
+                            </button>
+                        </div>
+                    </label>
+                    <div>
+                        Click to select the images of the items or drag them
+                        inside
+                        the
+                        box
+                    </div>
                 </div>
             </div>
+
         </div>
+
+        <!-- Ai recognition -->
+        <div>
+            <mat-slide-toggle [(ngModel)]="isAiActive">Auto recognize
+                images
+            </mat-slide-toggle>
+        </div>
+
     </div>
-</ng-template>
+    }
+</div>

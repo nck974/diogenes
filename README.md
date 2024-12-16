@@ -8,7 +8,9 @@ Diogenes is an inventory web application designed to help you manage and keep tr
 
 This app is intended to assist you in cataloging everything you own, helping you avoid the clutter often associated with Diogenes Syndrome.
 
-The application goal is to provide a faster and more user-friendly alternative to managing your belongings compared to a plain Excel spreadsheet
+The application goal is to provide a faster and more user-friendly alternative to managing your belongings compared to a plain Excel spreadsheet.
+
+To minimize time consumed it is possible to make use of `Gemini AI` to automatically detect the items you add with an image.
 
 - [Usage](#usage)
   - [Docker](#docker)

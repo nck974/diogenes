@@ -9,7 +9,7 @@ export class MessageService {
   messages: string[] = [];
 
   // Broadcast messages
-  private messagesAddedSubject = new Subject<string[]>();
+  private readonly messagesAddedSubject = new Subject<string[]>();
   messagesAdded$ = this.messagesAddedSubject.asObservable();
 
   add(message: string) {
