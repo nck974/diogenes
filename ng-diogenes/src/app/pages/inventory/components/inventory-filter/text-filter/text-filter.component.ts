@@ -4,16 +4,17 @@ import { ValidationMessages } from 'src/app/models/ValidationMessages';
 
 
 @Component({
-  selector: 'app-text-filter',
-  templateUrl: './text-filter.component.html',
-  styleUrls: ['./text-filter.component.scss', '../inventory-filter.component.scss'],
-  providers: [
-    {
-      provide: NG_VALUE_ACCESSOR,
-      useExisting: forwardRef(() => TextFilterComponent),
-      multi: true,
-    }
-  ]
+    selector: 'app-text-filter',
+    templateUrl: './text-filter.component.html',
+    styleUrls: ['./text-filter.component.scss', '../inventory-filter.component.scss'],
+    providers: [
+        {
+            provide: NG_VALUE_ACCESSOR,
+            useExisting: forwardRef(() => TextFilterComponent),
+            multi: true,
+        }
+    ],
+    standalone: false
 })
 export class TextFilterComponent {
   @Input() filterName?: string;

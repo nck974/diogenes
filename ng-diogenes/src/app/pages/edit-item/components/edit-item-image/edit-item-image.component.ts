@@ -8,9 +8,10 @@ import { ItemService } from 'src/app/shared/services/item.service';
 import { MessageService } from 'src/app/shared/services/message.service';
 
 @Component({
-  selector: 'app-edit-item-image',
-  templateUrl: './edit-item-image.component.html',
-  styleUrls: ['./edit-item-image.component.scss']
+    selector: 'app-edit-item-image',
+    templateUrl: './edit-item-image.component.html',
+    styleUrls: ['./edit-item-image.component.scss'],
+    standalone: false
 })
 export class EditItemImageComponent implements OnInit {
 

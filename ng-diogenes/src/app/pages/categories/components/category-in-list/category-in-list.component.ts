@@ -4,9 +4,10 @@ import { Category } from 'src/app/models/Category';
 import { getColorOrDefault } from 'src/app/utils/color';
 
 @Component({
-  selector: 'app-category-in-list',
-  templateUrl: './category-in-list.component.html',
-  styleUrls: ['./category-in-list.component.scss']
+    selector: 'app-category-in-list',
+    templateUrl: './category-in-list.component.html',
+    styleUrls: ['./category-in-list.component.scss'],
+    standalone: false
 })
 export class CategoryInListComponent {
 

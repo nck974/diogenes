@@ -1,6 +1,6 @@
 // This file serves as interface to load the components
 
-@import './components/cards';
-@import './components/card-list';
-@import './components/item-image';
-@import './components/button';
+@use 'src/styles/components/cards.scss';
+@use 'src/styles/components/card-list.scss';
+@use 'src/styles/components/item-image.scss';
+@use 'src/styles/components/button.scss';

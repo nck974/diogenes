@@ -3,7 +3,8 @@ import { Category } from '../../models/Category';
 import { Location } from 'src/app/models/Location';
 
 @Pipe({
-  name: 'generateSelectBoxOptions'
+    name: 'generateSelectBoxOptions',
+    standalone: false
 })
 export class GenerateSelectBoxOptionsPipe implements PipeTransform {
 

@@ -9,9 +9,10 @@ import { MessageService } from 'src/app/shared/services/message.service';
 import { getMaterialIcons } from 'src/app/utils/material-icons';
 
 @Component({
-  selector: 'app-edit-location',
-  templateUrl: './edit-location.component.html',
-  styleUrls: ['./edit-location.component.scss']
+    selector: 'app-edit-location',
+    templateUrl: './edit-location.component.html',
+    styleUrls: ['./edit-location.component.scss'],
+    standalone: false
 })
 export class EditLocationComponent {
   initializationSubscription?: Subscription;

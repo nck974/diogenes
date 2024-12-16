@@ -9,9 +9,10 @@ import { LocationService } from 'src/app/shared/services/location.service';
 import { MessageService } from 'src/app/shared/services/message.service';
 
 @Component({
-  selector: 'app-location-detail',
-  templateUrl: './location-detail.component.html',
-  styleUrls: ['./location-detail.component.scss']
+    selector: 'app-location-detail',
+    templateUrl: './location-detail.component.html',
+    styleUrls: ['./location-detail.component.scss'],
+    standalone: false
 })
 export class LocationDetailComponent implements OnInit, OnDestroy {
 

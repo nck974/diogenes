@@ -15,9 +15,10 @@ import { LocationService } from 'src/app/shared/services/location.service';
 import { MessageService } from 'src/app/shared/services/message.service';
 
 @Component({
-  selector: 'app-edit-single-item',
-  templateUrl: './edit-single-item.component.html',
-  styleUrls: ['./edit-single-item.component.scss']
+    selector: 'app-edit-single-item',
+    templateUrl: './edit-single-item.component.html',
+    styleUrls: ['./edit-single-item.component.scss'],
+    standalone: false
 })
 export class EditSingleItemComponent implements OnDestroy, OnInit {
   @Input() createFromImage?: ImageTransfer;

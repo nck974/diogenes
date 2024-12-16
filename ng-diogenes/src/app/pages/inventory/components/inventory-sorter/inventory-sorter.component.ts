@@ -4,9 +4,10 @@ import { ItemSorter } from 'src/app/models/ItemSorter';
 import { SortingField } from 'src/app/models/SortingField';
 
 @Component({
-  selector: 'app-inventory-sorter',
-  templateUrl: './inventory-sorter.component.html',
-  styleUrls: ['./inventory-sorter.component.scss']
+    selector: 'app-inventory-sorter',
+    templateUrl: './inventory-sorter.component.html',
+    styleUrls: ['./inventory-sorter.component.scss'],
+    standalone: false
 })
 export class InventorySorterComponent implements OnInit {
   options: string[] = []

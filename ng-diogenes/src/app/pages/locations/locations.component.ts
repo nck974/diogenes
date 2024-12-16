@@ -5,9 +5,10 @@ import { Location } from 'src/app/models/Location';
 import { LocationService } from 'src/app/shared/services/location.service';
 
 @Component({
-  selector: 'app-locations',
-  templateUrl: './locations.component.html',
-  styleUrls: ['./locations.component.scss']
+    selector: 'app-locations',
+    templateUrl: './locations.component.html',
+    styleUrls: ['./locations.component.scss'],
+    standalone: false
 })
 export class LocationsComponent implements OnInit {
 

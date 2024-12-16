@@ -3,9 +3,10 @@ import { Router } from '@angular/router';
 import { AuthenticationService } from 'src/app/shared/services/authentication.service';
 
 @Component({
-  selector: 'app-inventory-menu',
-  templateUrl: './inventory-menu.component.html',
-  styleUrls: ['./inventory-menu.component.scss']
+    selector: 'app-inventory-menu',
+    templateUrl: './inventory-menu.component.html',
+    styleUrls: ['./inventory-menu.component.scss'],
+    standalone: false
 })
 export class InventoryMenuComponent {
 
