@@ -19,7 +19,7 @@
     "@angular/material": "^19.0.3",
     "@angular/platform-browser": "^19.0.4",
     "@angular/platform-browser-dynamic": "^19.0.4",
-    "@angular/router": "^19.0.4",
+    "@angular/router": "^19.2.4",
     "@auth0/angular-jwt": "^5.2.0",
     "ngx-colors": "^3.6.0",
     "ngx-infinite-scroll": "^19.0.0",
